@@ -1,0 +1,25 @@
+<div class="container">
+    <h1 class=" text-center my-4 bg-info p-4 text-white fw-bolder">View Employee</h1>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Department</th>
+            <th scope="col">Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of employeeList">
+            <td>{{employee.id}}</td>
+            <td>{{employee.firstName+" "+employee.lastName}}</td>
+            <td>{{employee.email}}</td>
+            <td>{{employee.departmentId}}</td>
+            <td>{{employee.roleId}}</td>
+          </tr>
+          
+        </tbody>
+      </table>
+</div>
+
