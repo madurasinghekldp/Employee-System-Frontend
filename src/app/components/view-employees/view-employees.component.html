@@ -12,20 +12,25 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let employee of employeeList">
-            <td>{{employee.id}}</td>
-            <td>{{employee.firstName+" "+employee.lastName}}</td>
-            <td>{{employee.email}}</td>
-            <td>{{employee.departmentId}}</td>
-            <td>{{employee.roleId}}</td>
-            <td>
+          <tr *ngFor="let employee of employeeList; index as i;">
+            <td *ngIf="i>lowRange && i<highRange">{{employee.id}}</td>
+            <td *ngIf="i>lowRange && i<highRange">{{employee.firstName+" "+employee.lastName}}</td>
+            <td *ngIf="i>lowRange && i<highRange">{{employee.email}}</td>
+            <td *ngIf="i>lowRange && i<highRange">{{employee.departmentId}}</td>
+            <td *ngIf="i>lowRange && i<highRange">{{employee.roleId}}</td>
+            <td *ngIf="i>lowRange && i<highRange">
               <i class="btn bi bi-trash3 btn-outline-danger" (click)="deleteEmployee(employee)"></i>
               <span class=" mx-1"></span>
               <i class="btn bi bi-pencil-square btn-outline-success" (click)="loadUpdateModel(employee)"
                data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
             </td>
           </tr>
-          
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item" *ngIf="lowRange>-1"><button class="page-link" (click)="decreaseRange()">&laquo; Previous</button></li>
+              <li class="page-item" *ngIf="highRange<employeeCount"><button class="page-link" (click)="increaseRange()">Next &raquo;</button></li>
+            </ul>
+          </nav>
         </tbody>
       </table>
 </div>
@@ -39,25 +44,34 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1"></span>
-          <input type="text" class="form-control" placeholder="First Name" aria-label="first name" 
-          [(ngModel)]="selectedEmployee.firstName" required #firstName="ngModel" [class.is-invalid]="firstName.invalid && firstName.touched"
-          aria-describedby="basic-addon1" >
+        <div class=" mb-3">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1"></span>
+            <input type="text" class="form-control" placeholder="First Name" aria-label="first name" 
+            [(ngModel)]="selectedEmployee.firstName" required #firstName="ngModel" [class.is-invalid]="firstName.invalid && firstName.touched"
+            aria-describedby="basic-addon1" >
+          </div>
+          <small class="text-danger" [class.d-none]="firstName.valid || firstName.untouched">First name is required.</small>
         </div>
         
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1"></span>
-          <input type="text" class="form-control" placeholder="Last Name" aria-label="last name" 
-          [(ngModel)]="selectedEmployee.lastName" required #lastName="ngModel" [class.is-invalid]="lastName.invalid && lastName.touched"
-          aria-describedby="basic-addon1" >
+        <div class=" mb-3">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1"></span>
+            <input type="text" class="form-control" placeholder="Last Name" aria-label="last name" 
+            [(ngModel)]="selectedEmployee.lastName" required #lastName="ngModel" [class.is-invalid]="lastName.invalid && lastName.touched"
+            aria-describedby="basic-addon1" >
+          </div>
+          <small class="text-danger" [class.d-none]="lastName.valid || lastName.untouched">Last name is required.</small>
         </div>
   
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1"></span>
-          <input type="email" class="form-control" placeholder="Email" aria-label="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
-          [(ngModel)]="selectedEmployee.email" required #email="ngModel" [class.is-invalid]="email.invalid && email.touched"
-          aria-describedby="basic-addon1" >
+        <div class=" mb-3">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1"></span>
+            <input type="email" class="form-control" placeholder="Email" aria-label="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+            [(ngModel)]="selectedEmployee.email" required #email="ngModel" [class.is-invalid]="email.invalid && email.touched"
+            aria-describedby="basic-addon1" >
+          </div>
+          <small class="text-danger" [class.d-none]="email.valid || email.untouched">Please enter a valid email.</small>
         </div>
         
         

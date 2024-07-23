@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -7,13 +7,14 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-view-employees',
   standalone: true,
-  imports: [HttpClientModule,FormsModule,NgFor],
+  imports: [HttpClientModule,FormsModule,NgFor,NgIf],
   templateUrl: './view-employees.component.html',
   styleUrl: './view-employees.component.css'
 })
 export class ViewEmployeesComponent {
 
   public employeeList:any = [];
+
   public selectedEmployee = {
     id:undefined,
     firstName:undefined,
@@ -23,13 +24,25 @@ export class ViewEmployeesComponent {
     roleId:undefined
   }
 
+  public lowRange:number = -1;
+  public highRange:number = 5;
+  public employeeCount:any;
+
   constructor(private http: HttpClient) {
     this.loadEmployeeTable();
+    this.getEmployeeCount();
   }
 
   loadEmployeeTable(){
     this.http.get("http://localhost:8080/emp/get-all").subscribe(res=>{
       this.employeeList = res;
+      this.employeeList.sort((a: { id: number; },b: { id: number; })=> b.id - a.id);
+    });
+  }
+
+  getEmployeeCount(){
+    this.http.get("http://localhost:8080/emp/count").subscribe(res=>{
+      this.employeeCount = res;
     });
   }
 
@@ -120,6 +133,16 @@ export class ViewEmployeesComponent {
         }
       });
     }
+  }
+
+  increaseRange(){
+    this.lowRange = this.lowRange+5;
+    this.highRange = this.highRange+5;
+  }
+
+  decreaseRange(){
+    this.lowRange = this.lowRange-5;
+    this.highRange = this.highRange-5;
   }
 
 }
