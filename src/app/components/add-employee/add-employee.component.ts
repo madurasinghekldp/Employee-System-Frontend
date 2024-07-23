@@ -34,6 +34,13 @@ export class AddEmployeeComponent {
         text: "New Employee Added!",
         icon: "success"
       });
+      this.employee={
+        firstName:undefined,
+        lastName:undefined,
+        email:undefined,
+        departmentId:undefined,
+        roleId:undefined
+      }
     });
   }
 

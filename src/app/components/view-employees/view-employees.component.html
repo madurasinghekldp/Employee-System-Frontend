@@ -18,10 +18,73 @@
             <td>{{employee.email}}</td>
             <td>{{employee.departmentId}}</td>
             <td>{{employee.roleId}}</td>
-            <td><i class="btn bi bi-trash3 btn-outline-danger" (click)="deleteEmployee(employee)"></i></td>
+            <td>
+              <i class="btn bi bi-trash3 btn-outline-danger" (click)="deleteEmployee(employee)"></i>
+              <span class=" mx-1"></span>
+              <i class="btn bi bi-pencil-square btn-outline-success" (click)="loadUpdateModel(employee)"
+               data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
+            </td>
           </tr>
           
         </tbody>
       </table>
 </div>
 
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Employee</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"></span>
+          <input type="text" class="form-control" placeholder="First Name" aria-label="first name" 
+          [(ngModel)]="selectedEmployee.firstName" required #firstName="ngModel" [class.is-invalid]="firstName.invalid && firstName.touched"
+          aria-describedby="basic-addon1" >
+        </div>
+        
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"></span>
+          <input type="text" class="form-control" placeholder="Last Name" aria-label="last name" 
+          [(ngModel)]="selectedEmployee.lastName" required #lastName="ngModel" [class.is-invalid]="lastName.invalid && lastName.touched"
+          aria-describedby="basic-addon1" >
+        </div>
+  
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"></span>
+          <input type="email" class="form-control" placeholder="Email" aria-label="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+          [(ngModel)]="selectedEmployee.email" required #email="ngModel" [class.is-invalid]="email.invalid && email.touched"
+          aria-describedby="basic-addon1" >
+        </div>
+        
+        
+        <div class="input-group mb-3">
+          <span class="input-group-text">Department</span>
+          <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" 
+          [(ngModel)]="selectedEmployee.departmentId" required #departmentId="ngModel"
+          [class.is-invalid]="departmentId.invalid && departmentId.touched">
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          <span class="input-group-text">Role</span>
+          <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" 
+          [(ngModel)]="selectedEmployee.roleId" required #roleId="ngModel"
+          [class.is-invalid]="roleId.invalid && roleId.touched">
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" (click)="updateEmployee()"
+        [disabled]="firstName.invalid || lastName.invalid || email.invalid || departmentId.invalid || roleId.invalid">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

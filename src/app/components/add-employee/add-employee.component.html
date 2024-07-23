@@ -1,40 +1,59 @@
 <div class="container">
     <h1 class=" text-center my-4 bg-info p-4 text-white fw-bolder">Add Employee</h1>
-    <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1"></span>
-        <input type="text" class="form-control" placeholder="First Name" aria-label="first name" 
-        aria-describedby="basic-addon1" [(ngModel)]="employee.firstName">
+    
+      <div class=" mb-3">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1"></span>
+          <input type="text" class="form-control" placeholder="First Name" aria-label="first name" required
+          aria-describedby="basic-addon1" [(ngModel)]="employee.firstName" #firstName="ngModel" 
+          [class.is-invalid]="firstName.invalid && firstName.touched">
+        </div>
+        <small class="text-danger" [class.d-none]="firstName.valid || firstName.untouched">First name is required.</small>
       </div>
       
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1"></span>
-        <input type="text" class="form-control" placeholder="Last Name" aria-label="last name" 
-        aria-describedby="basic-addon1" [(ngModel)]="employee.lastName">
+      
+      <div class=" mb-3">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1"></span>
+          <input type="text" class="form-control" placeholder="Last Name" aria-label="last name" required
+          aria-describedby="basic-addon1" [(ngModel)]="employee.lastName" #lastName="ngModel" 
+          [class.is-invalid]="lastName.invalid && lastName.touched">
+        </div>
+        <small class="text-danger" [class.d-none]="lastName.valid || lastName.untouched">Last name is required.</small>
       </div>
 
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1"></span>
-        <input type="email" class="form-control" placeholder="Email" aria-label="email" 
-        aria-describedby="basic-addon1" [(ngModel)]="employee.email">
+      <div class=" mb-3">
+        <div class="input-group">
+          <span class="input-group-text" id="basic-addon1"></span>
+          <input type="email" class="form-control" placeholder="Email" aria-label="email" required pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+          aria-describedby="basic-addon1" [(ngModel)]="employee.email" #email="ngModel" 
+          [class.is-invalid]="email.invalid && email.touched">
+        </div>
+        <small class="text-danger" [class.d-none]="email.valid || email.untouched">Please enter a valid email.</small>
       </div>
       
       
       <div class="input-group mb-3">
         <span class="input-group-text">Department</span>
-        <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" 
-        [(ngModel)]="employee.departmentId" >
+        <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" required
+            [(ngModel)]="employee.departmentId" #departmentId="ngModel" 
+            [class.is-invalid]="departmentId.invalid && departmentId.touched">
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
-          </select>
+        </select>
+        <small class="text-danger me-2" [class.d-none]="departmentId.valid || departmentId.untouched">Please select a department id.</small>
         <span class="input-group-text">Role</span>
-        <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" 
-        [(ngModel)]="employee.roleId">
+        <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" required
+            [(ngModel)]="employee.roleId" #roleId="ngModel" 
+            [class.is-invalid]="roleId.invalid && roleId.touched">
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
-          </select>
+        </select>
+        <small class="text-danger me-2" [class.d-none]="roleId.valid || roleId.untouched">Please select a role id.</small>
       </div>
-      <button type="button" class="btn btn-success" (click)="addEmployee()">Add Employee</button>
-      
+      <button type="button" class="btn btn-success" (click)="addEmployee()" 
+      [disabled]="firstName.invalid || lastName.invalid || email.invalid || departmentId.invalid || roleId.invalid">Add Employee</button>
+    
 </div>
