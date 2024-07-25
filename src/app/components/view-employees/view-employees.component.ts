@@ -36,7 +36,7 @@ export class ViewEmployeesComponent {
   }
 
   loadEmployeeTable(){
-    this.http.get("http://localhost:8080/emp/get-all").subscribe(res=>{
+    this.employeeService.getAll().subscribe(res=>{
       this.employeeList = res;
       this.employeeList.sort((a: { id: number; },b: { id: number; })=> b.id - a.id);
     });
@@ -66,7 +66,7 @@ export class ViewEmployeesComponent {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        this.http.delete(`http://localhost:8080/emp/del/${employee.id}`,{responseType:"text"}).subscribe(res=>{
+        this.employeeService.delete(employee).subscribe(res=>{
           this.loadEmployeeTable();
           swalWithBootstrapButtons.fire({
             title: "Deleted!",
@@ -115,7 +115,7 @@ export class ViewEmployeesComponent {
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
-          this.http.put(`http://localhost:8080/emp/update`,this.selectedEmployee).subscribe(res=>{
+          this.employeeService.update(this.selectedEmployee).subscribe(res=>{
             this.loadEmployeeTable();
             swalWithBootstrapButtons.fire({
               title: "Updated!",

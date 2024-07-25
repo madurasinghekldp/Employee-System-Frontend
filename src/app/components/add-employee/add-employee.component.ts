@@ -3,17 +3,19 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { EmployeeService } from '../../services/employee.service';
 
 @Component({
   selector: 'app-add-employee',
   standalone: true,
   imports: [FormsModule,HttpClientModule,CommonModule],
   templateUrl: './add-employee.component.html',
-  styleUrl: './add-employee.component.css'
+  styleUrl: './add-employee.component.css',
+  providers:[EmployeeService]
 })
 export class AddEmployeeComponent {
 
-  constructor(private http: HttpClient){
+  constructor(private employeeService: EmployeeService){
     
   }
 
@@ -27,7 +29,7 @@ export class AddEmployeeComponent {
 
   addEmployee(){
     console.log(this.employee);
-    this.http.post("http://localhost:8080/emp/add",this.employee).subscribe(data =>{
+    this.employeeService.add(this.employee).subscribe(data =>{
 
       Swal.fire({
         title: "Success!",
