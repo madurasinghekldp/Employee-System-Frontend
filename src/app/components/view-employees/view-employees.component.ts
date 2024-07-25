@@ -3,13 +3,15 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { EmployeeService } from '../../services/employee.service';
 
 @Component({
   selector: 'app-view-employees',
   standalone: true,
   imports: [HttpClientModule,FormsModule,NgFor,NgIf],
   templateUrl: './view-employees.component.html',
-  styleUrl: './view-employees.component.css'
+  styleUrl: './view-employees.component.css',
+  providers:[EmployeeService]
 })
 export class ViewEmployeesComponent {
 
@@ -25,10 +27,10 @@ export class ViewEmployeesComponent {
   }
 
   public lowRange:number = -1;
-  public highRange:number = 5;
+  public highRange:number = 7;
   public employeeCount:any;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private employeeService: EmployeeService) {
     this.loadEmployeeTable();
     this.getEmployeeCount();
   }
@@ -41,9 +43,9 @@ export class ViewEmployeesComponent {
   }
 
   getEmployeeCount(){
-    this.http.get("http://localhost:8080/emp/count").subscribe(res=>{
-      this.employeeCount = res;
-    });
+    this.employeeService.getCount().subscribe(
+      res=>this.employeeCount = res
+    );
   }
 
   deleteEmployee(employee:any){
@@ -136,13 +138,13 @@ export class ViewEmployeesComponent {
   }
 
   increaseRange(){
-    this.lowRange = this.lowRange+5;
-    this.highRange = this.highRange+5;
+    this.lowRange = this.lowRange+7;
+    this.highRange = this.highRange+7;
   }
 
   decreaseRange(){
-    this.lowRange = this.lowRange-5;
-    this.highRange = this.highRange-5;
+    this.lowRange = this.lowRange-7;
+    this.highRange = this.highRange-7;
   }
 
 }
