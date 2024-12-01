@@ -1,5 +1,5 @@
 <div class="container">
-    <h1 class=" text-center my-4 bg-info p-4 text-white fw-bolder">View Employee</h1>
+    <h1 class=" text-center my-4 bg-black p-4 text-white fw-bolder">View Employee</h1>
     <table class="table table-striped">
         <thead>
           <tr>
@@ -11,27 +11,33 @@
             <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="employeeList.length>0">
           <tr *ngFor="let employee of employeeList; index as i;">
-            <td *ngIf="i>lowRange && i<highRange">{{employee.id}}</td>
-            <td *ngIf="i>lowRange && i<highRange">{{employee.firstName+" "+employee.lastName}}</td>
-            <td *ngIf="i>lowRange && i<highRange">{{employee.email}}</td>
-            <td *ngIf="i>lowRange && i<highRange">{{employee.departmentId}}</td>
-            <td *ngIf="i>lowRange && i<highRange">{{employee.roleId}}</td>
-            <td *ngIf="i>lowRange && i<highRange">
+            <td >{{employee.id}}</td>
+            <td >{{employee.firstName+" "+employee.lastName}}</td>
+            <td >{{employee.email}}</td>
+            <td >{{employee.department.name}}</td>
+            <td >{{employee.role.name}}</td>
+            <td >
               <i class="btn bi bi-trash3 btn-outline-danger" (click)="deleteEmployee(employee)"></i>
               <span class=" mx-1"></span>
               <i class="btn bi bi-pencil-square btn-outline-success" (click)="loadUpdateModel(employee)"
                data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
             </td>
           </tr>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item" *ngIf="lowRange>-1"><button class="page-link" (click)="decreaseRange()">&laquo; Previous</button></li>
-              <li class="page-item" *ngIf="highRange<employeeCount"><button class="page-link" (click)="increaseRange()">Next &raquo;</button></li>
-            </ul>
-          </nav>
         </tbody>
+        <tbody *ngIf="employeeMessage">
+          <tr>
+            <td colspan="6" class="text-center">{{employeeMessage}}</td>
+          </tr>
+        </tbody>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item"><button class="page-link" (click)="goToPreviousPage()">&laquo; Previous</button></li>
+            <span class=" mx-3 my-auto">{{(offset/5)+1}}</span>
+            <li class="page-item"><button class="page-link" (click)="goToNextPage()">Next &raquo;</button></li>
+          </ul>
+        </nav>
       </table>
 </div>
 
@@ -78,7 +84,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="input-group mb-3">
           <span class="input-group-text">Department</span>
           <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" 
-          [(ngModel)]="selectedEmployee.departmentId" required #departmentId="ngModel"
+          [(ngModel)]="selectedEmployee.department.id" required #departmentId="ngModel"
           [class.is-invalid]="departmentId.invalid && departmentId.touched">
               <option value="1">One</option>
               <option value="2">Two</option>
@@ -86,7 +92,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
             </select>
           <span class="input-group-text">Role</span>
           <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" 
-          [(ngModel)]="selectedEmployee.roleId" required #roleId="ngModel"
+          [(ngModel)]="selectedEmployee.role.id" required #roleId="ngModel"
           [class.is-invalid]="roleId.invalid && roleId.touched">
               <option value="1">One</option>
               <option value="2">Two</option>
@@ -96,7 +102,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success" (click)="updateEmployee()"
+        <button type="button" class="btn btn-success" 
         [disabled]="firstName.invalid || lastName.invalid || email.invalid || departmentId.invalid || roleId.invalid">Update</button>
       </div>
     </div>

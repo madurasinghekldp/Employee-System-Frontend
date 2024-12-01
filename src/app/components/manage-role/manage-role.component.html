@@ -1,0 +1,45 @@
+<!-- add-role.component.html -->
+<div class="container mt-5">
+    <h2>Add New Role</h2>
+    
+    <form (ngSubmit)="addRole()">
+      <div class="mb-3">
+        <label for="roleName" class="form-label">Role Name</label>
+        <input type="text" id="roleName" class="form-control" [(ngModel)]="newRole.name" name="name" required>
+      </div>
+  
+      <div class="mb-3">
+        <label for="roleDescription" class="form-label">Description</label>
+        <textarea id="roleDescription" class="form-control" [(ngModel)]="newRole.description" name="description" rows="3" required></textarea>
+      </div>
+  
+      <button type="submit" class="btn btn-success">Add Role</button>
+    </form>
+  
+    <hr class="my-4">
+  
+    <h2>Roles List</h2>
+  
+    <table class="table table-bordered table-striped mt-3">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let role of roles">
+          <td>{{ role.id }}</td>
+          <td>{{ role.name }}</td>
+          <td>{{ role.description }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2" (click)="editRole(role)">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="deleteRole(role.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
