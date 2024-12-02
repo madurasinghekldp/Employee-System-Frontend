@@ -9,6 +9,7 @@ import { Department } from '../../types/department';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import { RoleService } from '../../services/role.service';
 import { Role } from '../../types/role';
+import { Employee } from '../../types/employee';
 
 @Component({
   selector: 'app-add-employee',
@@ -69,35 +70,29 @@ export class AddEmployeeComponent implements OnInit{
     firstName: new FormControl('',[Validators.required]),
     lastName: new FormControl('',[Validators.required]),
     email: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
-    department: new FormControl('',Validators.required),
-    role: new FormControl('',Validators.required)
+    department: new FormControl(null,Validators.required),
+    role: new FormControl(null,Validators.required)
   })
 
-  departments = [
-    { id: 1, name: 'Human Resources' },
-    { id: 2, name: 'IT Department' },
-    { id: 3, name: 'Finance' },
-    { id: 4, name: 'Marketing' }
-  ];
-
-  roles = [
-    { id: 1, name: 'Manager' },
-    { id: 2, name: 'Developer' },
-    { id: 3, name: 'Analyst' },
-    { id: 4, name: 'HR Specialist' }
-  ];
-
-  public employee={
-    id:undefined,
-    firstName:undefined,
-    lastName:undefined,
-    email:undefined,
-    department:undefined,
-    role:undefined
+  
+  public employee:Employee={
+    id:null,
+    firstName:null,
+    lastName:null,
+    email:null,
+    department:null,
+    role:null
   }
 
-  /* addEmployee(){
-    console.log(this.employee);
+  addEmployee(){
+    this.employee={
+      id:null,
+      firstName:this.employeeForm.controls.firstName?.value,
+      lastName:this.employeeForm.controls.lastName?.value,
+      email:this.employeeForm.controls.email?.value,
+      department:this.employeeForm.controls.department?.value,
+      role:this.employeeForm.controls.role?.value
+    }
     this.employeeService.add(this.employee).subscribe(data =>{
 
       Swal.fire({
@@ -106,18 +101,18 @@ export class AddEmployeeComponent implements OnInit{
         icon: "success"
       });
       this.employee={
-        id:undefined,
-        firstName:undefined,
-        lastName:undefined,
-        email:undefined,
-        department:undefined,
-        role:undefined
+        id:null,
+        firstName:null,
+        lastName:null,
+        email:null,
+        department:null,
+        role:null
       }
     });
-  } */
+  }
 
   submitEmployeeForm() {
-    console.log(this.employeeForm);
+    console.log(this.employeeForm.controls);
   }
 
 }

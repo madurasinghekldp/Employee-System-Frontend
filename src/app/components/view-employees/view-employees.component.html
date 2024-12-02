@@ -16,8 +16,8 @@
             <td >{{employee.id}}</td>
             <td >{{employee.firstName+" "+employee.lastName}}</td>
             <td >{{employee.email}}</td>
-            <td >{{employee.department.name}}</td>
-            <td >{{employee.role.name}}</td>
+            <td >{{employee.department?.name}}</td>
+            <td >{{employee.role?.name}}</td>
             <td >
               <i class="btn bi bi-trash3 btn-outline-danger" (click)="deleteEmployee(employee)"></i>
               <span class=" mx-1"></span>
@@ -50,61 +50,67 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class=" mb-3">
-          <div class="input-group">
-            <span class="input-group-text" id="basic-addon1"></span>
-            <input type="text" class="form-control" placeholder="First Name" aria-label="first name" 
-            [(ngModel)]="selectedEmployee.firstName" required #firstName="ngModel" [class.is-invalid]="firstName.invalid && firstName.touched"
-            aria-describedby="basic-addon1" >
+
+        <form (ngSubmit)="testUpdate()" [formGroup]="employeeForm">
+    
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" id="firstName" class="form-control" formControlName="firstName" name="firstName" 
+            [(ngModel)]="selectedEmployee.firstName">
+            <small *ngIf="employeeForm.controls.firstName.errors && employeeForm.controls.firstName.touched" 
+            class="text-danger fst-italic">First name should be provided.</small>
           </div>
-          <small class="text-danger" [class.d-none]="firstName.valid || firstName.untouched">First name is required.</small>
-        </div>
-        
-        <div class=" mb-3">
-          <div class="input-group">
-            <span class="input-group-text" id="basic-addon1"></span>
-            <input type="text" class="form-control" placeholder="Last Name" aria-label="last name" 
-            [(ngModel)]="selectedEmployee.lastName" required #lastName="ngModel" [class.is-invalid]="lastName.invalid && lastName.touched"
-            aria-describedby="basic-addon1" >
+      
+          
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" id="lastName" class="form-control" formControlName="lastName" name="lastName"
+            [(ngModel)]="selectedEmployee.lastName">
+            <small *ngIf="employeeForm.controls.lastName.errors && employeeForm.controls.lastName.touched" 
+            class="text-danger fst-italic">Last name should be provided.</small>
           </div>
-          <small class="text-danger" [class.d-none]="lastName.valid || lastName.untouched">Last name is required.</small>
-        </div>
-  
-        <div class=" mb-3">
-          <div class="input-group">
-            <span class="input-group-text" id="basic-addon1"></span>
-            <input type="email" class="form-control" placeholder="Email" aria-label="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
-            [(ngModel)]="selectedEmployee.email" required #email="ngModel" [class.is-invalid]="email.invalid && email.touched"
-            aria-describedby="basic-addon1" >
+      
+          
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" class="form-control" formControlName="email" name="email"
+            [(ngModel)]="selectedEmployee.email">
+            <small *ngIf="employeeForm.controls.email.errors? employeeForm.controls.email.touched && employeeForm.controls.email.errors['required']:false" 
+            class="text-danger fst-italic">Email should be provided.</small>
+            <small *ngIf="employeeForm.controls.email.errors? employeeForm.controls.email.dirty && employeeForm.controls.email.status=='INVALID':false" 
+            class="text-danger fst-italic"> Please enter valid email.</small>
           </div>
-          <small class="text-danger" [class.d-none]="email.valid || email.untouched">Please enter a valid email.</small>
-        </div>
-        
-        
-        <div class="input-group mb-3">
-          <span class="input-group-text">Department</span>
-          <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" 
-          [(ngModel)]="selectedEmployee.department.id" required #departmentId="ngModel"
-          [class.is-invalid]="departmentId.invalid && departmentId.touched">
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+      
+          
+          <div class="mb-3">
+            <label for="department" class="form-label">Department</label>
+            <select id="department" class="form-select" formControlName="department" name="department">
+              <option *ngFor="let department of departmentList" [ngValue]="department">{{ department.name }}</option>
             </select>
-          <span class="input-group-text">Role</span>
-          <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" 
-          [(ngModel)]="selectedEmployee.role.id" required #roleId="ngModel"
-          [class.is-invalid]="roleId.invalid && roleId.touched">
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <small *ngIf="employeeForm.controls.department.errors && employeeForm.controls.department.touched" 
+            class="text-danger fst-italic">Department should be provided.</small>
+          </div>
+      
+          
+          <div class="mb-3">
+            <label for="role" class="form-label">Role</label>
+            <select id="role" class="form-select" formControlName="role" name="role">
+              <option *ngFor="let role of roleList" [ngValue]="role">{{ role.name }}</option>
             </select>
-        </div>
+            <small *ngIf="employeeForm.controls.role.errors && employeeForm.controls.role.touched" 
+            class="text-danger fst-italic">Role should be provided.</small>
+          </div>
+      
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success" 
+            *ngIf="!employeeForm.errors">Update</button>
+          </div>
+
+        </form>
+
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-success" 
-        [disabled]="firstName.invalid || lastName.invalid || email.invalid || departmentId.invalid || roleId.invalid">Update</button>
-      </div>
+      
     </div>
   </div>
 </div>

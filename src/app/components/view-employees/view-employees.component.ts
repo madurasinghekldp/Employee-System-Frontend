@@ -1,23 +1,23 @@
 import { NgFor, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../types/employee';
-import { SuccessResponse } from '../../types/success-response';
-import { ErrorResponse } from '../../types/error-response';
 import { DepartmentService } from '../../services/department.service';
 import { Department } from '../../types/department';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
+import { RoleService } from '../../services/role.service';
+import { Role } from '../../types/role';
 
 @Component({
   selector: 'app-view-employees',
   standalone: true,
-  imports: [HttpClientModule,FormsModule,NgFor,NgIf],
+  imports: [HttpClientModule,FormsModule,NgFor,NgIf,ReactiveFormsModule],
   templateUrl: './view-employees.component.html',
   styleUrl: './view-employees.component.css',
-  providers:[EmployeeService,DepartmentService]
+  providers:[EmployeeService,DepartmentService,RoleService]
 })
 export class ViewEmployeesComponent implements OnInit{
 
@@ -26,28 +26,32 @@ export class ViewEmployeesComponent implements OnInit{
   public employeeList:Employee[] = [];
   public employeeMessage:string = "";
   public departmentList:Department[] = [];
+  public departmentMessage:string = "";
+  public roleList:Role[] = [];
+  public roleMessage:string = "";
 
   public selectedEmployee:Employee = {
-    id: 0,
-    firstName: '',
-    lastName: '',
-    email: '',
-    department: {
-      id: 0,
-      name: '',
-      description: ''
-    },
-    role: {
-      id: 0,
-      name: '',
-      description: ''
-    }
+    id: null,
+    firstName: null,
+    lastName: null,
+    email: null,
+    department: null,
+    role: null
   } 
+
+  employeeForm = new FormGroup({
+    firstName: new FormControl('',[Validators.required]),
+    lastName: new FormControl('',[Validators.required]),
+    email: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+    department: new FormControl(this.selectedEmployee.department,Validators.required),
+    role: new FormControl(this.selectedEmployee.role,Validators.required)
+  })
 
   constructor(
     private http: HttpClient, 
     private employeeService: EmployeeService,
-    private departmentService: DepartmentService) {
+    private departmentService: DepartmentService,
+    private roleService: RoleService) {
     this.loadEmployeeTable();
   }
   ngOnInit(): void {
@@ -56,8 +60,34 @@ export class ViewEmployeesComponent implements OnInit{
 
   init(){
     this.departmentService.getAll().subscribe(res=>{
-      
-    })
+      if(isSuccessResponse(res)){
+        this.departmentList = res.data;
+        this.departmentMessage = "";
+      }
+      else if(isErrorResponse(res)){
+        this.departmentList = [];
+        this.departmentMessage = res.message;
+      }
+      else{
+        this.departmentList = [];
+        this.departmentMessage = "Unexpected error occurred";
+      }
+    });
+
+    this.roleService.getAll().subscribe(res=>{
+      if(isSuccessResponse(res)){
+        this.roleList = res.data;
+        this.roleMessage = "";
+      }
+      else if(isErrorResponse(res)){
+        this.roleList = [];
+        this.roleMessage = res.message;
+      }
+      else{
+        this.roleList = [];
+        this.roleMessage = "Unexpected error occurred";
+      }
+    });
   }
 
   goToNextPage(){
@@ -127,14 +157,25 @@ export class ViewEmployeesComponent implements OnInit{
   }
 
   loadUpdateModel(employee:Employee){
-    this.selectedEmployee.id = employee.id;
-    this.selectedEmployee.firstName = employee.firstName;
-    this.selectedEmployee.lastName = employee.lastName;
-    this.selectedEmployee.email = employee.email;
-    this.selectedEmployee.department = employee.department;
-    this.selectedEmployee.role = employee.role;
+    this.selectedEmployee = {...employee};
+    this.employeeForm.patchValue({
+      firstName: employee.firstName,
+      lastName: employee.lastName,
+      email: employee.email,
+      department: this.departmentList.find(dep => dep.id === employee.department?.id),
+      role: this.roleList.find(role => role.id === employee.role?.id)
+    })
   }
 
+  testUpdate(){
+    this.selectedEmployee.firstName = this.employeeForm.controls.firstName.value;
+    this.selectedEmployee.lastName = this.employeeForm.controls.lastName.value;
+    this.selectedEmployee.email = this.employeeForm.controls.email.value;
+    this.selectedEmployee.department = this.employeeForm.controls.department.value;
+    this.selectedEmployee.role = this.employeeForm.controls.role.value;
+
+    console.log(this.selectedEmployee)
+  }
   updateEmployee(){
     if(this.selectedEmployee.id){
       const swalWithBootstrapButtons = Swal.mixin({
@@ -162,10 +203,7 @@ export class ViewEmployeesComponent implements OnInit{
               icon: "success"
             });
           });
-        } else if (
-          
-          result.dismiss === Swal.DismissReason.cancel
-        ) {
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
           swalWithBootstrapButtons.fire({
             title: "Cancelled",
             text: "Employee has not been updated.",

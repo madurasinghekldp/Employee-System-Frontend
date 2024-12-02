@@ -2,10 +2,10 @@ import { Department } from "./department";
 import { Role } from "./role";
 
 export type Employee = {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    department: Department;
-    role: Role;
+    id: number|null;
+    firstName: string|null;
+    lastName: string|null;
+    email: string|null;
+    department: Department|null;
+    role: Role|null;
 }
