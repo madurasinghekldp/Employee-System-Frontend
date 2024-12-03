@@ -48,7 +48,6 @@ export class ViewEmployeesComponent implements OnInit{
   })
 
   constructor(
-    private http: HttpClient, 
     private employeeService: EmployeeService,
     private departmentService: DepartmentService,
     private roleService: RoleService) {
