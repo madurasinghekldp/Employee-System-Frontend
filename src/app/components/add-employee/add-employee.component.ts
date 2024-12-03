@@ -100,19 +100,12 @@ export class AddEmployeeComponent implements OnInit{
         text: "New Employee Added!",
         icon: "success"
       });
-      this.employee={
-        id:null,
-        firstName:null,
-        lastName:null,
-        email:null,
-        department:null,
-        role:null
-      }
+      this.employeeForm.reset();
     });
   }
 
   submitEmployeeForm() {
-    console.log(this.employeeForm.controls);
+    this.addEmployee();
   }
 
 }

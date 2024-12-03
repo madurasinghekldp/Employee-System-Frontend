@@ -167,16 +167,15 @@ export class ViewEmployeesComponent implements OnInit{
     })
   }
 
-  testUpdate(){
+  prepareToUpdate(){
     this.selectedEmployee.firstName = this.employeeForm.controls.firstName.value;
     this.selectedEmployee.lastName = this.employeeForm.controls.lastName.value;
     this.selectedEmployee.email = this.employeeForm.controls.email.value;
     this.selectedEmployee.department = this.employeeForm.controls.department.value;
     this.selectedEmployee.role = this.employeeForm.controls.role.value;
-
-    console.log(this.selectedEmployee)
   }
   updateEmployee(){
+    this.prepareToUpdate();
     if(this.selectedEmployee.id){
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -196,12 +195,21 @@ export class ViewEmployeesComponent implements OnInit{
       }).then((result) => {
         if (result.isConfirmed) {
           this.employeeService.update(this.selectedEmployee).subscribe(res=>{
-            this.loadEmployeeTable();
-            swalWithBootstrapButtons.fire({
-              title: "Updated!",
-              text: "Employee has been updated.",
-              icon: "success"
-            });
+            if(isSuccessResponse(res)){
+              this.loadEmployeeTable();
+              swalWithBootstrapButtons.fire({
+                title: "Updated!",
+                text: "Employee has been updated.",
+                icon: "success"
+              });
+            }
+            else{
+              swalWithBootstrapButtons.fire({
+                title: "Update Error!",
+                text: "Employee has not been updated.",
+                icon: "error"
+              });
+            }
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           swalWithBootstrapButtons.fire({

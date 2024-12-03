@@ -51,7 +51,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
       </div>
       <div class="modal-body">
 
-        <form (ngSubmit)="testUpdate()" [formGroup]="employeeForm">
+        <form (ngSubmit)="updateEmployee()" [formGroup]="employeeForm">
     
           <div class="mb-3">
             <label for="firstName" class="form-label">First Name</label>
@@ -104,7 +104,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-success" 
-            *ngIf="!employeeForm.errors">Update</button>
+            *ngIf="employeeForm.valid">Update</button>
           </div>
 
         </form>
