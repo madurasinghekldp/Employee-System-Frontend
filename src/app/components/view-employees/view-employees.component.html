@@ -55,8 +55,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
     
           <div class="mb-3">
             <label for="firstName" class="form-label">First Name</label>
-            <input type="text" id="firstName" class="form-control" formControlName="firstName" name="firstName" 
-            [(ngModel)]="selectedEmployee.firstName">
+            <input type="text" id="firstName" class="form-control" formControlName="firstName" name="firstName">
             <small *ngIf="employeeForm.controls.firstName.errors && employeeForm.controls.firstName.touched" 
             class="text-danger fst-italic">First name should be provided.</small>
           </div>
@@ -64,8 +63,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
           
           <div class="mb-3">
             <label for="lastName" class="form-label">Last Name</label>
-            <input type="text" id="lastName" class="form-control" formControlName="lastName" name="lastName"
-            [(ngModel)]="selectedEmployee.lastName">
+            <input type="text" id="lastName" class="form-control" formControlName="lastName" name="lastName">
             <small *ngIf="employeeForm.controls.lastName.errors && employeeForm.controls.lastName.touched" 
             class="text-danger fst-italic">Last name should be provided.</small>
           </div>
@@ -73,8 +71,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
           
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" class="form-control" formControlName="email" name="email"
-            [(ngModel)]="selectedEmployee.email">
+            <input type="email" id="email" class="form-control" formControlName="email" name="email">
             <small *ngIf="employeeForm.controls.email.errors? employeeForm.controls.email.touched && employeeForm.controls.email.errors['required']:false" 
             class="text-danger fst-italic">Email should be provided.</small>
             <small *ngIf="employeeForm.controls.email.errors? employeeForm.controls.email.dirty && employeeForm.controls.email.status=='INVALID':false" 

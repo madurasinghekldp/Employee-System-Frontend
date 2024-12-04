@@ -5,6 +5,7 @@ import { Department } from '../../types/department';
 import { DepartmentService } from '../../services/department.service';
 import { HttpClientModule } from '@angular/common/http';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-department',
@@ -22,6 +23,11 @@ export class ManageDepartmentComponent implements OnInit {
   public departmentMessage:string = "";
 
   departmentForm = new FormGroup({
+    name: new FormControl('',Validators.required),
+    description: new FormControl('',Validators.required)
+  })
+
+  departmentFormUpdate = new FormGroup({
     name: new FormControl('',Validators.required),
     description: new FormControl('',Validators.required)
   })
@@ -70,45 +76,141 @@ export class ManageDepartmentComponent implements OnInit {
     description: null
   }
 
-  
-
-  newDepartment = {
-    id: 0, // Will be auto-generated
-    name: '',
-    description: ''
-  };
-
-  isEditing = false;
-  editingIndex: number | null = null;
-
-  addDepartment() {
-    // if (this.isEditing) {
-    //   // Save changes if editing an existing department
-    //   if (this.editingIndex !== null) {
-    //     this.departments[this.editingIndex] = { ...this.newDepartment };
-    //   }
-    //   this.isEditing = false;
-    //   this.editingIndex = null;
-    // } else {
-    //   // Generate a new ID for the department
-    //   const newId = this.departments.length + 1;
-    //   this.departments.push({ ...this.newDepartment, id: newId });
-    // }
-
-    // // Clear the form
-    // this.newDepartment = { id: 0, name: '', description: '' };
+  public department:Department = {
+    id: null,
+    name: null,
+    description: null
   }
 
-  editDepartment(department: Department) {
-    // Load the department details into the form for editing
-    // this.newDepartment = { ...department };
-    // this.isEditing = true;
-    // this.editingIndex = this.departments.findIndex(d => d.id === department.id);
+
+  loadUpdateModel(department: Department){
+    this.selectedDepartment = {...department};
+    this.departmentFormUpdate.patchValue({
+      name: department.name,
+      description: department.description
+    })
+  }
+
+  prepareToUpdate(){
+    this.selectedDepartment.name = this.departmentFormUpdate.controls.name.value;
+    this.selectedDepartment.description = this.departmentFormUpdate.controls.description.value;
+  }
+
+  addDepartment() {
+    this.department = {
+      id: null,
+      name: this.departmentForm.controls.name.value,
+      description: this.departmentForm.controls.description.value
+    }
+
+    this.departmentService.add(this.department).subscribe(res => {
+      if(isSuccessResponse(res)){
+        Swal.fire({
+          title: "Success!",
+          text: "New Department Added!",
+          icon: "success"
+        });
+        this.departmentForm.reset();
+        this.loadDepartments();
+      }
+      else if(isErrorResponse(res)){
+        Swal.fire({
+          title: "Failed!",
+          text: res.message,
+          icon: "error"
+        });
+        this.departmentForm.reset();
+      }
+    })
+  }
+
+  updateDepartment() {
+    this.prepareToUpdate();
+    if(this.selectedDepartment.id){
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      });
+      swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, update it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.departmentService.update(this.selectedDepartment).subscribe(res=>{
+            if(isSuccessResponse(res)){
+              this.loadDepartments();
+              swalWithBootstrapButtons.fire({
+                title: "Updated!",
+                text: "Department has been updated.",
+                icon: "success"
+              });
+            }
+            else{
+              swalWithBootstrapButtons.fire({
+                title: "Update Error!",
+                text: "Department has not been updated.",
+                icon: "error"
+              });
+            }
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Department has not been updated.",
+            icon: "error"
+          });
+        }
+      });
+    }
   }
 
   deleteDepartment(department: Department) {
-    // Remove the department by ID
-    //this.departments = this.departments.filter(department => department.id !== id);
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
+      },
+      buttonsStyling: false
+    });
+    swalWithBootstrapButtons.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.departmentService.delete(department).subscribe(res=>{
+          if(isSuccessResponse(res)){
+            this.loadDepartments();
+            swalWithBootstrapButtons.fire({
+              title: "Deleted!",
+              text: "Department has been deleted.",
+              icon: "success"
+            });
+          }
+        });
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire({
+          title: "Cancelled",
+          text: "Department has not been deleted.",
+          icon: "error"
+        });
+      }
+    });
   }
 
 }

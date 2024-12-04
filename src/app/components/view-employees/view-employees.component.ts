@@ -116,7 +116,7 @@ export class ViewEmployeesComponent implements OnInit{
     });
   }
 
-  deleteEmployee(employee:any){
+  deleteEmployee(employee:Employee){
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
@@ -135,12 +135,14 @@ export class ViewEmployeesComponent implements OnInit{
     }).then((result) => {
       if (result.isConfirmed) {
         this.employeeService.delete(employee).subscribe(res=>{
-          this.loadEmployeeTable();
-          swalWithBootstrapButtons.fire({
-            title: "Deleted!",
-            text: "Employee has been deleted.",
-            icon: "success"
-          });
+          if(isSuccessResponse(res)){
+            this.loadEmployeeTable();
+            swalWithBootstrapButtons.fire({
+              title: "Deleted!",
+              text: "Employee has been deleted.",
+              icon: "success"
+            });
+          }
         });
       } else if (
         /* Read more about handling dismissals below */
