@@ -2,18 +2,22 @@
 <div class="container mt-5">
     <h2>Add New Role</h2>
     
-    <form (ngSubmit)="addRole()">
+    <form (ngSubmit)="addRole()" [formGroup]="roleForm">
       <div class="mb-3">
-        <label for="roleName" class="form-label">Role Name</label>
-        <input type="text" id="roleName" class="form-control" [(ngModel)]="newRole.name" name="name" required>
+        <label for="roleName" class="form-label">role Name</label>
+        <input type="text" id="roleName" class="form-control" formControlName="name" name="name">
+        <small *ngIf="roleForm.controls.name.errors && roleForm.controls.name.touched" 
+      class="text-danger fst-italic">Name should be provided.</small>
       </div>
   
       <div class="mb-3">
         <label for="roleDescription" class="form-label">Description</label>
-        <textarea id="roleDescription" class="form-control" [(ngModel)]="newRole.description" name="description" rows="3" required></textarea>
+        <textarea id="roleDescription" class="form-control" formControlName="description" name="description" rows="3"></textarea>
+        <small *ngIf="roleForm.controls.description.errors && roleForm.controls.description.touched" 
+      class="text-danger fst-italic">Description should be provided.</small>
       </div>
   
-      <button type="submit" class="btn btn-success">Add Role</button>
+      <button type="submit" class="btn btn-success" *ngIf="roleForm.valid || roleForm.untouched">Add Role</button>
     </form>
   
     <hr class="my-4">
@@ -30,16 +34,73 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let role of roles">
+        <tr *ngFor="let role of roleList">
           <td>{{ role.id }}</td>
           <td>{{ role.name }}</td>
           <td>{{ role.description }}</td>
           <td>
-            <button class="btn btn-primary btn-sm me-2" (click)="editRole(role)">Edit</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteRole(role.id)">Delete</button>
+            <i class="btn bi bi-trash3 btn-outline-danger" (click)="deleteRole(role)"></i>
+              <span class=" mx-1"></span>
+              <i class="btn bi bi-pencil-square btn-outline-success" (click)="loadUpdateModel(role)"
+               data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
           </td>
         </tr>
       </tbody>
+      <tbody *ngIf="roleMessage.length>0">
+        <tr>
+          <td colspan="4" class="text-center">
+            {{roleMessage}}
+          </td>
+        </tr>
+      </tbody>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item"><button class="page-link" (click)="goToPreviousPage()">&laquo; Previous</button></li>
+          <span class=" mx-3 my-auto">{{(offset/5)+1}}</span>
+          <li class="page-item"><button class="page-link" (click)="goToNextPage()">Next &raquo;</button></li>
+        </ul>
+      </nav>
     </table>
   </div>
   
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Role</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form (ngSubmit)="updateRole()" [formGroup]="roleFormUpdate">
+    
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" class="form-control" formControlName="name" name="name" >
+            <small *ngIf="roleFormUpdate.controls.name.errors && roleFormUpdate.controls.name.touched" 
+            class="text-danger fst-italic">Name should be provided.</small>
+          </div>
+      
+          
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="deptDescription" class="form-control" formControlName="description" name="description" rows="3"></textarea>
+            <small *ngIf="roleFormUpdate.controls.description.errors && roleFormUpdate.controls.description.touched" 
+            class="text-danger fst-italic">Description should be provided.</small>
+          </div>
+      
+      
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success" 
+            *ngIf="roleFormUpdate.valid">Update</button>
+          </div>
+
+        </form>
+
+      </div>
+      
+    </div>
+  </div>
+</div>
