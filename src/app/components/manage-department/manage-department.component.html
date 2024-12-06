@@ -22,7 +22,11 @@
   
     <hr class="my-4">
   
-    <h2>Departments List</h2>
+    <div class="d-flex justify-content-between align-items-center">
+      <h2>Departments List</h2>
+      <input class="form-control w-auto bg-info text-dark" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="searchText" 
+      (ngModelChange)="onInputChange($event)">
+    </div>
   
     <table class="table table-bordered table-striped mt-3">
       <thead class="table-dark">

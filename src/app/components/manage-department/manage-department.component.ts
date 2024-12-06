@@ -19,6 +19,7 @@ export class ManageDepartmentComponent implements OnInit {
 
   private readonly limit:number = 5;
   public offset:number = 0;
+  public searchText:string = '';
   public departmentList:Department[] = [];
   public departmentMessage:string = "";
 
@@ -40,8 +41,12 @@ export class ManageDepartmentComponent implements OnInit {
     this.loadDepartments();
   }
 
+  onInputChange(event:any){
+    this.loadDepartments();
+  }
+
   loadDepartments(){
-    this.departmentService.getAllSelected(this.limit,this.offset).subscribe(res=>{
+    this.departmentService.getAllSelected(this.limit,this.offset,this.searchText).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.departmentList = res.data;
         this.departmentMessage = "";

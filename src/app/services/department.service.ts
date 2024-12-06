@@ -19,9 +19,9 @@ export class DepartmentService {
     );
   }
 
-  getAllSelected(limit: number, offset: number):Observable<SuccessResponse|ErrorResponse>{
+  getAllSelected(limit: number, offset: number, search:string):Observable<SuccessResponse|ErrorResponse>{
     return this.http.get<SuccessResponse | ErrorResponse>(
-      `http://localhost:8080/dep/all-selected?limit=${limit}&offset=${offset}`,
+      `http://localhost:8080/dep/all-selected?limit=${limit}&offset=${offset}&search=${search}`,
       {responseType:"json"}
     );
   }
