@@ -46,73 +46,12 @@
       </table>
 </div>
 
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
-aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Employee</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
+<!--model-->
 
-        <form (ngSubmit)="updateEmployee()" [formGroup]="employeeForm">
-    
-          <div class="mb-3">
-            <label for="firstName" class="form-label">First Name</label>
-            <input type="text" id="firstName" class="form-control" formControlName="firstName" name="firstName">
-            <small *ngIf="employeeForm.controls.firstName.errors && employeeForm.controls.firstName.touched" 
-            class="text-danger fst-italic">First name should be provided.</small>
-          </div>
-      
-          
-          <div class="mb-3">
-            <label for="lastName" class="form-label">Last Name</label>
-            <input type="text" id="lastName" class="form-control" formControlName="lastName" name="lastName">
-            <small *ngIf="employeeForm.controls.lastName.errors && employeeForm.controls.lastName.touched" 
-            class="text-danger fst-italic">Last name should be provided.</small>
-          </div>
-      
-          
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" class="form-control" formControlName="email" name="email">
-            <small *ngIf="employeeForm.controls.email.errors? employeeForm.controls.email.touched && employeeForm.controls.email.errors['required']:false" 
-            class="text-danger fst-italic">Email should be provided.</small>
-            <small *ngIf="employeeForm.controls.email.errors? employeeForm.controls.email.dirty && employeeForm.controls.email.status=='INVALID':false" 
-            class="text-danger fst-italic"> Please enter valid email.</small>
-          </div>
-      
-          
-          <div class="mb-3">
-            <label for="department" class="form-label">Department</label>
-            <select id="department" class="form-select" formControlName="department" name="department">
-              <option *ngFor="let department of departmentList" [ngValue]="department">{{ department.name }}</option>
-            </select>
-            <small *ngIf="employeeForm.controls.department.errors && employeeForm.controls.department.touched" 
-            class="text-danger fst-italic">Department should be provided.</small>
-          </div>
-      
-          
-          <div class="mb-3">
-            <label for="role" class="form-label">Role</label>
-            <select id="role" class="form-select" formControlName="role" name="role">
-              <option *ngFor="let role of roleList" [ngValue]="role">{{ role.name }}</option>
-            </select>
-            <small *ngIf="employeeForm.controls.role.errors && employeeForm.controls.role.touched" 
-            class="text-danger fst-italic">Role should be provided.</small>
-          </div>
-      
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-success" 
-            *ngIf="employeeForm.valid">Update</button>
-          </div>
 
-        </form>
-
-      </div>
-      
-    </div>
-  </div>
-</div>
+<app-employee-update-popup
+[employeeForm]="employeeForm"
+[departmentList]="departmentList"
+[roleList]="roleList"
+(updateEmployee)="updateEmployee()"
+></app-employee-update-popup>

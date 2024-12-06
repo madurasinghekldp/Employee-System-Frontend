@@ -4,6 +4,7 @@ import { ManageEmployeeComponent } from './components/manage-employee/manage-emp
 import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
 import { ViewEmployeesComponent } from './components/view-employees/view-employees.component';
 import { HeaderComponent } from './components/header/header.component';
+import { EmployeeUpdatePopupComponent } from './components/employee-update-popup/employee-update-popup.component';
 
 @Component({
   selector: 'app-root',

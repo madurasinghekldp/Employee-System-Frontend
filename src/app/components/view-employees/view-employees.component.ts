@@ -10,11 +10,12 @@ import { Department } from '../../types/department';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import { RoleService } from '../../services/role.service';
 import { Role } from '../../types/role';
+import { EmployeeUpdatePopupComponent } from '../employee-update-popup/employee-update-popup.component';
 
 @Component({
   selector: 'app-view-employees',
   standalone: true,
-  imports: [HttpClientModule,FormsModule,NgFor,NgIf,ReactiveFormsModule],
+  imports: [HttpClientModule,FormsModule,NgFor,NgIf,ReactiveFormsModule,EmployeeUpdatePopupComponent],
   templateUrl: './view-employees.component.html',
   styleUrl: './view-employees.component.css',
   providers:[EmployeeService,DepartmentService,RoleService]
