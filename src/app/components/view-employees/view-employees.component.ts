@@ -1,6 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { EmployeeService } from '../../services/employee.service';
@@ -23,6 +23,7 @@ export class ViewEmployeesComponent implements OnInit{
 
   private readonly limit:number = 5;
   public offset:number = 0;
+  public searchText:string = '';
   public employeeList:Employee[] = [];
   public employeeMessage:string = "";
   public departmentList:Department[] = [];
@@ -55,6 +56,11 @@ export class ViewEmployeesComponent implements OnInit{
   }
   ngOnInit(): void {
     this.init();
+  }
+
+
+  onInputChange(value: string): void {
+    this.loadEmployeeTable();
   }
 
   init(){
@@ -102,7 +108,7 @@ export class ViewEmployeesComponent implements OnInit{
   }
 
   loadEmployeeTable(){
-    this.employeeService.getAll(this.limit,this.offset).subscribe(res=>{
+    this.employeeService.getAll(this.limit,this.offset,this.searchText).subscribe(res=>{
       if (isSuccessResponse(res)) {
         this.employeeList = res.data;
         this.employeeMessage = "";
