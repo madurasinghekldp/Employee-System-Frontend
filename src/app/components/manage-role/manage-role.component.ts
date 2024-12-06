@@ -19,6 +19,7 @@ export class ManageRoleComponent implements OnInit {
   
   private readonly limit:number = 5;
   public offset:number = 0;
+  public searchText:string = '';
   public roleList:Role[] = [];
   public roleMessage:string = "";
 
@@ -40,8 +41,12 @@ export class ManageRoleComponent implements OnInit {
     this.loadRoles();
   }
 
+  onInputChange(event:any){
+    this.loadRoles();
+  }
+
   loadRoles(){
-    this.roleService.getAllSelected(this.limit,this.offset).subscribe((res)=>{
+    this.roleService.getAllSelected(this.limit,this.offset,this.searchText).subscribe((res)=>{
       if(isSuccessResponse(res)){
         this.roleList = res.data;
         this.roleMessage = "";
