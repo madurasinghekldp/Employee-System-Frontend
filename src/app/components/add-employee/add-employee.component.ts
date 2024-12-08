@@ -93,24 +93,26 @@ export class AddEmployeeComponent implements OnInit{
       department:this.employeeForm.controls.department?.value,
       role:this.employeeForm.controls.role?.value
     }
-    this.employeeService.add(this.employee).subscribe(res =>{
-      if(isSuccessResponse(res)){
-        Swal.fire({
-          title: "Success!",
-          text: "New Employee Added!",
-          icon: "success"
-        });
-        this.employeeForm.reset();
-      }
-      else if(isErrorResponse(res)){
-        Swal.fire({
-          title: "Failed!",
-          text: res.message,
-          icon: "error"
-        });
-        this.employeeForm.reset();
-      }
-    });
+    if(this.employeeForm.valid){
+      this.employeeService.add(this.employee).subscribe(res =>{
+        if(isSuccessResponse(res)){
+          Swal.fire({
+            title: "Success!",
+            text: "New Employee Added!",
+            icon: "success"
+          });
+          this.employeeForm.reset();
+        }
+        else if(isErrorResponse(res)){
+          Swal.fire({
+            title: "Failed!",
+            text: res.message,
+            icon: "error"
+          });
+          this.employeeForm.reset();
+        }
+      });
+    }
   }
 
   submitEmployeeForm() {
