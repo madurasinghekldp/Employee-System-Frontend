@@ -107,25 +107,27 @@ export class ManageRoleComponent implements OnInit {
       description: this.roleForm.controls.description.value
     }
 
-    this.roleService.add(this.role).subscribe(res=>{
-      if(isSuccessResponse(res)){
-        Swal.fire({
-          title: "Success!",
-          text: "New Role Added!",
-          icon: "success"
-        });
-        this.roleForm.reset();
-        this.loadRoles();
-      }
-      else if(isErrorResponse(res)){
-        Swal.fire({
-          title: "Failed!",
-          text: res.message,
-          icon: "error"
-        });
-        this.roleForm.reset();
-      }
-    })
+    if(this.roleForm.valid){
+      this.roleService.add(this.role).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          Swal.fire({
+            title: "Success!",
+            text: "New Role Added!",
+            icon: "success"
+          });
+          this.roleForm.reset();
+          this.loadRoles();
+        }
+        else if(isErrorResponse(res)){
+          Swal.fire({
+            title: "Failed!",
+            text: res.message,
+            icon: "error"
+          });
+          this.roleForm.reset();
+        }
+      })
+    }
   }
 
   updateRole() {
@@ -155,6 +157,13 @@ export class ManageRoleComponent implements OnInit {
                 title: "Updated!",
                 text: "Role has been updated.",
                 icon: "success"
+              });
+            }
+            else if(isErrorResponse(res)){
+              swalWithBootstrapButtons.fire({
+                title: "Update Error!",
+                text: res.message,
+                icon: "error"
               });
             }
             else{

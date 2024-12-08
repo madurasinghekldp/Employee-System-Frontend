@@ -211,6 +211,13 @@ export class ViewEmployeesComponent implements OnInit{
                 icon: "success"
               });
             }
+            else if(isErrorResponse(res)){
+              swalWithBootstrapButtons.fire({
+                title: "Update Error!",
+                text: res.message,
+                icon: "error"
+              });
+            }
             else{
               swalWithBootstrapButtons.fire({
                 title: "Update Error!",

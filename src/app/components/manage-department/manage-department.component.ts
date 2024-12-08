@@ -109,25 +109,27 @@ export class ManageDepartmentComponent implements OnInit {
       description: this.departmentForm.controls.description.value
     }
 
-    this.departmentService.add(this.department).subscribe(res => {
-      if(isSuccessResponse(res)){
-        Swal.fire({
-          title: "Success!",
-          text: "New Department Added!",
-          icon: "success"
-        });
-        this.departmentForm.reset();
-        this.loadDepartments();
-      }
-      else if(isErrorResponse(res)){
-        Swal.fire({
-          title: "Failed!",
-          text: res.message,
-          icon: "error"
-        });
-        this.departmentForm.reset();
-      }
-    })
+    if(this.departmentForm.valid){
+      this.departmentService.add(this.department).subscribe(res => {
+        if(isSuccessResponse(res)){
+          Swal.fire({
+            title: "Success!",
+            text: "New Department Added!",
+            icon: "success"
+          });
+          this.departmentForm.reset();
+          this.loadDepartments();
+        }
+        else if(isErrorResponse(res)){
+          Swal.fire({
+            title: "Failed!",
+            text: res.message,
+            icon: "error"
+          });
+          this.departmentForm.reset();
+        }
+      })
+    }
   }
 
   updateDepartment() {
@@ -157,6 +159,13 @@ export class ManageDepartmentComponent implements OnInit {
                 title: "Updated!",
                 text: "Department has been updated.",
                 icon: "success"
+              });
+            }
+            else if(isErrorResponse(res)){
+              swalWithBootstrapButtons.fire({
+                title: "Update Error!",
+                text: res.message,
+                icon: "error"
               });
             }
             else{
