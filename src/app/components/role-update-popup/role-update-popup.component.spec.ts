@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewDepartmentComponent } from './view-department.component';
+import { RoleUpdatePopupComponent } from './role-update-popup.component';
 
-describe('ViewDepartmentComponent', () => {
-  let component: ViewDepartmentComponent;
-  let fixture: ComponentFixture<ViewDepartmentComponent>;
+describe('RoleUpdatePopupComponent', () => {
+  let component: RoleUpdatePopupComponent;
+  let fixture: ComponentFixture<RoleUpdatePopupComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ViewDepartmentComponent]
+      imports: [RoleUpdatePopupComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ViewDepartmentComponent);
+    fixture = TestBed.createComponent(RoleUpdatePopupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

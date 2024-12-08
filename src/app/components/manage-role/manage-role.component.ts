@@ -6,11 +6,12 @@ import { RoleService } from '../../services/role.service';
 import { HttpClientModule } from '@angular/common/http';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import Swal from 'sweetalert2';
+import { RoleUpdatePopupComponent } from '../role-update-popup/role-update-popup.component';
 
 @Component({
   selector: 'app-manage-role',
   standalone: true,
-  imports: [FormsModule,NgFor,NgIf,HttpClientModule,ReactiveFormsModule],
+  imports: [FormsModule,NgFor,NgIf,HttpClientModule,ReactiveFormsModule,RoleUpdatePopupComponent],
   templateUrl: './manage-role.component.html',
   styleUrl: './manage-role.component.css',
   providers: [RoleService]

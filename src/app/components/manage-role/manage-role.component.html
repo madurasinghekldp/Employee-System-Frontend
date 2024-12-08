@@ -4,7 +4,7 @@
     
     <form (ngSubmit)="addRole()" [formGroup]="roleForm">
       <div class="mb-3">
-        <label for="roleName" class="form-label">role Name</label>
+        <label for="roleName" class="form-label">Role Name</label>
         <input type="text" id="roleName" class="form-control" formControlName="name" name="name">
         <small *ngIf="roleForm.controls.name.errors && roleForm.controls.name.touched" 
       class="text-danger fst-italic">Name should be provided.</small>
@@ -66,45 +66,8 @@
       </nav>
     </table>
   </div>
-  
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
-aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Role</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
 
-        <form (ngSubmit)="updateRole()" [formGroup]="roleFormUpdate">
-    
-          <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" id="name" class="form-control" formControlName="name" name="name" >
-            <small *ngIf="roleFormUpdate.controls.name.errors && roleFormUpdate.controls.name.touched" 
-            class="text-danger fst-italic">Name should be provided.</small>
-          </div>
-      
-          
-          <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea id="deptDescription" class="form-control" formControlName="description" name="description" rows="3"></textarea>
-            <small *ngIf="roleFormUpdate.controls.description.errors && roleFormUpdate.controls.description.touched" 
-            class="text-danger fst-italic">Description should be provided.</small>
-          </div>
-      
-      
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-success" 
-            *ngIf="roleFormUpdate.valid">Update</button>
-          </div>
-
-        </form>
-
-      </div>
-      
-    </div>
-  </div>
-</div>
+<app-role-update-popup
+[roleFormUpdate]="roleFormUpdate"
+(updateRole)="updateRole()">
+</app-role-update-popup>

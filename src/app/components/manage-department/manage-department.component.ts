@@ -6,11 +6,12 @@ import { DepartmentService } from '../../services/department.service';
 import { HttpClientModule } from '@angular/common/http';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import Swal from 'sweetalert2';
+import { DepartmentUpdatePopupComponent } from '../department-update-popup/department-update-popup.component';
 
 @Component({
   selector: 'app-manage-department',
   standalone: true,
-  imports: [NgFor,FormsModule,ReactiveFormsModule,NgIf,HttpClientModule],
+  imports: [NgFor,FormsModule,ReactiveFormsModule,NgIf,HttpClientModule,DepartmentUpdatePopupComponent],
   templateUrl: './manage-department.component.html',
   styleUrl: './manage-department.component.css',
   providers:[DepartmentService]

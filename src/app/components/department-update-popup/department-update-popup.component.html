@@ -1,0 +1,42 @@
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Department</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <form (ngSubmit)="updateDepartment.emit()" [formGroup]="departmentFormUpdate">
+    
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" class="form-control" formControlName="name" name="name" >
+            <small *ngIf="departmentFormUpdate.controls['name'].errors && departmentFormUpdate.controls['name'].touched" 
+            class="text-danger fst-italic">Name should be provided.</small>
+          </div>
+      
+          
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea id="deptDescription" class="form-control" formControlName="description" name="description" rows="3"></textarea>
+            <small *ngIf="departmentFormUpdate.controls['description'].errors && departmentFormUpdate.controls['description'].touched" 
+            class="text-danger fst-italic">Description should be provided.</small>
+          </div>
+      
+      
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success" 
+            *ngIf="departmentFormUpdate.valid">Update</button>
+          </div>
+
+        </form>
+
+      </div>
+      
+    </div>
+  </div>
+</div>
+  
