@@ -5,6 +5,9 @@ import { HomeComponent } from './components/home/home.component';
 import { ManageDepartmentComponent } from './components/manage-department/manage-department.component';
 import { ManageRoleComponent } from './components/manage-role/manage-role.component';
 import { AboutComponent } from './components/about/about.component';
+import { LayoutComponent } from './components/layout/layout.component';
+import { UserRegistrationComponent } from './components/user-registration/user-registration.component';
+import { UserLoginComponent } from './components/user-login/user-login.component';
 
 export const routes: Routes = [
     {
@@ -34,5 +37,24 @@ export const routes: Routes = [
     {
         path:"about",
         component: AboutComponent
-    }
+    },
+    {
+        path: '',
+        component: LayoutComponent,
+        children: [
+          { path: "", redirectTo: "home", pathMatch: 'full' },
+          { path: "home", component: HomeComponent },
+          { path: "view-employee", component: ViewEmployeesComponent },
+          { path: "add-employee", component: AddEmployeeComponent },
+          // Add more routes as needed
+        ]
+      },
+      {
+        path: "signup",
+        component: UserRegistrationComponent
+      },
+      {
+        path: "login",
+        component: UserLoginComponent
+      }
 ];
