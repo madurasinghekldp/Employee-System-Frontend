@@ -16,27 +16,35 @@
                   </div>
                 </div>
               </div>
-              <form action="#!">
+              <form (ngSubmit)="submitRegForm()" [formGroup]="userRegForm">
                 <div class="row gy-3 gy-md-4 overflow-hidden">
                   <div class="col-12">
                     <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
-                    <input type="email" class="form-control" name="firstName" id="firstName" placeholder="First Name" required>
+                    <input formControlName="firstName" type="email" class="form-control" name="firstName" id="firstName" placeholder="First Name">
+                    <small *ngIf="userRegForm.controls.firstName.errors && userRegForm.controls.firstName.touched" 
+                    class="text-danger fst-italic">First name should be provided.</small>
                   </div>
                   <div class="col-12">
                     <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
-                    <input type="email" class="form-control" name="lastName" id="lastName" placeholder="Last Name" required>
+                    <input formControlName="lastName" type="email" class="form-control" name="lastName" id="lastName" placeholder="Last Name">
+                    <small *ngIf="userRegForm.controls.lastName.errors && userRegForm.controls.lastName.touched" 
+                    class="text-danger fst-italic">Last name should be provided.</small>
                   </div>
                   <div class="col-12">
                     <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                    <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+                    <input formControlName="email" type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+                    <small *ngIf="userRegForm.controls.email.errors && userRegForm.controls.email.touched" 
+                    class="text-danger fst-italic">Email should be provided.</small>
                   </div>
                   <div class="col-12">
                     <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                    <input type="password" class="form-control" name="password" id="password" value="" required>
+                    <input formControlName="password" type="password" class="form-control" name="password" id="password" value="">
+                    <small *ngIf="userRegForm.controls.password.errors && userRegForm.controls.password.touched" 
+                    class="text-danger fst-italic">Password should be provided.</small>
                   </div>
                   <div class="col-12">
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" name="iAgree" id="iAgree" required>
+                      <input  formControlName="agreed" class="form-check-input" type="checkbox" value="" name="iAgree" id="iAgree">
                       <label class="form-check-label text-secondary" for="iAgree">
                         I agree to the <a href="#!" class="link-primary text-decoration-none">terms and conditions</a>
                       </label>

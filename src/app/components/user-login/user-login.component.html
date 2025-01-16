@@ -16,16 +16,16 @@
                   </div>
                 </div>
               </div>
-              <form action="#!">
+              <form (ngSubmit)="submitLoginForm()" [formGroup]="userLoginForm">
                 <div class="row gy-3 gy-md-4 overflow-hidden">
                   
                   <div class="col-12">
                     <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                    <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+                    <input formControlName="email" type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
                   </div>
                   <div class="col-12">
                     <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                    <input type="password" class="form-control" name="password" id="password" value="" required>
+                    <input formControlName="password" type="password" class="form-control" name="password" id="password" value="">
                   </div>
                   
                   <div class="col-12">
