@@ -22,10 +22,14 @@
                   <div class="col-12">
                     <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                     <input formControlName="email" type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+                    <small *ngIf="userLoginForm.controls.email.errors && userLoginForm.controls.email.touched" 
+                    class="text-danger fst-italic">Email should be provided.</small>
                   </div>
                   <div class="col-12">
                     <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
                     <input formControlName="password" type="password" class="form-control" name="password" id="password" value="">
+                    <small *ngIf="userLoginForm.controls.password.errors && userLoginForm.controls.password.touched" 
+                    class="text-danger fst-italic">Password should be provided.</small>
                   </div>
                   
                   <div class="col-12">

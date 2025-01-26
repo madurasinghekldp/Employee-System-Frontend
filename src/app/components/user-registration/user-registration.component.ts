@@ -7,6 +7,7 @@ import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-
 import Swal from 'sweetalert2';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Company } from '../../types/company';
 
 @Component({
   selector: 'app-user-registration',
@@ -20,6 +21,8 @@ export class UserRegistrationComponent {
 
   constructor(private userService:UserService, private router: Router){}
 
+  public isCompanyValid: boolean = false;
+
   userRegForm = new FormGroup({
     firstName: new FormControl('',Validators.required),
     lastName: new FormControl('',Validators.required),
@@ -28,12 +31,42 @@ export class UserRegistrationComponent {
     agreed: new FormControl('',Validators.requiredTrue)
   });
 
+  companyRegForm = new FormGroup({
+    name: new FormControl('',Validators.required),
+    address: new FormControl('',Validators.required),
+    registerNumber: new FormControl('',[Validators.required])
+  });
+
   public createUser:CreateUser = {
     firstName: '',
     lastName: '',
     email: '',
     password: '',
-    userRoleName:''
+    userRoleName:'',
+    company:null
+  }
+
+  public createCompany: Company = {
+    id:null,
+    name: '',
+    address: '',
+    registerNumber: ''
+  }
+
+  submitCompanyForm(){
+    this.createCompany = {
+      id: null,
+      name: this.companyRegForm.controls.name?.value,
+      address: this.companyRegForm.controls.address?.value,
+      registerNumber: this.companyRegForm.controls.registerNumber?.value
+    }
+    if(this.companyRegForm.valid){
+      this.isCompanyValid = true;
+    }
+  }
+
+  goBack(){
+    this.isCompanyValid = false;
   }
 
   submitRegForm(){
@@ -42,7 +75,8 @@ export class UserRegistrationComponent {
       lastName: this.userRegForm.controls.lastName?.value,
       email: this.userRegForm.controls.email?.value,
       password: this.userRegForm.controls.password?.value,
-      userRoleName: "ROLE_ADMIN"
+      userRoleName: "ROLE_ADMIN",
+      company: this.createCompany
     }
 
     if(this.userRegForm.valid){

@@ -16,7 +16,38 @@
                   </div>
                 </div>
               </div>
-              <form (ngSubmit)="submitRegForm()" [formGroup]="userRegForm">
+
+              <form (ngSubmit)="submitCompanyForm()" [formGroup]="companyRegForm" *ngIf="!isCompanyValid">
+                <div class="row gy-3 gy-md-4 overflow-hidden">
+                  <div class="col-12">
+                    <label for="firstName" class="form-label">Company Name <span class="text-danger">*</span></label>
+                    <input formControlName="name" type="text" class="form-control" name="name" id="name" placeholder="Company Name">
+                    <small *ngIf="companyRegForm.controls.name.errors && companyRegForm.controls.name.touched" 
+                    class="text-danger fst-italic">Company Name should be provided.</small>
+                  </div>
+                  <div class="col-12">
+                    <label for="lastName" class="form-label">Address<span class="text-danger">*</span></label>
+                    <input formControlName="address" type="text" class="form-control" name="address" id="address" placeholder="Address">
+                    <small *ngIf="companyRegForm.controls.address.errors && companyRegForm.controls.address.touched" 
+                    class="text-danger fst-italic">Address should be provided.</small>
+                  </div>
+                  <div class="col-12">
+                    <label for="registerNumber" class="form-label">Register Number<span class="text-danger">*</span></label>
+                    <input formControlName="registerNumber" type="text" class="form-control" name="registerNumber" id="registerNumber" placeholder="Register Number">
+                    <small *ngIf="companyRegForm.controls.registerNumber.errors && companyRegForm.controls.registerNumber.touched" 
+                    class="text-danger fst-italic">Register Number should be provided.</small>
+                  </div>
+                  
+                  
+                  <div class="col-12">
+                    <div class="d-grid">
+                      <button class="btn bsb-btn-xl btn-primary" type="submit">Next</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <form (ngSubmit)="submitRegForm()" [formGroup]="userRegForm" *ngIf="isCompanyValid">
                 <div class="row gy-3 gy-md-4 overflow-hidden">
                   <div class="col-12">
                     <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
@@ -51,6 +82,10 @@
                     </div>
                   </div>
                   <div class="col-12">
+                    <div class="d-grid">
+                      <button class="btn bsb-btn-xl btn-primary" (click)="goBack()">Back</button>
+                    </div>
+                    <span class="d-grid"></span>
                     <div class="d-grid">
                       <button class="btn bsb-btn-xl btn-primary" type="submit">Sign up</button>
                     </div>
