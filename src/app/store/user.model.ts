@@ -1,12 +1,12 @@
-export interface Company {
-    id: number;
+export type Company = {
+    id: number|null;
     name: string;
     address: string;
     registerNumber: string;
   }
   
-  export interface UserData {
-    id: number;
+  export type UserData = {
+    id: number|null;
     firstName: string;
     lastName: string;
     email: string;

@@ -26,7 +26,7 @@ export class TokenService {
     return null;
   }
 
-  validateTokenFromCookies(): boolean {
+  validateTokenFromLocalStorage(): boolean {
     
     try {
       const decodedToken = this.getDecodedToken();
@@ -46,10 +46,15 @@ export class TokenService {
   }
 
   getUserEmail(){
-    const decodedToken = this.getDecodedToken();
-    if(decodedToken===null){
-      return null;
+    if(this.validateTokenFromLocalStorage()){
+      const decodedToken = this.getDecodedToken();
+      if(decodedToken===null){
+        return null;
+      }
+      console.log(decodedToken.sub);
+      return decodedToken.sub;
     }
-    return decodedToken.sub;
+    return null;
+    
   }
 }

@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule} from '@angular/router';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UserData } from '../../store/user.model';
 import { UserState } from '../../store/user.state';
 import { CommonModule, NgIf } from '@angular/common';
+import { userStore } from '../../store/user.store';
 
 @Component({
   selector: 'app-home',
@@ -13,11 +13,16 @@ import { CommonModule, NgIf } from '@angular/common';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
-  user$: Observable<UserData | null>;
-
-  constructor(private readonly store: Store<{ user: UserState }>) {
-    this.user$ = this.store.select(state => state.user.user);
-    console.log(this.user$);
+export class HomeComponent implements OnInit {
+  ngOnInit(): void {
+    
   }
+  store = inject(userStore);
+
+
+  get user() {
+    return this.store.user(); // Access user reactively
+  }
+  
+
 }

@@ -5,14 +5,17 @@ import { Observable } from 'rxjs';
 import { SuccessResponse } from '../types/success-response';
 import { ErrorResponse } from '../types/error-response';
 import { LoginUser } from '../types/loginUser';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  
 
   constructor(
-    private readonly http:HttpClient
+    private readonly http:HttpClient,
+    private readonly tokenService:TokenService
   ) { }
 
   signup(createUser:CreateUser):Observable<SuccessResponse|ErrorResponse>{
@@ -28,9 +31,12 @@ export class UserService {
     return res;
   }
 
-  getUserDetailsByEmail(email:string):Observable<SuccessResponse|ErrorResponse>{
+  getUserDetailsByEmail():Observable<SuccessResponse|ErrorResponse>{
+    const email = this.tokenService.getUserEmail();
+    console.log(email);
     const res = this.http.get<SuccessResponse | ErrorResponse>("http://localhost:8080/users/by-email?email="+email,
     {responseType:"json"});
+    console.log(res);
     return res;
   }
 }
