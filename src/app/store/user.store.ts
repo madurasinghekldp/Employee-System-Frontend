@@ -20,7 +20,6 @@ export const userStore = signalStore(
         (store) => ({
             loadUsers(data:UserData|null){
                 patchState(store, {user: data});
-                console.log(data);
             }
         })
     )

@@ -8,6 +8,7 @@ import { AboutComponent } from './components/about/about.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { UserRegistrationComponent } from './components/user-registration/user-registration.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
+import { AddUserComponent } from './components/add-user/add-user.component';
 
 export const routes: Routes = [
     {
@@ -56,5 +57,9 @@ export const routes: Routes = [
       {
         path: "login",
         component: UserLoginComponent
+      },
+      {
+        path: "add-user",
+        component: AddUserComponent
       }
 ];

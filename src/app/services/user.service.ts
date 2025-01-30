@@ -33,10 +33,12 @@ export class UserService {
 
   getUserDetailsByEmail():Observable<SuccessResponse|ErrorResponse>{
     const email = this.tokenService.getUserEmail();
-    console.log(email);
     const res = this.http.get<SuccessResponse | ErrorResponse>("http://localhost:8080/users/by-email?email="+email,
     {responseType:"json"});
-    console.log(res);
     return res;
+  }
+
+  createUser(createUser:CreateUser):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.post<SuccessResponse | ErrorResponse>("http://localhost:8080/users",createUser,{responseType:"json"});
   }
 }

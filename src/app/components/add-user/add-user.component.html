@@ -1,0 +1,70 @@
+<!-- Registration 4 - Bootstrap Brain Component -->
+<section class="p-3 p-md-4 p-xl-5">
+    <div class="container">
+      <div class="card border-light-subtle shadow-sm">
+        <div class="row g-0">
+          <div class="col-12 col-md-6">
+            <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy" src="assets/images/signup-page.jpg" alt="BootstrapBrain Logo">
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="card-body p-3 p-md-4 p-xl-5">
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-5">
+                    <h2 class="h3">Add User</h2>
+                    <h3 class="fs-6 fw-normal text-secondary m-0">Enter user details</h3>
+                  </div>
+                </div>
+              </div>
+
+              <form (ngSubmit)="submitRegForm()" [formGroup]="userRegForm">
+                <div class="row gy-3 gy-md-4 overflow-hidden">
+                  <div class="col-12">
+                    <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                    <input formControlName="firstName" type="email" class="form-control" name="firstName" id="firstName" placeholder="First Name">
+                    <small *ngIf="userRegForm.controls.firstName.errors && userRegForm.controls.firstName.touched" 
+                    class="text-danger fst-italic">First name should be provided.</small>
+                  </div>
+                  <div class="col-12">
+                    <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                    <input formControlName="lastName" type="email" class="form-control" name="lastName" id="lastName" placeholder="Last Name">
+                    <small *ngIf="userRegForm.controls.lastName.errors && userRegForm.controls.lastName.touched" 
+                    class="text-danger fst-italic">Last name should be provided.</small>
+                  </div>
+                  <div class="col-12">
+                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                    <input formControlName="email" type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+                    <small *ngIf="userRegForm.controls.email.errors && userRegForm.controls.email.touched" 
+                    class="text-danger fst-italic">Email should be provided.</small>
+                  </div>
+                  <div class="col-12">
+                    <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                    <input formControlName="password" type="password" class="form-control" name="password" id="password" value="">
+                    <small *ngIf="userRegForm.controls.password.errors && userRegForm.controls.password.touched" 
+                    class="text-danger fst-italic">Password should be provided.</small>
+                  </div>
+                  <div class="col-12">
+                    <label for="userRole" class="form-label">User Role <span class="text-danger">*</span></label>
+                    <select id="userRole" class="form-select" formControlName="userRole" name="userRole">
+                      <option value="ROLE_ADMIN">ADMIN</option>
+                      <option value="ROLE_USER">USER</option>
+                    </select>
+                    <small *ngIf="userRegForm.controls.userRole.errors && userRegForm.controls.userRole.touched" 
+                    class="text-danger fst-italic">Role should be provided.</small>
+                  </div>
+                  <div class="col-12">
+                    
+                    <div class="d-grid">
+                      <button class="btn bsb-btn-xl btn-primary" type="submit">Add</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
