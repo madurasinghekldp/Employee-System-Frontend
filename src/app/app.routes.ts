@@ -9,6 +9,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { UserRegistrationComponent } from './components/user-registration/user-registration.component';
 import { UserLoginComponent } from './components/user-login/user-login.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
+import { LeavesComponent } from './components/leaves/leaves.component';
 
 export const routes: Routes = [
     {
@@ -61,5 +62,9 @@ export const routes: Routes = [
       {
         path: "add-user",
         component: AddUserComponent
+      },
+      {
+        path: "manage-leaves",
+        component: LeavesComponent
       }
 ];

@@ -22,7 +22,9 @@ export class LayoutComponent implements OnInit {
     private readonly tokenService: TokenService,
     private readonly userService: UserService,
     private readonly router: Router
-  ){}
+  ){
+    
+  }
   ngOnInit(): void {
     this.loadUserDetails();
   }

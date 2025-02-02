@@ -40,4 +40,9 @@ export class EmployeeService {
       employee,{responseType:"json"}
     );
   }
+
+  getAllByCompany(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/emp/all?companyId=${companyId}`,
+    {responseType:"json"});
+  }
 }

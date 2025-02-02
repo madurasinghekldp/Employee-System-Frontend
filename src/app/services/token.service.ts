@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {jwtDecode} from 'jwt-decode';
-import { getCookie} from 'typescript-cookie'
 
 interface DecodedToken {
   roles: string[];

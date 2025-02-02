@@ -1,0 +1,14 @@
+.custom-bg {
+    background: rgb(150,18,215);
+    background: linear-gradient(180deg, rgba(150,18,215,1) 0%, rgba(255,0,241,1) 50%, rgba(215,18,154,1) 100%);
+}
+
+.not-active{
+    color:white;
+}
+
+.active-bg{
+    background-color:black 
+    
+}
+

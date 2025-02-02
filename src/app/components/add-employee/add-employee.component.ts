@@ -26,9 +26,9 @@ export class AddEmployeeComponent implements OnInit{
   public roleList:Role[] = [];
   public roleMessage:string = "";
 
-  constructor(private employeeService: EmployeeService,
-              private departmentService: DepartmentService,
-              private roleService: RoleService){
+  constructor(private readonly employeeService: EmployeeService,
+              private readonly departmentService: DepartmentService,
+              private readonly roleService: RoleService){
     
   }
   ngOnInit(): void {

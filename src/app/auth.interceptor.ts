@@ -6,12 +6,12 @@ import { catchError } from 'rxjs/operators';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const excludedUrls = ['http://localhost:8080/auth/signup', 'http://localhost:8080/auth/login'];
-    const isExcluded = excludedUrls.some(url => req.url.includes(url));
+    // const excludedUrls = ['http://localhost:8080/auth/signup', 'http://localhost:8080/auth/login'];
+    // const isExcluded = excludedUrls.some(url => req.url.includes(url));
 
-    if (isExcluded) {
-      return next.handle(req.clone({withCredentials: true }));
-    }
+    // if (isExcluded) {
+    //   return next.handle(req.clone({withCredentials: true }));
+    // }
     const token = localStorage.getItem('token');
 
     const authReq = token

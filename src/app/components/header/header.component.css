@@ -1,0 +1,13 @@
+.custom-bg {
+    background-color: #7e46f5; /* Custom blue */
+    
+}
+
+.not-active{
+    color:white;
+}
+
+.active-bg{
+    background-color:black /* Custom blue */
+    
+}

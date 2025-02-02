@@ -5,6 +5,7 @@ import { ViewEmployeesComponent } from './components/view-employees/view-employe
 import { HeaderComponent } from './components/header/header.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { userStore } from './store/user.store';
+import { environment } from '../environments/environment.development';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,6 @@ import { userStore } from './store/user.store';
 })
 export class AppComponent {
   title = 'emp-app';
-
+  baseUrl:string = environment.apiUrl;
   store = inject(userStore);
 }
