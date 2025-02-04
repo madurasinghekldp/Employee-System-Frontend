@@ -5,20 +5,21 @@
                 <h2 class="text-center mb-4">Leaves</h2>
                 <form (ngSubmit)="submitLeave()" [formGroup]="leaveForm">
                     <div class="mb-3">
-                        <label class="form-label">Employee</label>
+                        <label class="form-label" for="employee">Employee</label>
                         <select class="form-select" formControlName="employee" name="employee" (change)="employeeSelected()">
                             <option [ngValue]="employee" *ngFor="let employee of employeeList">{{employee.firstName}} {{employee.lastName}}</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Start Date</label>
+                        <label class="form-label" for="startDate">Start Date</label>
                         <input type="date" class="form-control" formControlName="startDate" name="startDate">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">End Date</label>
+                        <label class="form-label" for="endDate">End Date</label>
                         <input type="date" class="form-control" formControlName="endDate" name="endDate">
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Add Leave</button>
+                    <button type="submit" class="btn btn-primary w-100" *ngIf="!isGoingToUpdate">Add Leave</button>
+                    <button type="button" class="btn btn-primary w-100" *ngIf="isGoingToUpdate" (click)="updateLeave()">Update Leave</button>
                 </form>
             </div>
         </div>
@@ -34,18 +35,30 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngIf="employeeList.length>0">
                         
                         <tr *ngFor="let leave of leaveList">
                             <td>{{leave.id}}</td>
-                            <td>{{leave.startDate}}</td>
-                            <td>{{leave.endDate}}</td>
+                            <td>{{ leave.startDate | date: 'yyyy-MM-dd' }}</td>
+                            <td>{{leave.endDate | date: 'yyyy-MM-dd' }}</td>
                             <td>
-                                <button class="btn btn-warning btn-sm">Edit</button>
-                                <button class="btn btn-danger btn-sm">Delete</button>
+                                <button class="btn btn-warning btn-sm" (click)="onEdit(leave)">Edit</button>
+                                <button class="btn btn-danger btn-sm" (click)="onDelete(leave)">Delete</button>
                             </td>
                         </tr>
                     </tbody>
+                    <tbody *ngIf="leavesMessage">
+                        <tr>
+                          <td colspan="6" class="text-center">{{leavesMessage}}</td>
+                        </tr>
+                    </tbody>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                          <li class="page-item"><button class="page-link" (click)="goToPreviousPage()">&laquo;</button></li>
+                          <span class=" mx-3 my-auto">{{(offset/5)+1}}</span>
+                          <li class="page-item"><button class="page-link" (click)="goToNextPage()">&raquo;</button></li>
+                        </ul>
+                    </nav>
                 </table>
             </div>
         </div>
