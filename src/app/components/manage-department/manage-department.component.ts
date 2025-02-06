@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Department } from '../../types/department';
 import { DepartmentService } from '../../services/department.service';
@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import Swal from 'sweetalert2';
 import { DepartmentUpdatePopupComponent } from '../department-update-popup/department-update-popup.component';
+import { userStore } from '../../store/user.store';
 
 @Component({
   selector: 'app-manage-department',
@@ -17,6 +18,11 @@ import { DepartmentUpdatePopupComponent } from '../department-update-popup/depar
   providers:[DepartmentService]
 })
 export class ManageDepartmentComponent implements OnInit {
+
+  store = inject(userStore);
+  get user() {
+    return this.store.user(); 
+  }
 
   private readonly limit:number = 5;
   public offset:number = 0;
@@ -34,12 +40,14 @@ export class ManageDepartmentComponent implements OnInit {
     description: new FormControl('',Validators.required)
   })
 
-  constructor(private departmentService: DepartmentService){
+  constructor(private readonly departmentService: DepartmentService){
 
   }
 
   ngOnInit(): void {
-    this.loadDepartments();
+    setTimeout(()=>{
+      this.loadDepartments();
+    },500);
   }
 
   onInputChange(event:any){
@@ -47,7 +55,7 @@ export class ManageDepartmentComponent implements OnInit {
   }
 
   loadDepartments(){
-    this.departmentService.getAllSelected(this.limit,this.offset,this.searchText).subscribe(res=>{
+    this.departmentService.getAllSelected(this.user?.company.id,this.limit,this.offset,this.searchText).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.departmentList = res.data;
         this.departmentMessage = "";
@@ -79,13 +87,15 @@ export class ManageDepartmentComponent implements OnInit {
   public selectedDepartment:Department = {
     id: null,
     name: null,
-    description: null
+    description: null,
+    company: undefined
   }
 
   public department:Department = {
     id: null,
     name: null,
-    description: null
+    description: null,
+    company: undefined
   }
 
 
@@ -106,7 +116,8 @@ export class ManageDepartmentComponent implements OnInit {
     this.department = {
       id: null,
       name: this.departmentForm.controls.name.value,
-      description: this.departmentForm.controls.description.value
+      description: this.departmentForm.controls.description.value,
+      company: this.user?.company
     }
 
     if(this.departmentForm.valid){

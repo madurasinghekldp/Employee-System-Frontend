@@ -12,16 +12,16 @@ export class DepartmentService {
 
   constructor(private http:HttpClient) { }
 
-  getAll():Observable<SuccessResponse|ErrorResponse>{
+  getAll(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
     return this.http.get<SuccessResponse | ErrorResponse>(
-      "http://localhost:8080/dep/all",
+      `http://localhost:8080/dep/all?companyId=${companyId}`,
       {responseType:"json"}
     );
   }
 
-  getAllSelected(limit: number, offset: number, search:string):Observable<SuccessResponse|ErrorResponse>{
+  getAllSelected(companyId:number|null|undefined,limit: number, offset: number, search:string):Observable<SuccessResponse|ErrorResponse>{
     return this.http.get<SuccessResponse | ErrorResponse>(
-      `http://localhost:8080/dep/all-selected?limit=${limit}&offset=${offset}&search=${search}`,
+      `http://localhost:8080/dep/all-selected?companyId=${companyId}&limit=${limit}&offset=${offset}&search=${search}`,
       {responseType:"json"}
     );
   }

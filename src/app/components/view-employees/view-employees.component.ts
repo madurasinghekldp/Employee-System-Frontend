@@ -1,6 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, inject, OnChanges, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { EmployeeService } from '../../services/employee.service';
@@ -11,6 +11,7 @@ import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-
 import { RoleService } from '../../services/role.service';
 import { Role } from '../../types/role';
 import { EmployeeUpdatePopupComponent } from '../employee-update-popup/employee-update-popup.component';
+import { userStore } from '../../store/user.store';
 
 @Component({
   selector: 'app-view-employees',
@@ -21,6 +22,12 @@ import { EmployeeUpdatePopupComponent } from '../employee-update-popup/employee-
   providers:[EmployeeService,DepartmentService,RoleService]
 })
 export class ViewEmployeesComponent implements OnInit{
+
+  store = inject(userStore);
+    
+  get user() {
+    return this.store.user(); 
+  }
 
   private readonly limit:number = 5;
   public offset:number = 0;
@@ -38,7 +45,8 @@ export class ViewEmployeesComponent implements OnInit{
     lastName: null,
     email: null,
     department: null,
-    role: null
+    role: null,
+    company: undefined
   } 
 
   employeeForm = new FormGroup({
@@ -50,13 +58,19 @@ export class ViewEmployeesComponent implements OnInit{
   })
 
   constructor(
-    private employeeService: EmployeeService,
-    private departmentService: DepartmentService,
-    private roleService: RoleService) {
-    this.loadEmployeeTable();
+    private readonly employeeService: EmployeeService,
+    private readonly departmentService: DepartmentService,
+    private readonly roleService: RoleService) {
+    
   }
   ngOnInit(): void {
     this.init();
+    setTimeout(()=>{
+      if(this.store.user()) {
+        this.init();
+        this.loadEmployeeTable();
+      }
+    },500);
   }
 
 
@@ -65,7 +79,7 @@ export class ViewEmployeesComponent implements OnInit{
   }
 
   init(){
-    this.departmentService.getAll().subscribe(res=>{
+    this.departmentService.getAll(this.user?.company?.id).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.departmentList = res.data;
         this.departmentMessage = "";
@@ -80,7 +94,7 @@ export class ViewEmployeesComponent implements OnInit{
       }
     });
 
-    this.roleService.getAll().subscribe(res=>{
+    this.roleService.getAll(this.user?.company?.id).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.roleList = res.data;
         this.roleMessage = "";
@@ -109,7 +123,7 @@ export class ViewEmployeesComponent implements OnInit{
   }
 
   loadEmployeeTable(){
-    this.employeeService.getAll(this.limit,this.offset,this.searchText).subscribe(res=>{
+    this.employeeService.getAll(this.user?.company?.id,this.limit,this.offset,this.searchText).subscribe(res=>{
       if (isSuccessResponse(res)) {
         this.employeeList = res.data;
         this.employeeMessage = "";

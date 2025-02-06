@@ -18,13 +18,11 @@ import { userStore } from '../../store/user.store';
 })
 export class AddUserComponent {
   store = inject(userStore);
-  
-  
   get user() {
-    return this.store.user(); // Access user reactively
+    return this.store.user(); 
   }
 
-  constructor(private userService:UserService){}
+  constructor(private readonly userService:UserService){}
 
   userRegForm = new FormGroup({
       firstName: new FormControl('',Validators.required),

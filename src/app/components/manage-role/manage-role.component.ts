@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Role } from '../../types/role';
 import { RoleService } from '../../services/role.service';
@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import Swal from 'sweetalert2';
 import { RoleUpdatePopupComponent } from '../role-update-popup/role-update-popup.component';
+import { userStore } from '../../store/user.store';
 
 @Component({
   selector: 'app-manage-role',
@@ -17,6 +18,11 @@ import { RoleUpdatePopupComponent } from '../role-update-popup/role-update-popup
   providers: [RoleService]
 })
 export class ManageRoleComponent implements OnInit {
+
+  store = inject(userStore);
+    get user() {
+      return this.store.user(); 
+    }
   
   private readonly limit:number = 5;
   public offset:number = 0;
@@ -34,12 +40,14 @@ export class ManageRoleComponent implements OnInit {
     description: new FormControl('',Validators.required)
   })
 
-  constructor(private roleService: RoleService){
+  constructor(private readonly roleService: RoleService){
     
   }
 
   ngOnInit(): void {
-    this.loadRoles();
+    setTimeout(()=>{
+      this.loadRoles();
+    },500)
   }
 
   onInputChange(event:any){
@@ -47,7 +55,7 @@ export class ManageRoleComponent implements OnInit {
   }
 
   loadRoles(){
-    this.roleService.getAllSelected(this.limit,this.offset,this.searchText).subscribe((res)=>{
+    this.roleService.getAllSelected(this.user?.company.id,this.limit,this.offset,this.searchText).subscribe((res)=>{
       if(isSuccessResponse(res)){
         this.roleList = res.data;
         this.roleMessage = "";
@@ -78,13 +86,15 @@ export class ManageRoleComponent implements OnInit {
   public selectedRole:Role = {
     id: null,
     name: null,
-    description: null
+    description: null,
+    company: undefined
   }
 
   public role:Role = {
     id: null,
     name: null,
-    description: null
+    description: null,
+    company: undefined
   }
 
   loadUpdateModel(role:Role){
@@ -104,7 +114,8 @@ export class ManageRoleComponent implements OnInit {
     this.role = {
       id: null,
       name: this.roleForm.controls.name.value,
-      description: this.roleForm.controls.description.value
+      description: this.roleForm.controls.description.value,
+      company: this.user?.company
     }
 
     if(this.roleForm.valid){

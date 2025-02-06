@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { EmployeeService } from '../../services/employee.service';
@@ -10,6 +10,7 @@ import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-
 import { RoleService } from '../../services/role.service';
 import { Role } from '../../types/role';
 import { Employee } from '../../types/employee';
+import { userStore } from '../../store/user.store';
 
 @Component({
   selector: 'app-add-employee',
@@ -20,6 +21,12 @@ import { Employee } from '../../types/employee';
   providers:[EmployeeService,DepartmentService,RoleService]
 })
 export class AddEmployeeComponent implements OnInit{
+
+  store = inject(userStore);
+    
+  get user() {
+    return this.store.user(); 
+  }
 
   public departmentList:Department[] = [];
   public departmentMessage:string = "";
@@ -32,10 +39,12 @@ export class AddEmployeeComponent implements OnInit{
     
   }
   ngOnInit(): void {
-    this.init();
+    setTimeout(()=>{
+      this.init();
+    },500)
   }
   init() {
-    this.departmentService.getAll().subscribe(res=>{
+    this.departmentService.getAll(this.user?.company.id).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.departmentList = res.data;
         this.departmentMessage = "";
@@ -50,7 +59,7 @@ export class AddEmployeeComponent implements OnInit{
       }
     });
 
-    this.roleService.getAll().subscribe(res=>{
+    this.roleService.getAll(this.user?.company.id).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.roleList = res.data;
         this.roleMessage = "";
@@ -81,7 +90,8 @@ export class AddEmployeeComponent implements OnInit{
     lastName:null,
     email:null,
     department:null,
-    role:null
+    role:null,
+    company:undefined
   }
 
   addEmployee(){
@@ -91,7 +101,8 @@ export class AddEmployeeComponent implements OnInit{
       lastName:this.employeeForm.controls.lastName?.value,
       email:this.employeeForm.controls.email?.value,
       department:this.employeeForm.controls.department?.value,
-      role:this.employeeForm.controls.role?.value
+      role:this.employeeForm.controls.role?.value,
+      company: this.user?.company
     }
     if(this.employeeForm.valid){
       this.employeeService.add(this.employee).subscribe(res =>{
