@@ -10,6 +10,7 @@ import { UserRegistrationComponent } from './components/user-registration/user-r
 import { UserLoginComponent } from './components/user-login/user-login.component';
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { LeavesComponent } from './components/leaves/leaves.component';
+import { SalaryComponent } from './components/salary/salary.component';
 
 export const routes: Routes = [
     {
@@ -66,5 +67,9 @@ export const routes: Routes = [
       {
         path: "manage-leaves",
         component: LeavesComponent
+      },
+      {
+        path: "manage-salary",
+        component: SalaryComponent
       }
 ];

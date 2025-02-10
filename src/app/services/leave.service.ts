@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SuccessResponse } from '../types/success-response';
 import { ErrorResponse } from '../types/error-response';
-import { Employee } from '../types/employee';
 
 @Injectable({
   providedIn: 'root'

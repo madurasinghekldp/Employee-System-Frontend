@@ -1,0 +1,68 @@
+<div class="container d-flex flex-column align-items-center min-vh-100">
+    <div class="w-100 mb-4">
+        <div class="bg-secondary-subtle p-5 rounded shadow">
+            <h2 class="text-center mb-4">Tasks</h2>
+            <form (ngSubmit)="submitTask()" [formGroup]="taskForm">
+                <div class="mb-3">
+                    <label class="form-label" for="employee">Employee</label>
+                    <select class="form-select" formControlName="employee" name="employee" (change)="employeeSelected()">
+                        <option [ngValue]="employee" *ngFor="let employee of employeeList">{{employee.firstName}} {{employee.lastName}}</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="taskName">Task Name</label>
+                    <input type="text" class="form-control" formControlName="taskName" name="taskName">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="startDate">Start Date</label>
+                    <input type="date" class="form-control" formControlName="startDate" name="startDate">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="dueDate">Due Date</label>
+                    <input type="date" class="form-control" formControlName="dueDate" name="dueDate">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="completedDate">Completed Date</label>
+                    <input type="date" class="form-control" formControlName="completedDate" name="completedDate">
+                </div>
+                <button type="submit" class="btn btn-primary w-100" *ngIf="!isGoingToUpdate">Add Task</button>
+                <button type="button" class="btn btn-primary w-100" *ngIf="isGoingToUpdate" (click)="updateTask()">Update Task</button>
+            </form>
+        </div>
+    </div>
+    <div class="w-100">
+        <div class="bg-white p-4 rounded shadow">
+            <h4 class="text-center mb-3">Tasks List</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Task Name</th>
+                        <th>Start Date</th>
+                        <th>Due Date</th>
+                        <th>Completed Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="taskList.length>0">
+                    <tr *ngFor="let task of taskList">
+                        <td>{{task.id}}</td>
+                        <td>{{task.taskName}}</td>
+                        <td>{{ task.startDate | date: 'yyyy-MM-dd' }}</td>
+                        <td>{{task.dueDate | date: 'yyyy-MM-dd' }}</td>
+                        <td>{{task.completedDate | date: 'yyyy-MM-dd' }}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" (click)="onEdit(task)">Edit</button>
+                            <button class="btn btn-danger btn-sm" (click)="onDelete(task)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="tasksMessage">
+                    <tr>
+                        <td colspan="6" class="text-center">{{tasksMessage}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

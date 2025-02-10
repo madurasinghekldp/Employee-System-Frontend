@@ -1,0 +1,66 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row w-100">
+        <div class="col-md-4">
+            <div class="bg-secondary-subtle p-5 rounded shadow mb-4">
+                <h2 class="text-center mb-4">Salaries</h2>
+                <form (ngSubmit)="submitSalary()" [formGroup]="salaryForm">
+                    <div class="mb-3">
+                        <label class="form-label" for="employee">Employee</label>
+                        <select class="form-select" formControlName="employee" name="employee" (change)="employeeSelected()">
+                            <option [ngValue]="employee" *ngFor="let employee of employeeList">{{employee.firstName}} {{employee.lastName}}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="payment">Payment</label>
+                        <input type="number" class="form-control" formControlName="payment" name="payment">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="paymentDate">Payment Date</label>
+                        <input type="date" class="form-control" formControlName="paymentDate" name="paymentDate">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" *ngIf="!isGoingToUpdate">Add Salary</button>
+                    <button type="button" class="btn btn-primary w-100" *ngIf="isGoingToUpdate" (click)="updateSalary()">Update Salary</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="bg-white p-4 rounded shadow">
+                <h4 class="text-center mb-3">Employee Salaries</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Payment</th>
+                            <th>Payment Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="salaryList.length > 0">
+                        <tr *ngFor="let salary of salaryList">
+                            <td>{{salary.id}}</td>
+                            <td>{{salary.payment}}</td>
+                            <td>{{ salary.paymentDate | date: 'yyyy-MM-dd' }}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" (click)="onEdit(salary)">Edit</button>
+                                <button class="btn btn-danger btn-sm" (click)="onDelete(salary)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="salariesMessage">
+                        <tr>
+                          <td colspan="6" class="text-center">{{salariesMessage}}</td>
+                        </tr>
+                    </tbody>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                          <li class="page-item"><button class="page-link" (click)="goToPreviousPage()">&laquo;</button></li>
+                          <span class="mx-3 my-auto">{{(offset/5)+1}}</span>
+                          <li class="page-item"><button class="page-link" (click)="goToNextPage()">&raquo;</button></li>
+                        </ul>
+                    </nav>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
