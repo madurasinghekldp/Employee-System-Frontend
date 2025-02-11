@@ -3,29 +3,35 @@
         <div class="bg-secondary-subtle p-5 rounded shadow">
             <h2 class="text-center mb-4">Tasks</h2>
             <form (ngSubmit)="submitTask()" [formGroup]="taskForm">
-                <div class="mb-3">
-                    <label class="form-label" for="employee">Employee</label>
-                    <select class="form-select" formControlName="employee" name="employee" (change)="employeeSelected()">
-                        <option [ngValue]="employee" *ngFor="let employee of employeeList">{{employee.firstName}} {{employee.lastName}}</option>
-                    </select>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="employee">Employee</label>
+                            <select class="form-select" formControlName="employee" name="employee" (change)="employeeSelected()">
+                                <option [ngValue]="employee" *ngFor="let employee of employeeList">{{employee.firstName}} {{employee.lastName}}</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="taskName">Task Name</label>
+                            <textarea type="text" class="form-control" formControlName="taskName" name="taskName"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" for="startDate">Start Date</label>
+                            <input type="date" class="form-control" formControlName="startDate" name="startDate">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="dueDate">Due Date</label>
+                            <input type="date" class="form-control" formControlName="dueDate" name="dueDate">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="completedDate">Completed Date</label>
+                            <input type="date" class="form-control" formControlName="completedDate" name="completedDate">
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label" for="taskName">Task Name</label>
-                    <input type="text" class="form-control" formControlName="taskName" name="taskName">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="startDate">Start Date</label>
-                    <input type="date" class="form-control" formControlName="startDate" name="startDate">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="dueDate">Due Date</label>
-                    <input type="date" class="form-control" formControlName="dueDate" name="dueDate">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="completedDate">Completed Date</label>
-                    <input type="date" class="form-control" formControlName="completedDate" name="completedDate">
-                </div>
-                <button type="submit" class="btn btn-primary w-100" *ngIf="!isGoingToUpdate">Add Task</button>
+                <button type="submit" class="btn btn-primary w-25" *ngIf="!isGoingToUpdate">Add Task</button>
                 <button type="button" class="btn btn-primary w-100" *ngIf="isGoingToUpdate" (click)="updateTask()">Update Task</button>
             </form>
         </div>
@@ -62,6 +68,13 @@
                         <td colspan="6" class="text-center">{{tasksMessage}}</td>
                     </tr>
                 </tbody>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item"><button class="page-link" (click)="goToPreviousPage()">&laquo;</button></li>
+                      <span class=" mx-3 my-auto">{{(offset/5)+1}}</span>
+                      <li class="page-item"><button class="page-link" (click)="goToNextPage()">&raquo;</button></li>
+                    </ul>
+                </nav>
             </table>
         </div>
     </div>

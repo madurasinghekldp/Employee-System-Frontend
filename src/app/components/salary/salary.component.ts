@@ -129,7 +129,7 @@ export class SalaryComponent implements OnInit {
         } 
         else if(isErrorResponse(res)){
           this.salaryList = [];
-          this.salariesMessage = "Leaves not found";
+          this.salariesMessage = "Salaries not found";
         }
         else{
           this.salaryList = [];

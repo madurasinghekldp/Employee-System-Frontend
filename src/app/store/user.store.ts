@@ -3,10 +3,12 @@ import { UserData } from "./user.model"
 
 type UserState = {
     user: UserData|null;
+    roles: string[]|null;
 }
 
 const initialState: UserState = {
-    user: null
+    user: null,
+    roles:[]
 }
 
 export const userStore = signalStore(
@@ -16,6 +18,9 @@ export const userStore = signalStore(
         (store) => ({
             loadUsers(data:UserData|null){
                 patchState(store, {user: data});
+            },
+            loadRoles(data:string[]|null){
+                patchState(store, {roles: data});
             }
         })
     )

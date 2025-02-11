@@ -9,16 +9,19 @@
           </a>
           <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start gap-4" id="menu">
             <!-- Sidebar Links -->
-            <li class="nav-item"><a  class="nav-link not-active" routerLink="/signup" routerLinkActive="active-bg">
-              <i class="bi bi-person-lock"></i> <span class="ms-1 d-none d-sm-inline">Create Account</span>
-            </a></li>
-            <li class="nav-item"><a  class="nav-link not-active" routerLink="/login" routerLinkActive="active-bg">
-              <i class="bi bi-key"></i> <span class="ms-1 d-none d-sm-inline">Login Account</span>
-            </a></li>
-            <li class="nav-item"><a  class="nav-link not-active" routerLink="/add-user" routerLinkActive="active-bg">
-              <i class="bi bi-person-plus"></i> <span class="ms-1 d-none d-sm-inline">Add User</span>
-            </a></li>
-            
+             <ng-container *ngIf="!isUserLogedIn">
+              <li class="nav-item"><a  class="nav-link not-active" routerLink="/signup" routerLinkActive="active-bg">
+                <i class="bi bi-person-lock"></i> <span class="ms-1 d-none d-sm-inline">Create Account</span>
+              </a></li>
+              <li class="nav-item"><a  class="nav-link not-active" routerLink="/login" routerLinkActive="active-bg">
+                <i class="bi bi-key"></i> <span class="ms-1 d-none d-sm-inline">Login Account</span>
+              </a></li>
+             </ng-container>
+             <ng-container *ngIf="isUserLogedIn && isAdmin">
+              <li class="nav-item"><a  class="nav-link not-active" routerLink="/add-user" routerLinkActive="active-bg">
+                <i class="bi bi-person-plus"></i> <span class="ms-1 d-none d-sm-inline">Add User</span>
+              </a></li>
+             </ng-container>
             <!-- Add more links as needed -->
           </ul>
           <hr>

@@ -52,8 +52,14 @@ export class UserLoginComponent {
               localStorage.setItem("token",res.data.token);
               this.userLoginForm.reset();
               this.userService.getUserDetailsByEmail().subscribe(res=>{
-                if(isSuccessResponse(res)) this.store.loadUsers(res.data);
-                else if(isErrorResponse(res)) this.store.loadUsers(null);
+                if(isSuccessResponse(res)) {
+                  this.store.loadUsers(res.data);
+                  this.store.loadRoles(this.tokenService.getUserRoles());
+                }
+                else if(isErrorResponse(res)) {
+                  this.store.loadUsers(null);
+                  this.store.loadRoles(null);
+                }
               })
               this.router.navigate(["/home"]);
             });

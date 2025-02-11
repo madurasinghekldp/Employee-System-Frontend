@@ -11,6 +11,8 @@ import { UserLoginComponent } from './components/user-login/user-login.component
 import { AddUserComponent } from './components/add-user/add-user.component';
 import { LeavesComponent } from './components/leaves/leaves.component';
 import { SalaryComponent } from './components/salary/salary.component';
+import { TasksComponent } from './components/tasks/tasks.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
@@ -23,19 +25,23 @@ export const routes: Routes = [
     },
     {
         path:"add-employee",
-        component: AddEmployeeComponent
+        component: AddEmployeeComponent,
+        canActivate: [authGuard]
     },
     {
         path:"view-employee",
-        component: ViewEmployeesComponent
+        component: ViewEmployeesComponent,
+        canActivate: [authGuard]
     },
     {
         path:"manage-department",
-        component: ManageDepartmentComponent
+        component: ManageDepartmentComponent,
+        canActivate: [authGuard]
     },
     {
         path:"manage-role",
-        component: ManageRoleComponent
+        component: ManageRoleComponent,
+        canActivate: [authGuard]
     },
     {
         path:"about",
@@ -47,9 +53,8 @@ export const routes: Routes = [
         children: [
           { path: "", redirectTo: "home", pathMatch: 'full' },
           { path: "home", component: HomeComponent },
-          { path: "view-employee", component: ViewEmployeesComponent },
-          { path: "add-employee", component: AddEmployeeComponent },
-          // Add more routes as needed
+          { path: "view-employee", component: ViewEmployeesComponent ,canActivate: [authGuard]},
+          { path: "add-employee", component: AddEmployeeComponent ,canActivate: [authGuard]},
         ]
       },
       {
@@ -62,14 +67,22 @@ export const routes: Routes = [
       },
       {
         path: "add-user",
-        component: AddUserComponent
+        component: AddUserComponent,
+        canActivate: [authGuard]
       },
       {
         path: "manage-leaves",
-        component: LeavesComponent
+        component: LeavesComponent,
+        canActivate: [authGuard]
       },
       {
         path: "manage-salary",
-        component: SalaryComponent
+        component: SalaryComponent,
+        canActivate: [authGuard]
+      },
+      {
+        path: "manage-task",
+        component: TasksComponent,
+        canActivate: [authGuard]
       }
 ];

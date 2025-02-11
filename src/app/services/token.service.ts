@@ -56,4 +56,17 @@ export class TokenService {
     return null;
     
   }
+
+  getUserRoles(){
+    if(this.validateTokenFromLocalStorage()){
+      const decodedToken = this.getDecodedToken();
+      if(decodedToken===null){
+        return null;
+      }
+      console.log(decodedToken.roles);
+      return decodedToken.roles;
+    }
+    return null;
+    
+  }
 }

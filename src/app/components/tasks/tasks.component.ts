@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../types/task';
 import Swal from 'sweetalert2';
@@ -7,11 +7,13 @@ import { Employee } from '../../types/employee';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import { userStore } from '../../store/user.store';
 import { EmployeeService } from '../../services/employee.service';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [],
+  imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
   providers:[TaskService,EmployeeService]
@@ -115,6 +117,22 @@ export class TasksComponent  implements OnInit {
     }
   }
 
+  employeeSelected(){
+    this.loadTasks();
+  }
+
+  goToPreviousPage(){
+    if(this.offset>0){
+      this.offset -= 5;
+      this.loadTasks();
+    }
+  }
+
+  goToNextPage(){
+    this.offset +=5 ;
+    this.loadTasks();
+  }
+
   loadTasks() {
     if(this.taskForm.controls.employee.valid && this.taskForm.controls.employee.value!=null){
       const employeeSelected:Employee = this.taskForm?.controls?.employee?.value;
@@ -125,7 +143,7 @@ export class TasksComponent  implements OnInit {
         }
         else if(isErrorResponse(res)){
           this.taskList = [];
-          this.tasksMessage = "Leaves not found";
+          this.tasksMessage = "Tasks not found";
         }
         else{
           this.taskList = [];
@@ -218,21 +236,59 @@ export class TasksComponent  implements OnInit {
   }
 
   onDelete(task: Task) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, Delete it!",
-      cancelButtonText: "No, cancel!"
-    }).then(result => {
-      if (result.isConfirmed) {
-        this.taskService.deleteTask(task.id).subscribe(res => {
-          Swal.fire("Success!", "Task Deleted!", "success");
-          this.loadTasks();
-        });
-      }
-    });
+    if(task){
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      });
+      swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+      }).then((result)=>{
+        if (result.isConfirmed) {
+          this.taskService.deleteTask(task.id).subscribe(res => {
+            if(isSuccessResponse(res)){
+              Swal.fire({
+                title: "Success!",
+                text: "Task Deleted!",
+                icon: "success"
+              });
+              this.loadTasks();
+            }
+            else if(isErrorResponse(res)){
+              Swal.fire({
+                title: "Failed!",
+                text: res.message,
+                icon: "error"
+              });
+            }
+            else{
+              Swal.fire({
+                title: "Failed!",
+                text: "Unkown error occurred!",
+                icon: "error"
+              });
+            }
+          });
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Task has not been deleted.",
+            icon: "error"
+          });
+        }
+      });
+    }
+    
   }
 
 }
