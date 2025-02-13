@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, effect, inject, Input, OnInit, Signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { userStore } from '../../store/user.store';
 import { NgIf } from '@angular/common';
@@ -18,17 +18,13 @@ export class HeaderComponent implements OnInit {
   
   store = inject(userStore);
   
-  get user() {
-    return this.store.user();
-  }
+  isUserLogedIn:boolean = false;
+  isAdmin:boolean|undefined = false;
 
-  public isUserLogedIn: boolean = false;
-  public isAdmin: boolean|undefined = false;
 
   ngOnInit(): void {
     this.isUserLogedIn = this.tokenService.validateTokenFromLocalStorage();
     this.isAdmin = this.tokenService.getUserRoles()?.includes("ROLE_ADMIN");
   }
-
 
 }

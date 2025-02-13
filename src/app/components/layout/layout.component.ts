@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterModule} from '@angular/router';
 import { TokenService } from '../../services/token.service';
 import { UserService } from '../../services/user.service';
@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { userStore } from '../../store/user.store';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import { NgIf } from '@angular/common';
+import { UserLoginComponent } from '../user-login/user-login.component';
 
 @Component({
   selector: 'app-layout',
@@ -15,7 +16,7 @@ import { NgIf } from '@angular/common';
   styleUrl: './layout.component.css',
   providers: [TokenService,UserService]
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent implements OnInit{
 
   store = inject(userStore);
   
@@ -28,11 +29,11 @@ export class LayoutComponent implements OnInit {
 
   public isUserLogedIn: boolean = false;
   public isAdmin: boolean|undefined = false;
+
   
   constructor(
     private readonly tokenService: TokenService,
     private readonly userService: UserService,
-    private readonly router: Router
   ){
     
   }
@@ -42,6 +43,7 @@ export class LayoutComponent implements OnInit {
     this.isAdmin = this.tokenService.getUserRoles()?.includes("ROLE_ADMIN");
     
   }
+
 
   async loadUserDetails(){
     this.userService.getUserDetailsByEmail().subscribe(res=>{

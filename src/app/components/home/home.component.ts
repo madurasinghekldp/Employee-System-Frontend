@@ -19,10 +19,4 @@ export class HomeComponent implements OnInit {
   }
   store = inject(userStore);
 
-
-  get user() {
-    return this.store.user(); // Access user reactively
-  }
-  
-
 }

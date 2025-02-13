@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
 import { ViewEmployeesComponent } from './components/view-employees/view-employees.component';
@@ -14,8 +14,10 @@ import { environment } from '../environments/environment.development';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent{
+
   title = 'emp-app';
   baseUrl:string = environment.apiUrl;
   store = inject(userStore);
+
 }
