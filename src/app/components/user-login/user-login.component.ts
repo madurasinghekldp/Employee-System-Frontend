@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { HttpClientModule } from '@angular/common/http';
 import { TokenService } from '../../services/token.service';
 import { userStore } from '../../store/user.store';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-user-login',
@@ -26,6 +27,7 @@ export class UserLoginComponent {
     private readonly userService:UserService, 
     private readonly router: Router,
     private readonly tokenService:TokenService,
+    private readonly authService:AuthService
   ){}
 
   userLoginForm = new FormGroup({
@@ -58,7 +60,9 @@ export class UserLoginComponent {
                 if(isSuccessResponse(res)) {
                   this.store.loadUsers(res.data);
                   this.store.loadRoles(this.tokenService.getUserRoles());
-                  location.reload();
+                  //location.reload();
+                  this.authService.isUserLogedIn.set(this.tokenService.validateTokenFromLocalStorage());
+                  this.authService.isAdmin.set(this.tokenService.getUserRoles()?.includes("ROLE_ADMIN"));
                 }
                 else if(isErrorResponse(res)) {
                   this.store.loadUsers(null);

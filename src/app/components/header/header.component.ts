@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { userStore } from '../../store/user.store';
 import { NgIf } from '@angular/common';
 import { TokenService } from '../../services/token.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,15 @@ import { TokenService } from '../../services/token.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private readonly tokenService: TokenService){}
+  constructor(
+    private readonly tokenService: TokenService,
+    private readonly authService: AuthService
+  ){
+    effect(()=>{
+      this.isUserLogedIn = this.authService.isUserLogedIn();
+      this.isAdmin = this.authService.isAdmin();
+    });
+  }
   
   store = inject(userStore);
   
@@ -23,8 +32,7 @@ export class HeaderComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.isUserLogedIn = this.tokenService.validateTokenFromLocalStorage();
-    this.isAdmin = this.tokenService.getUserRoles()?.includes("ROLE_ADMIN");
+    
   }
 
 }
