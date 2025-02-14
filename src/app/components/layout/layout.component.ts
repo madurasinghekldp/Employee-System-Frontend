@@ -1,12 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, effect, inject, Input, OnInit, ViewChild } from '@angular/core';
-import { Router, RouterModule} from '@angular/router';
+import { Component, effect, inject,OnInit} from '@angular/core';
+import { RouterModule} from '@angular/router';
 import { TokenService } from '../../services/token.service';
 import { UserService } from '../../services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { userStore } from '../../store/user.store';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import { NgIf } from '@angular/common';
-import { UserLoginComponent } from '../user-login/user-login.component';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -44,7 +43,6 @@ export class LayoutComponent implements OnInit{
   }
   ngOnInit(): void {
     this.loadUserDetails();
-    console.log(this.isUserLogedIn)
   }
 
 
@@ -59,6 +57,14 @@ export class LayoutComponent implements OnInit{
         this.store.loadRoles(null);
       }
     })
+  }
+
+  logout(){
+    localStorage.removeItem('token');
+    this.store.loadUsers(null);
+    this.store.loadRoles(null);
+    this.authService.isUserLogedIn.set(this.tokenService.validateTokenFromLocalStorage());
+    this.authService.isAdmin.set(this.tokenService.getUserRoles()?.includes("ROLE_ADMIN"));
   }
 
 

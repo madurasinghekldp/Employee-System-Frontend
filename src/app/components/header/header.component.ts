@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, computed, effect, inject, Input, OnInit, Signal } from '@angular/core';
+import { Component, effect, inject, OnInit} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { userStore } from '../../store/user.store';
 import { NgIf } from '@angular/common';

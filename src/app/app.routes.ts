@@ -13,6 +13,8 @@ import { LeavesComponent } from './components/leaves/leaves.component';
 import { SalaryComponent } from './components/salary/salary.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { authGuard } from './guards/auth.guard';
+import { SettingComponent } from './components/setting/setting.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
     {
@@ -83,6 +85,16 @@ export const routes: Routes = [
       {
         path: "manage-task",
         component: TasksComponent,
+        canActivate: [authGuard]
+      },
+      {
+        path: "setting",
+        component: SettingComponent,
+        canActivate: [authGuard]
+      },
+      {
+        path: "profile",
+        component: ProfileComponent,
         canActivate: [authGuard]
       }
 ];
