@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, inject, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AddEmployeeComponent } from './components/add-employee/add-employee.component';
 import { ViewEmployeesComponent } from './components/view-employees/view-employees.component';
