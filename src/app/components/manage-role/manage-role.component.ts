@@ -217,13 +217,20 @@ export class ManageRoleComponent implements OnInit {
       if (result.isConfirmed) {
         this.roleService.delete(role).subscribe(res=>{
           if(isSuccessResponse(res)){
-            this.loadRoles();
             swalWithBootstrapButtons.fire({
               title: "Deleted!",
               text: "role has been deleted.",
               icon: "success"
             });
           }
+          else if(isErrorResponse(res)){
+            swalWithBootstrapButtons.fire({
+              title: "Cannot delete!",
+              text: res.message,
+              icon: "error"
+            });
+          }
+          this.loadRoles();
         });
       } else if (
         /* Read more about handling dismissals below */

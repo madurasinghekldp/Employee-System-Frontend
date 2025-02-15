@@ -157,13 +157,20 @@ export class ViewEmployeesComponent implements OnInit{
       if (result.isConfirmed) {
         this.employeeService.delete(employee).subscribe(res=>{
           if(isSuccessResponse(res)){
-            this.loadEmployeeTable();
             swalWithBootstrapButtons.fire({
               title: "Deleted!",
               text: "Employee has been deleted.",
               icon: "success"
             });
           }
+          else if(isErrorResponse(res)){
+            swalWithBootstrapButtons.fire({
+              title: "Cannot delete!",
+              text: res.message,
+              icon: "error"
+            });
+          }
+          this.loadEmployeeTable();
         });
       } else if (
         /* Read more about handling dismissals below */

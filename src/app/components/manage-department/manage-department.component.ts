@@ -218,13 +218,20 @@ export class ManageDepartmentComponent implements OnInit {
       if (result.isConfirmed) {
         this.departmentService.delete(department).subscribe(res=>{
           if(isSuccessResponse(res)){
-            this.loadDepartments();
             swalWithBootstrapButtons.fire({
               title: "Deleted!",
               text: "Department has been deleted.",
               icon: "success"
             });
           }
+          else if(isErrorResponse(res)){
+            swalWithBootstrapButtons.fire({
+              title: "Cannot delete!",
+              text: res.message,
+              icon: "error"
+            });
+          }
+          this.loadDepartments();
         });
       } else if (
         /* Read more about handling dismissals below */

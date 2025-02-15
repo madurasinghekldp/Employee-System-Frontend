@@ -12,3 +12,33 @@
     
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: purple;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.container {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+.content-container {
+    max-height: 80vh; /* Adjust the height as needed */
+    overflow-y: auto;
+    padding-right: 10px; /* Optional: Prevents scrollbar overlap */
+}
+.content-container::-webkit-scrollbar {
+    width: 8px;
+}
+.content-container::-webkit-scrollbar-thumb {
+    background-color: purple;
+    border-radius: 4px;
+}
+.content-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
