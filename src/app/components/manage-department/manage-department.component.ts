@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Department } from '../../types/department';
 import { DepartmentService } from '../../services/department.service';
@@ -20,9 +20,7 @@ import { userStore } from '../../store/user.store';
 export class ManageDepartmentComponent implements OnInit {
 
   store = inject(userStore);
-  get user() {
-    return this.store.user(); 
-  }
+  user = computed(() => this.store.user());
 
   private readonly limit:number = 5;
   public offset:number = 0;
@@ -41,13 +39,13 @@ export class ManageDepartmentComponent implements OnInit {
   })
 
   constructor(private readonly departmentService: DepartmentService){
-
+    effect(()=>{
+      this.loadDepartments();
+    });
   }
 
   ngOnInit(): void {
-    setTimeout(()=>{
-      this.loadDepartments();
-    },500);
+    
   }
 
   onInputChange(event:any){
@@ -55,7 +53,7 @@ export class ManageDepartmentComponent implements OnInit {
   }
 
   loadDepartments(){
-    this.departmentService.getAllSelected(this.user?.company.id,this.limit,this.offset,this.searchText).subscribe(res=>{
+    this.departmentService.getAllSelected(this.user()?.company.id,this.limit,this.offset,this.searchText).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.departmentList = res.data;
         this.departmentMessage = "";
@@ -117,7 +115,7 @@ export class ManageDepartmentComponent implements OnInit {
       id: null,
       name: this.departmentForm.controls.name.value,
       description: this.departmentForm.controls.description.value,
-      company: this.user?.company
+      company: this.user()?.company
     }
 
     if(this.departmentForm.valid){

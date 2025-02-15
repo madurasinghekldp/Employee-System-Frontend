@@ -1,6 +1,6 @@
 import { NgFor, NgIf } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, inject, OnChanges, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnChanges, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { EmployeeService } from '../../services/employee.service';
@@ -25,9 +25,7 @@ export class ViewEmployeesComponent implements OnInit{
 
   store = inject(userStore);
     
-  get user() {
-    return this.store.user(); 
-  }
+  user = computed(() => this.store.user());
 
   private readonly limit:number = 5;
   public offset:number = 0;
@@ -60,17 +58,15 @@ export class ViewEmployeesComponent implements OnInit{
   constructor(
     private readonly employeeService: EmployeeService,
     private readonly departmentService: DepartmentService,
-    private readonly roleService: RoleService) {
-    
+    private readonly roleService: RoleService
+  ) {
+    effect(()=>{
+      this.init();
+      this.loadEmployeeTable();
+    });
   }
   ngOnInit(): void {
-    this.init();
-    setTimeout(()=>{
-      if(this.store.user()) {
-        this.init();
-        this.loadEmployeeTable();
-      }
-    },500);
+    
   }
 
 
@@ -79,7 +75,7 @@ export class ViewEmployeesComponent implements OnInit{
   }
 
   init(){
-    this.departmentService.getAll(this.user?.company?.id).subscribe(res=>{
+    this.departmentService.getAll(this.user()?.company?.id).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.departmentList = res.data;
         this.departmentMessage = "";
@@ -94,7 +90,7 @@ export class ViewEmployeesComponent implements OnInit{
       }
     });
 
-    this.roleService.getAll(this.user?.company?.id).subscribe(res=>{
+    this.roleService.getAll(this.user()?.company?.id).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.roleList = res.data;
         this.roleMessage = "";
@@ -123,7 +119,7 @@ export class ViewEmployeesComponent implements OnInit{
   }
 
   loadEmployeeTable(){
-    this.employeeService.getAll(this.user?.company?.id,this.limit,this.offset,this.searchText).subscribe(res=>{
+    this.employeeService.getAll(this.user()?.company?.id,this.limit,this.offset,this.searchText).subscribe(res=>{
       if (isSuccessResponse(res)) {
         this.employeeList = res.data;
         this.employeeMessage = "";

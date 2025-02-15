@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { EmployeeService } from '../../services/employee.service';
@@ -24,27 +24,27 @@ export class AddEmployeeComponent implements OnInit{
 
   store = inject(userStore);
     
-  get user() {
-    return this.store.user(); 
-  }
+  user = computed(() => this.store.user());
 
   public departmentList:Department[] = [];
   public departmentMessage:string = "";
   public roleList:Role[] = [];
   public roleMessage:string = "";
 
-  constructor(private readonly employeeService: EmployeeService,
-              private readonly departmentService: DepartmentService,
-              private readonly roleService: RoleService){
-    
+  constructor(
+    private readonly employeeService: EmployeeService,
+    private readonly departmentService: DepartmentService,
+    private readonly roleService: RoleService
+  ){
+    effect(()=>{
+      this.init();
+    });
   }
   ngOnInit(): void {
-    setTimeout(()=>{
-      this.init();
-    },500)
+   
   }
   init() {
-    this.departmentService.getAll(this.user?.company.id).subscribe(res=>{
+    this.departmentService.getAll(this.user()?.company.id).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.departmentList = res.data;
         this.departmentMessage = "";
@@ -59,7 +59,7 @@ export class AddEmployeeComponent implements OnInit{
       }
     });
 
-    this.roleService.getAll(this.user?.company.id).subscribe(res=>{
+    this.roleService.getAll(this.user()?.company.id).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.roleList = res.data;
         this.roleMessage = "";
@@ -102,7 +102,7 @@ export class AddEmployeeComponent implements OnInit{
       email:this.employeeForm.controls.email?.value,
       department:this.employeeForm.controls.department?.value,
       role:this.employeeForm.controls.role?.value,
-      company: this.user?.company
+      company: this.user()?.company
     }
     if(this.employeeForm.valid){
       this.employeeService.add(this.employee).subscribe(res =>{

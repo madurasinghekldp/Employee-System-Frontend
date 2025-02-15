@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Role } from '../../types/role';
 import { RoleService } from '../../services/role.service';
@@ -20,9 +20,7 @@ import { userStore } from '../../store/user.store';
 export class ManageRoleComponent implements OnInit {
 
   store = inject(userStore);
-    get user() {
-      return this.store.user(); 
-    }
+  user = computed(() => this.store.user());
   
   private readonly limit:number = 5;
   public offset:number = 0;
@@ -41,13 +39,13 @@ export class ManageRoleComponent implements OnInit {
   })
 
   constructor(private readonly roleService: RoleService){
-    
+    effect(()=>{
+      this.loadRoles();
+    });
   }
 
   ngOnInit(): void {
-    setTimeout(()=>{
-      this.loadRoles();
-    },500)
+    
   }
 
   onInputChange(event:any){
@@ -55,7 +53,7 @@ export class ManageRoleComponent implements OnInit {
   }
 
   loadRoles(){
-    this.roleService.getAllSelected(this.user?.company.id,this.limit,this.offset,this.searchText).subscribe((res)=>{
+    this.roleService.getAllSelected(this.user()?.company.id,this.limit,this.offset,this.searchText).subscribe((res)=>{
       if(isSuccessResponse(res)){
         this.roleList = res.data;
         this.roleMessage = "";
@@ -115,7 +113,7 @@ export class ManageRoleComponent implements OnInit {
       id: null,
       name: this.roleForm.controls.name.value,
       description: this.roleForm.controls.description.value,
-      company: this.user?.company
+      company: this.user()?.company
     }
 
     if(this.roleForm.valid){
