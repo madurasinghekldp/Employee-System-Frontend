@@ -1,4 +1,4 @@
-import { Component, effect, inject,OnInit} from '@angular/core';
+import { Component, computed, effect, inject,OnInit} from '@angular/core';
 import { RouterModule} from '@angular/router';
 import { TokenService } from '../../services/token.service';
 import { UserService } from '../../services/user.service';
@@ -20,9 +20,7 @@ export class LayoutComponent implements OnInit{
 
   store = inject(userStore);
   
-  get user() {
-    return this.store.user();
-  }
+  user = computed(() => this.store.user());
   get roles() {
     return this.store.roles();
   }

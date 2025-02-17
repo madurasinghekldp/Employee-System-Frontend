@@ -1,17 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CreateUser } from '../types/createUser';
 import { Observable } from 'rxjs';
 import { SuccessResponse } from '../types/success-response';
 import { ErrorResponse } from '../types/error-response';
 import { LoginUser } from '../types/loginUser';
 import { TokenService } from './token.service';
+import { userStore } from '../store/user.store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   
+  store = inject(userStore);
 
   constructor(
     private readonly http:HttpClient,
@@ -40,5 +42,9 @@ export class UserService {
 
   createUser(createUser:CreateUser):Observable<SuccessResponse|ErrorResponse>{
     return this.http.post<SuccessResponse | ErrorResponse>("http://localhost:8080/users",createUser,{responseType:"json"});
+  }
+
+  updateUser(id:number|null|undefined,user:any):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.patch<SuccessResponse|ErrorResponse>(`http://localhost:8080/users?id=${id}`,user,{responseType:"json"});
   }
 }

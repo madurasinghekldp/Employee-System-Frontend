@@ -50,7 +50,6 @@ export class TokenService {
       if(decodedToken===null){
         return null;
       }
-      console.log(decodedToken.sub);
       return decodedToken.sub;
     }
     return null;
@@ -63,7 +62,6 @@ export class TokenService {
       if(decodedToken===null){
         return null;
       }
-      console.log(decodedToken.roles);
       return decodedToken.roles;
     }
     return null;

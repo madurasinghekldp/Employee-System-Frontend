@@ -21,6 +21,16 @@ export const userStore = signalStore(
             },
             loadRoles(data:string[]|null){
                 patchState(store, {roles: data});
+            },
+            updateUser(updatedFields: Partial<UserData>) {
+                patchState(store, { 
+                    user: { ...store.user(), ...updatedFields } as UserData
+                });
+            },
+            updateCompany(updatedFields: Partial<UserData>){
+                patchState(store, { 
+                    user: { ...store.user(), ...updatedFields } as UserData
+                });
             }
         })
     )
