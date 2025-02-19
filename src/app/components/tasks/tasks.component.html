@@ -58,8 +58,8 @@
                         <td>{{task.dueDate | date: 'yyyy-MM-dd' }}</td>
                         <td>{{task.completedDate | date: 'yyyy-MM-dd' }}</td>
                         <td>
-                            <button class="btn btn-warning btn-sm" (click)="onEdit(task)">Edit</button>
-                            <button class="btn btn-danger btn-sm" (click)="onDelete(task)">Delete</button>
+                            <button class="btn btn-warning btn-sm" (click)="onEdit(task)"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-danger btn-sm" (click)="onDelete(task)"><i class="bi bi-trash3"></i></button>
                         </td>
                     </tr>
                 </tbody>

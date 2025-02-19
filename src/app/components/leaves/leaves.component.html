@@ -42,8 +42,8 @@
                             <td>{{ leave.startDate | date: 'yyyy-MM-dd' }}</td>
                             <td>{{leave.endDate | date: 'yyyy-MM-dd' }}</td>
                             <td>
-                                <button class="btn btn-warning btn-sm" (click)="onEdit(leave)">Edit</button>
-                                <button class="btn btn-danger btn-sm" (click)="onDelete(leave)">Delete</button>
+                                <button class="btn btn-warning btn-sm" (click)="onEdit(leave)"><i class="bi bi-pencil-square"></i></button>
+                                <button class="btn btn-danger btn-sm" (click)="onDelete(leave)"><i class="bi bi-trash3"></i></button>
                             </td>
                         </tr>
                     </tbody>

@@ -190,4 +190,62 @@ export class SettingComponent {
       }
     }
 
+
+  deactivateAccount(){
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
+      },
+      buttonsStyling: false
+    });
+    swalWithBootstrapButtons.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, deactivate",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.userService.deleteUser(this.user()?.id).subscribe(res=>{
+          if(isSuccessResponse(res)){
+            localStorage.removeItem('token');
+            this.store.loadUsers(null);
+            this.store.loadRoles(null);
+            this.authService.isUserLogedIn.set(this.tokenService.validateTokenFromLocalStorage());
+            this.authService.isAdmin.set(this.tokenService.getUserRoles()?.includes("ROLE_ADMIN"));
+            this.router.navigate(["/login"]);
+            swalWithBootstrapButtons.fire({
+              title: "Deactivated!",
+              text: "Your account has been deactivated",
+              icon: "success"
+            });
+          }
+          else if(isErrorResponse(res)){
+            swalWithBootstrapButtons.fire({
+              title: "Deactivate Error!",
+              text: res.message,
+              icon: "error"
+            });
+          }
+          else{
+            swalWithBootstrapButtons.fire({
+              title: "Deactivate Error!",
+              text: "Your account has been deactivated",
+              icon: "error"
+            });
+          }
+        });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        swalWithBootstrapButtons.fire({
+          title: "Cancelled",
+          text: "Deactivate Cancelled!",
+          icon: "error"
+        });
+      }
+    });
+  }
+
 }

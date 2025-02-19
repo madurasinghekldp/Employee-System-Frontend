@@ -41,8 +41,8 @@
                             <td>{{salary.payment}}</td>
                             <td>{{ salary.paymentDate | date: 'yyyy-MM-dd' }}</td>
                             <td>
-                                <button class="btn btn-warning btn-sm" (click)="onEdit(salary)">Edit</button>
-                                <button class="btn btn-danger btn-sm" (click)="onDelete(salary)">Delete</button>
+                                <button class="btn btn-warning btn-sm" (click)="onEdit(salary)"><i class="bi bi-pencil-square"></i></button>
+                                <button class="btn btn-danger btn-sm" (click)="onDelete(salary)"><i class="bi bi-trash3"></i></button>
                             </td>
                         </tr>
                     </tbody>

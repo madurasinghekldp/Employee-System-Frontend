@@ -47,4 +47,8 @@ export class UserService {
   updateUser(id:number|null|undefined,user:any):Observable<SuccessResponse|ErrorResponse>{
     return this.http.patch<SuccessResponse|ErrorResponse>(`http://localhost:8080/users?id=${id}`,user,{responseType:"json"});
   }
+
+  deleteUser(id:number|null|undefined){
+    return this.http.delete<SuccessResponse|ErrorResponse>(`http://localhost:8080/users?id=${id}`,{responseType:"json"});
+  }
 }
