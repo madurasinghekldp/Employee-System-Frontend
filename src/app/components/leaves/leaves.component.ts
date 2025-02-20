@@ -110,7 +110,9 @@ export class LeavesComponent implements OnInit{
       this.leaveForm.controls.startDate.reset();
       this.leaveForm.controls.endDate.reset();
     }
-    
+    else{
+      this.leaveForm.controls.employee.markAsTouched();
+    }
   }
 
   employeeSelected(){

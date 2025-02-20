@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
 import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
 import { CompanyService } from '../../services/company.service';
+import { UpdatePassword } from '../../types/update-password';
 
 @Component({
   selector: 'app-setting',
@@ -34,14 +35,18 @@ export class SettingComponent {
     userForm = new FormGroup({
       firstName: new FormControl('',Validators.required),
       lastName: new FormControl('',Validators.required),
-      email: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
-      password: new FormControl('')
+      email: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")])
     })
 
     companyForm = new FormGroup({
       name: new FormControl('',Validators.required),
       address: new FormControl('',Validators.required),
       registerNumber: new FormControl('',Validators.required)
+    })
+
+    passwordForm = new FormGroup({
+      oldPassword: new FormControl('',Validators.required),
+      newPassword: new FormControl('',Validators.required)
     })
   
     constructor(
@@ -246,6 +251,64 @@ export class SettingComponent {
         });
       }
     });
+  }
+
+  updatePassword(){
+    const passwords = {
+      oldPassword: this.passwordForm.value.oldPassword,
+      newPassword: this.passwordForm.value.newPassword
+    } as UpdatePassword;
+    if(this.passwordForm.valid){
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      });
+      swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, update it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.userService.updatePassword(this.user()?.id,passwords).subscribe(res=>{
+            if(isSuccessResponse(res)){
+              swalWithBootstrapButtons.fire({
+                title: "Updated!",
+                text: "Password has been updated",
+                icon: "success"
+              });
+              this.passwordForm.reset();
+            }
+            else if(isErrorResponse(res)){
+              swalWithBootstrapButtons.fire({
+                title: "Update Error!",
+                text: res.message,
+                icon: "error"
+              });
+            }
+            else{
+              swalWithBootstrapButtons.fire({
+                title: "Update Error!",
+                text: "Password has not been updated.",
+                icon: "error"
+              });
+            }
+          });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Password has not been updated.",
+            icon: "error"
+          });
+        }
+      });
+    }
   }
 
 }

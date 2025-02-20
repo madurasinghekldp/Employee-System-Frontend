@@ -7,6 +7,7 @@ import { ErrorResponse } from '../types/error-response';
 import { LoginUser } from '../types/loginUser';
 import { TokenService } from './token.service';
 import { userStore } from '../store/user.store';
+import { UpdatePassword } from '../types/update-password';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +46,11 @@ export class UserService {
   }
 
   updateUser(id:number|null|undefined,user:any):Observable<SuccessResponse|ErrorResponse>{
-    return this.http.patch<SuccessResponse|ErrorResponse>(`http://localhost:8080/users?id=${id}`,user,{responseType:"json"});
+    return this.http.patch<SuccessResponse|ErrorResponse>(`http://localhost:8080/users/profile?id=${id}`,user,{responseType:"json"});
+  }
+
+  updatePassword(id:number|null|undefined,passwords:UpdatePassword):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.patch<SuccessResponse|ErrorResponse>(`http://localhost:8080/users/password?id=${id}`,passwords,{responseType:"json"});
   }
 
   deleteUser(id:number|null|undefined){

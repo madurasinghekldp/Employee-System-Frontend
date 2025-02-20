@@ -101,6 +101,9 @@ export class SalaryComponent implements OnInit {
       this.salaryForm.controls.payment.reset();
       this.salaryForm.controls.paymentDate.reset();
     }
+    else{
+      this.salaryForm.controls.employee.markAsTouched();
+    }
   }
 
   employeeSelected() {

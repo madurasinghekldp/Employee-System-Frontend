@@ -8,10 +8,14 @@
                 <div class="col-md-6">
                     <label class="form-label fw-bold" for="firstName">First Name:</label>
                     <input type="text" class="form-control" formControlName="firstName">
+                    <small *ngIf="userForm.controls.firstName.errors && userForm.controls.firstName.touched" 
+                    class="text-danger fst-italic">First name should be provided.</small>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-bold" for="lastName">Last Name:</label>
                     <input type="text" class="form-control" formControlName="lastName">
+                    <small *ngIf="userForm.controls.lastName.errors && userForm.controls.lastName.touched"
+                    class="text-danger fst-italic">Last name should be provided.</small>
                 </div>
             </div>
             
@@ -19,16 +23,36 @@
                 <div class="col-md-6">
                     <label class="form-label fw-bold" for="email">Email:</label>
                     <input type="email" class="form-control" formControlName="email">
+                    <small *ngIf="userForm.controls.email.errors && userForm.controls.email.touched" 
+                    class="text-danger fst-italic">Email should be provided.</small>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-bold" for="password">New Password:</label>
-                    <input type="password" class="form-control" formControlName="password">
-                </div>
+                
             </div>
             
             <button type="submit" class="btn btn-primary w-25">Save Personal Details</button>
         </form>
         
+        <hr class="my-4">
+
+        <form (ngSubmit)="updatePassword()" [formGroup]="passwordForm">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold" for="oldPassword">Old Password:</label>
+                    <input type="password" class="form-control" formControlName="oldPassword">
+                    <small *ngIf="passwordForm.controls.oldPassword.errors && passwordForm.controls.oldPassword.touched" 
+                    class="text-danger fst-italic">Old password should be provided.</small>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold" for="newPassword">New Password:</label>
+                    <input type="password" class="form-control" formControlName="newPassword">
+                    <small *ngIf="passwordForm.controls.newPassword.errors && passwordForm.controls.newPassword.touched" 
+                    class="text-danger fst-italic">New password should be provided.</small>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-25">Update Password</button>
+        </form>
+
         <hr class="my-4">
         
         <form (ngSubmit)="updateCompany()" [formGroup]="companyForm">
@@ -36,16 +60,22 @@
             <div class="mb-3">
                 <label class="form-label fw-bold" for="name">Company Name:</label>
                 <input type="text" class="form-control" formControlName="name">
+                <small *ngIf="companyForm.controls.name.errors && companyForm.controls.name.touched" 
+                    class="text-danger fst-italic">Company Name should be provided.</small>
             </div>
             
             <div class="mb-3">
                 <label class="form-label fw-bold" for="address">Address:</label>
                 <input type="text" class="form-control" formControlName="address">
+                <small *ngIf="companyForm.controls.address.errors && companyForm.controls.address.touched" 
+                    class="text-danger fst-italic">Address should be provided.</small>
             </div>
             
             <div class="mb-3">
                 <label class="form-label fw-bold" for="registerNumber">Register Number:</label>
                 <input type="text" class="form-control" formControlName="registerNumber">
+                <small *ngIf="companyForm.controls.registerNumber.errors && companyForm.controls.registerNumber.touched" 
+                    class="text-danger fst-italic">Register Number should be provided.</small>
             </div>
             
             <button type="submit" class="btn btn-primary w-25">Save Company Details</button>

@@ -9,14 +9,20 @@
                         <select class="form-select" formControlName="employee" name="employee" (change)="employeeSelected()">
                             <option [ngValue]="employee" *ngFor="let employee of employeeList">{{employee.firstName}} {{employee.lastName}}</option>
                         </select>
+                        <small *ngIf="salaryForm.controls.employee.errors && salaryForm.controls.employee.touched" 
+                            class="text-danger fst-italic">Employee should be selected.</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="payment">Payment</label>
                         <input type="number" class="form-control" formControlName="payment" name="payment">
+                        <small *ngIf="salaryForm.controls.payment.errors && salaryForm.controls.payment.touched" 
+                            class="text-danger fst-italic">Payment should not be empty.</small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="paymentDate">Payment Date</label>
                         <input type="date" class="form-control" formControlName="paymentDate" name="paymentDate">
+                        <small *ngIf="salaryForm.controls.paymentDate.errors && salaryForm.controls.paymentDate.touched" 
+                        class="text-danger fst-italic">Payment date should not be empty.</small>
                     </div>
                     <button type="submit" class="btn btn-primary w-100" *ngIf="!isGoingToUpdate">Add Salary</button>
                     <button type="button" class="btn btn-primary w-100" *ngIf="isGoingToUpdate" (click)="updateSalary()">Update Salary</button>

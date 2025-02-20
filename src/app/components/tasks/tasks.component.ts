@@ -115,6 +115,9 @@ export class TasksComponent  implements OnInit {
       this.taskForm.controls.dueDate.reset();
       this.taskForm.controls.completedDate.reset();
     }
+    else{
+      this.taskForm.controls.employee.markAsTouched();
+    }
   }
 
   employeeSelected(){
@@ -232,6 +235,9 @@ export class TasksComponent  implements OnInit {
       this.taskForm.controls.startDate.reset();
       this.taskForm.controls.dueDate.reset();
       this.taskForm.controls.completedDate.reset();
+    }
+    else{
+      this.taskForm.controls.employee.markAsTouched();
     }
   }
 
