@@ -1,6 +1,7 @@
 import { Company } from "./company";
 
-export type CreateUser = {
+export type User = {
+    id:number|null|undefined;
     firstName:string|null;
     lastName:string|null;
     email:string|null;

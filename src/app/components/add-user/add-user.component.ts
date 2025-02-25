@@ -5,14 +5,14 @@ import { Company } from '../../types/company';
 import { UserService } from '../../services/user.service';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import Swal from 'sweetalert2';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { userStore } from '../../store/user.store';
 
 @Component({
   selector: 'app-add-user',
   standalone: true,
-  imports: [FormsModule,ReactiveFormsModule,NgIf,HttpClientModule],
+  imports: [FormsModule,ReactiveFormsModule,NgIf,HttpClientModule,NgFor],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.css'
 })
@@ -24,6 +24,7 @@ export class AddUserComponent {
 
   constructor(private readonly userService:UserService){}
 
+  roleSet:Set<string> = new Set();
   userRegForm = new FormGroup({
       firstName: new FormControl('',Validators.required),
       lastName: new FormControl('',Validators.required),
@@ -37,7 +38,7 @@ export class AddUserComponent {
       lastName: '',
       email: '',
       password: '',
-      userRoleName:'',
+      userRoleName:[],
       company:null
     }
   
@@ -63,7 +64,7 @@ export class AddUserComponent {
         lastName: this.userRegForm.controls.lastName?.value,
         email: this.userRegForm.controls.email?.value,
         password: this.userRegForm.controls.password?.value,
-        userRoleName: this.userRegForm.controls.userRole?.value,
+        userRoleName: Array.from(this.roleSet),
         company: this.createCompany
       }
   
@@ -89,6 +90,21 @@ export class AddUserComponent {
             });
           }
   
+    }
+
+    selectRole(event: Event){
+      this.roleSet.add((event.target as HTMLSelectElement).value);
+    }
+
+    getRoleArray(){
+      return Array.from(this.roleSet);
+    }
+
+    removeRole(role: string){
+      this.roleSet.delete(role);
+      if(this.roleSet.size === 0){
+        this.userRegForm.controls.userRole?.setErrors({'required':true});
+      }
     }
 
 }

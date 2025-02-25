@@ -1,4 +1,6 @@
+
 import { Employee } from "./employee";
+import { User } from "./user";
 
 export type Task = {
     id:number|null;
@@ -8,4 +10,6 @@ export type Task = {
     dueDate:string|null;
     completedDate:string|null;
     overDues:number|null;
+    status:string|null;
+    approvedBy:User|null;
 }

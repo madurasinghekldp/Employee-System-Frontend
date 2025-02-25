@@ -15,6 +15,8 @@ import { TasksComponent } from './components/tasks/tasks.component';
 import { authGuard } from './guards/auth.guard';
 import { SettingComponent } from './components/setting/setting.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AssignTasksComponent } from './components/assign-tasks/assign-tasks.component';
+import { ApplyLeaveComponent } from './components/apply-leave/apply-leave.component';
 
 export const routes: Routes = [
     {
@@ -95,6 +97,16 @@ export const routes: Routes = [
       {
         path: "profile",
         component: ProfileComponent,
+        canActivate: [authGuard]
+      },
+      {
+        path: "assigned-tasks",
+        component: AssignTasksComponent,
+        canActivate: [authGuard]
+      },
+      {
+        path: "apply-leaves",
+        component: ApplyLeaveComponent,
         canActivate: [authGuard]
       }
 ];

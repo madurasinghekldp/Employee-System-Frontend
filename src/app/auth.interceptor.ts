@@ -1,17 +1,16 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AuthService } from './services/auth.service';
+import { userStore } from './store/user.store';
+import { TokenService } from './services/token.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // const excludedUrls = ['http://localhost:8080/auth/signup', 'http://localhost:8080/auth/login'];
-    // const isExcluded = excludedUrls.some(url => req.url.includes(url));
-
-    // if (isExcluded) {
-    //   return next.handle(req.clone({withCredentials: true }));
-    // }
+    
     const token = localStorage.getItem('token');
 
     const authReq = token

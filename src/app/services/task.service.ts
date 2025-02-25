@@ -17,8 +17,16 @@ export class TaskService {
   updateTask(updatedTask: Task):Observable<SuccessResponse|ErrorResponse>{
     return this.http.put<SuccessResponse|ErrorResponse>("http://localhost:8080/task",updatedTask,{responseType:"json"});
   }
+  updateTaskByUser(updatedTask: Task):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.put<SuccessResponse|ErrorResponse>("http://localhost:8080/task/by-user",updatedTask,{responseType:"json"});
+  }
   getAllTasks(limit: number, offset: number, employeeId:number|null) :Observable<SuccessResponse|ErrorResponse>{
     return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/task/all?employeeId=${employeeId}&limit=${limit}
+    &offset=${offset}`,{responseType:"json"});
+  }
+
+  getAllTasksByUser(limit: number, offset: number, userId:number|null|undefined) :Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/task/all-by-user?userId=${userId}&limit=${limit}
     &offset=${offset}`,{responseType:"json"});
   }
   createTask(newTask: Task) :Observable<SuccessResponse|ErrorResponse>{

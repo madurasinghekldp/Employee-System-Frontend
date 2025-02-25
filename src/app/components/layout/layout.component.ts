@@ -27,6 +27,8 @@ export class LayoutComponent implements OnInit{
 
   public isUserLogedIn: boolean = false;
   public isAdmin: boolean|undefined = false;
+  isUser:boolean|undefined = false;
+  isEmployee:boolean|undefined = false;
 
   
   constructor(
@@ -37,6 +39,8 @@ export class LayoutComponent implements OnInit{
     effect(()=>{
       this.isUserLogedIn = this.authService.isUserLogedIn();
       this.isAdmin = this.authService.isAdmin();
+      this.isUser = this.authService.isUser();
+      this.isEmployee = this.authService.isEmployee();
     });
   }
   ngOnInit(): void {

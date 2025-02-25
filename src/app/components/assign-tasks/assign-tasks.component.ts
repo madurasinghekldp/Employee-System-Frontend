@@ -1,26 +1,24 @@
 import { Component, computed, effect, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { userStore } from '../../store/user.store';
+import { Employee } from '../../types/employee';
 import { TaskService } from '../../services/task.service';
+import { EmployeeService } from '../../services/employee.service';
+import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Task } from '../../types/task';
 import Swal from 'sweetalert2';
-import { Employee } from '../../types/employee';
-import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
-import { userStore } from '../../store/user.store';
-import { EmployeeService } from '../../services/employee.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule, NgFor } from '@angular/common';
-import { User } from '../../types/user';
 
 @Component({
-  selector: 'app-tasks',
+  selector: 'app-assign-tasks',
   standalone: true,
   imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule],
-  templateUrl: './tasks.component.html',
-  styleUrl: './tasks.component.css',
+  templateUrl: './assign-tasks.component.html',
+  styleUrl: './assign-tasks.component.css',
   providers:[TaskService,EmployeeService]
 })
-export class TasksComponent  implements OnInit {
-
+export class AssignTasksComponent implements OnInit {
   store = inject(userStore);
     
   user = computed(() => this.store.user());
@@ -47,19 +45,9 @@ export class TasksComponent  implements OnInit {
   }
 
   init(){
-    if(this.store.user()){
-      this.employeeService.getAllByCompany(this.user()?.company.id).subscribe(res=>{
-        if(isSuccessResponse(res)){
-          this.employeeList = res.data;
-        }
-        else if(isErrorResponse(res)){
-          this.employeeList = [];
-        }
-        else{
-          this.employeeList = [];
-        }
-      })
-    }
+    
+    this.loadTasks();
+    
   }
 
   task:Task = {
@@ -76,61 +64,15 @@ export class TasksComponent  implements OnInit {
 
 
   taskForm = new FormGroup({
-    employee: new FormControl<Employee | null>(null,Validators.required),
-    taskName: new FormControl('', Validators.required),
+    
+    taskName: new FormControl({value:'', disabled:true}, Validators.required),
     status: new FormControl('',Validators.required),
-    startDate: new FormControl('', Validators.required),
-    dueDate: new FormControl('', Validators.required),
-    completedDate: new FormControl('')
+    startDate: new FormControl({value:'', disabled:true}, Validators.required),
+    dueDate: new FormControl({value:'', disabled:true}, Validators.required),
+    completedDate: new FormControl({value:'', disabled:true})
   });
 
-  submitTask() {
-    if (this.taskForm.valid) {
-      const newTask: Task = {
-        id: null,
-        employee: this.taskForm.controls.employee.value,
-        taskName: this.taskForm.controls.taskName.value,
-        startDate: this.taskForm.controls.startDate.value,
-        dueDate: this.taskForm.controls.dueDate.value,
-        completedDate: this.taskForm.controls.completedDate.value,
-        overDues: null,
-        status: this.taskForm.controls.status.value,
-        approvedBy: null
-      }
-      this.taskService.createTask(newTask).subscribe(res => {
-        if(isSuccessResponse(res)){
-          Swal.fire("Success!", "Task Added!", "success");
-        }
-        else if(isErrorResponse(res)){
-          Swal.fire({
-            title: "Failed!",
-            text: res.message,
-            icon: "error"
-          });
-        }
-        else{
-          Swal.fire({
-            title: "Failed!",
-            text: "Unkown error occurred!",
-            icon: "error"
-          });
-        }
-        this.loadTasks();
-      });
-      this.taskForm.controls.taskName.reset();
-      this.taskForm.controls.startDate.reset();
-      this.taskForm.controls.dueDate.reset();
-      this.taskForm.controls.completedDate.reset();
-      this.taskForm.controls.status.reset();
-    }
-    else{
-      this.taskForm.controls.employee.markAsTouched();
-    }
-  }
-
-  employeeSelected(){
-    this.loadTasks();
-  }
+  
 
   goToPreviousPage(){
     if(this.offset>0){
@@ -145,23 +87,22 @@ export class TasksComponent  implements OnInit {
   }
 
   loadTasks() {
-    if(this.taskForm.controls.employee.valid && this.taskForm.controls.employee.value!=null){
-      const employeeSelected:Employee = this.taskForm?.controls?.employee?.value;
-      this.taskService.getAllTasks(this.limit,this.offset,employeeSelected.id).subscribe(res => {
-        if(isSuccessResponse(res)){
-          this.taskList = res.data;
-          this.tasksMessage = "";
-        }
-        else if(isErrorResponse(res)){
-          this.taskList = [];
-          this.tasksMessage = "Tasks not found";
-        }
-        else{
-          this.taskList = [];
-          this.tasksMessage = "Unexpected error occurred";
-        }
-      });
-    }
+    
+    this.taskService.getAllTasksByUser(this.limit,this.offset,this.user()?.id).subscribe(res => {
+      if(isSuccessResponse(res)){
+        this.taskList = res.data;
+        this.tasksMessage = "";
+      }
+      else if(isErrorResponse(res)){
+        this.taskList = [];
+        this.tasksMessage = "Tasks not found";
+      }
+      else{
+        this.taskList = [];
+        this.tasksMessage = "Unexpected error occurred";
+      }
+    });
+    
     
   }
 
@@ -191,7 +132,7 @@ export class TasksComponent  implements OnInit {
     if (this.taskForm.valid) {
       const updatedTask: Task = {
         id: this.updatingTaskId,
-        employee: this.taskForm.controls.employee.value,
+        employee: null,
         taskName: this.taskForm.controls.taskName.value,
         startDate: this.taskForm.controls.startDate.value,
         dueDate: this.taskForm.controls.dueDate.value,
@@ -224,7 +165,7 @@ export class TasksComponent  implements OnInit {
         reverseButtons: true
       }).then((result)=>{
         if(result.isConfirmed){
-          this.taskService.updateTask(updatedTask).subscribe(res => {
+          this.taskService.updateTaskByUser(updatedTask).subscribe(res => {
             if(isSuccessResponse(res)){
               Swal.fire("Success!", "Task Updated!", "success");
               this.isGoingToUpdate = false;
@@ -265,9 +206,7 @@ export class TasksComponent  implements OnInit {
       this.taskForm.controls.completedDate.reset();
       this.taskForm.controls.status.reset();
     }
-    else{
-      this.taskForm.controls.employee.markAsTouched();
-    }
+    
   }
 
   onDelete(task: Task) {

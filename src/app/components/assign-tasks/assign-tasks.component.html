@@ -1,0 +1,128 @@
+<div class="container d-flex flex-column align-items-center min-vh-100">
+    
+    <div class="w-100">
+        <div class="bg-white p-4 rounded shadow">
+            <h4 class="text-center mb-3">Tasks List</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Task Name</th>
+                        <th>Start Date</th>
+                        <th>Due Date</th>
+                        <th>Completed Date</th>
+                        <th>Status</th>
+                        <th>Approved By</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="taskList.length>0">
+                    <tr *ngFor="let task of taskList">
+                        <td>{{task.id}}</td>
+                        <td>{{task.taskName}}</td>
+                        <td>{{ task.startDate | date: 'yyyy-MM-dd' }}</td>
+                        <td>{{task.dueDate | date: 'yyyy-MM-dd' }}</td>
+                        <td><span [ngClass]="{'p-2 rounded-pill text-white bg-danger': (task.overDues!=null&&task.overDues>0)}">
+                            {{task.completedDate | date: 'yyyy-MM-dd' }}</span></td>
+                        <td>
+                        <span class="p-2 rounded-pill text-white" [ngClass]="{
+                            'bg-warning': task.status === 'pending',
+                            'bg-primary': task.status === 'working',
+                            'bg-success': task.status === 'completed',
+                            'bg-danger': task.status === 'rejected'
+                        }"> {{task.status}}</span>
+                           
+                        </td>
+                        <td>{{task.approvedBy?.firstName}} {{task.approvedBy?.lastName}}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" (click)="onEdit(task)" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn btn-danger btn-sm" (click)="onDelete(task)"><i class="bi bi-trash3"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="tasksMessage">
+                    <tr>
+                        <td colspan="6" class="text-center">{{tasksMessage}}</td>
+                    </tr>
+                </tbody>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item"><button class="page-link" (click)="goToPreviousPage()">&laquo;</button></li>
+                      <span class=" mx-3 my-auto">{{(offset/5)+1}}</span>
+                      <li class="page-item"><button class="page-link" (click)="goToNextPage()">&raquo;</button></li>
+                    </ul>
+                </nav>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Status update</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="w-100 mb-4">
+                <div class="bg-secondary-subtle p-5 rounded shadow">
+                    <form (ngSubmit)="updateTask()" [formGroup]="taskForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                
+                                <div class="mb-3">
+                                    <label class="form-label" for="taskName">Task Name</label>
+                                    <textarea type="text" class="form-control" formControlName="taskName" name="taskName"></textarea>
+                                    <small *ngIf="taskForm.controls.taskName.errors && taskForm.controls.taskName.touched" 
+                                    class="text-danger fst-italic">Task cannot be empty.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="status">Status</label>
+                                    <select class="form-select" formControlName="status" name="status" [ngClass]="{
+                                        'bg-warning text-white': taskForm.controls.status.value === 'pending',
+                                        'bg-primary text-white': taskForm.controls.status.value === 'working',
+                                        'bg-success text-white': taskForm.controls.status.value === 'completed',
+                                        'bg-danger text-white': taskForm.controls.status.value === 'rejected'
+                                    }">
+                                        <option value = "pending">pending</option>
+                                        <option value = "working">working</option>
+                                        <option value = "completed">completed</option>
+                                        <option value = "rejected">rejected</option>
+                                    </select>
+                                    <small *ngIf="taskForm.controls.status.errors && taskForm.controls.status.touched" 
+                                    class="text-danger fst-italic">Status should be selected.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" for="startDate">Start Date</label>
+                                    <input type="date" class="form-control" formControlName="startDate" name="startDate">
+                                    <small *ngIf="taskForm.controls.startDate.errors && taskForm.controls.startDate.touched" 
+                                    class="text-danger fst-italic">Start date cannot be empty.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="dueDate">Due Date</label>
+                                    <input type="date" class="form-control" formControlName="dueDate" name="dueDate">
+                                    <small *ngIf="taskForm.controls.dueDate.errors && taskForm.controls.dueDate.touched" 
+                                    class="text-danger fst-italic">Due date cannot be empty.</small>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="completedDate">Completed Date</label>
+                                    <input type="date" class="form-control" formControlName="completedDate" name="completedDate">
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="updateTask()">Update Task</button>
+        </div>
+      </div>
+    </div>
+  </div>

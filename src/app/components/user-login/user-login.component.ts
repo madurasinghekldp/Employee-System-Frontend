@@ -63,6 +63,8 @@ export class UserLoginComponent {
                   //location.reload();
                   this.authService.isUserLogedIn.set(this.tokenService.validateTokenFromLocalStorage());
                   this.authService.isAdmin.set(this.tokenService.getUserRoles()?.includes("ROLE_ADMIN"));
+                  this.authService.isUser.set(this.tokenService.getUserRoles()?.includes("ROLE_USER"));
+                  this.authService.isEmployee.set(this.tokenService.getUserRoles()?.includes("ROLE_EMP"));
                 }
                 else if(isErrorResponse(res)) {
                   this.store.loadUsers(null);

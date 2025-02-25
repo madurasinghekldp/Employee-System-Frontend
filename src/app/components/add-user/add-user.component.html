@@ -45,10 +45,19 @@
                   </div>
                   <div class="col-12">
                     <label for="userRole" class="form-label">User Role <span class="text-danger">*</span></label>
-                    <select id="userRole" class="form-select" formControlName="userRole" name="userRole">
+                    <select id="userRole" class="form-select" formControlName="userRole" name="userRole" (change)="selectRole($event)">
                       <option value="ROLE_ADMIN">ADMIN</option>
                       <option value="ROLE_USER">USER</option>
+                      <option value="ROLE_EMP">EMPLOYEE</option>
                     </select>
+                    <div *ngIf="roleSet.size > 0">
+                      <div *ngFor="let role of getRoleArray()" class="d-inline-block m-1">
+                        <button type="button" class="btn btn-outline-primary">
+                          {{ role }}
+                          <span class="ms-2" (click)="removeRole(role)" style="cursor: pointer;">&times;</span>
+                        </button>
+                      </div>
+                    </div>
                     <small *ngIf="userRegForm.controls.userRole.errors && userRegForm.controls.userRole.touched" 
                     class="text-danger fst-italic">Role should be provided.</small>
                   </div>

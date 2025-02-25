@@ -19,6 +19,22 @@
                             <small *ngIf="taskForm.controls.taskName.errors && taskForm.controls.taskName.touched" 
                             class="text-danger fst-italic">Task cannot be empty.</small>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="status">Status</label>
+                            <select class="form-select" formControlName="status" name="status" [ngClass]="{
+                                'bg-warning text-white': taskForm.controls.status.value === 'pending',
+                                'bg-primary text-white': taskForm.controls.status.value === 'working',
+                                'bg-success text-white': taskForm.controls.status.value === 'completed',
+                                'bg-danger text-white': taskForm.controls.status.value === 'rejected'
+                            }">
+                                <option value = "pending">pending</option>
+                                <option value = "working">working</option>
+                                <option value = "completed">completed</option>
+                                <option value = "rejected">rejected</option>
+                            </select>
+                            <small *ngIf="taskForm.controls.status.errors && taskForm.controls.status.touched" 
+                            class="text-danger fst-italic">Status should be selected.</small>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
@@ -39,8 +55,12 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary w-25" *ngIf="!isGoingToUpdate">Add Task</button>
-                <button type="button" class="btn btn-primary w-100" *ngIf="isGoingToUpdate" (click)="updateTask()">Update Task</button>
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="button" class="btn btn-secondary w-25" (click)="onCancel()">Cancel</button>
+                    <span class="px-2"></span>
+                    <button type="submit" class="btn btn-primary w-25" *ngIf="!isGoingToUpdate">Add Task</button>
+                    <button type="button" class="btn btn-primary w-25" *ngIf="isGoingToUpdate" (click)="updateTask()">Update Task</button>
+                </div>
             </form>
         </div>
     </div>
@@ -55,6 +75,8 @@
                         <th>Start Date</th>
                         <th>Due Date</th>
                         <th>Completed Date</th>
+                        <th>Status</th>
+                        <th>Approved By</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -64,7 +86,18 @@
                         <td>{{task.taskName}}</td>
                         <td>{{ task.startDate | date: 'yyyy-MM-dd' }}</td>
                         <td>{{task.dueDate | date: 'yyyy-MM-dd' }}</td>
-                        <td>{{task.completedDate | date: 'yyyy-MM-dd' }}</td>
+                        <td><span [ngClass]="{'p-2 rounded-pill text-white bg-danger': (task.overDues!=null&&task.overDues>0)}">
+                            {{task.completedDate | date: 'yyyy-MM-dd' }}</span></td>
+                        <td>
+                        <span class="p-2 rounded-pill text-white" [ngClass]="{
+                            'bg-warning': task.status === 'pending',
+                            'bg-primary': task.status === 'working',
+                            'bg-success': task.status === 'completed',
+                            'bg-danger': task.status === 'rejected'
+                        }"> {{task.status}}</span>
+                           
+                        </td>
+                        <td>{{task.approvedBy?.firstName}} {{task.approvedBy?.lastName}}</td>
                         <td>
                             <button class="btn btn-warning btn-sm" (click)="onEdit(task)"><i class="bi bi-pencil-square"></i></button>
                             <button class="btn btn-danger btn-sm" (click)="onDelete(task)"><i class="bi bi-trash3"></i></button>

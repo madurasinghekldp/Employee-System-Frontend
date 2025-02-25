@@ -1,24 +1,24 @@
-import { Component, computed, effect, inject,OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
+import { userStore } from '../../store/user.store';
+import { Employee } from '../../types/employee';
 import { Leaves } from '../../types/leaves';
-import { HttpClientModule } from '@angular/common/http';
 import { EmployeeService } from '../../services/employee.service';
 import { LeaveService } from '../../services/leave.service';
-import { Employee } from '../../types/employee';
-import { userStore } from '../../store/user.store';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
-import { CommonModule, NgFor } from '@angular/common';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-leaves',
+  selector: 'app-apply-leave',
   standalone: true,
   imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule],
-  templateUrl: './leaves.component.html',
-  styleUrl: './leaves.component.css',
+  templateUrl: './apply-leave.component.html',
+  styleUrl: './apply-leave.component.css',
   providers:[EmployeeService,LeaveService]
 })
-export class LeavesComponent implements OnInit{
+export class ApplyLeaveComponent implements OnInit{
 
   store = inject(userStore);
   
@@ -37,8 +37,8 @@ export class LeavesComponent implements OnInit{
     private readonly leaveService:LeaveService
   ){
     effect(()=>{
-          this.init();
-        })
+      this.init();
+    })
   }
 
   ngOnInit(): void {
