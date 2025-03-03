@@ -2,15 +2,18 @@
     <header class="d-flex justify-content-center py-3">
       <ul class="nav nav-pills">
         <li class="nav-item"><a  class="nav-link not-active" routerLink="/home" routerLinkActive="active-bg">Home</a></li>
-        <ng-container *ngIf="isUserLogedIn">
+        <ng-container *ngIf="isUserLogedIn &&( isAdmin || isUser)">
         <li class="nav-item"><a  class="nav-link not-active" routerLink="/view-employee" routerLinkActive="active-bg">Employees</a></li>
         <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-department" routerLinkActive="active-bg">Departments</a></li>
         <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-role" routerLinkActive="active-bg">Roles</a></li>
         <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-leaves" routerLinkActive="active-bg">Leaves</a></li>
         <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-salary" routerLinkActive="active-bg">Salary</a></li>
         <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-task" routerLinkActive="active-bg">Tasks</a></li>
-        <li class="nav-item"><a  class="nav-link not-active" routerLink="/assigned-tasks" routerLinkActive="active-bg">Assigned Tasks</a></li>
-        <li class="nav-item"><a  class="nav-link not-active" routerLink="/apply-leaves" routerLinkActive="active-bg">Apply leave</a></li>
+        
+        </ng-container>
+        <ng-container *ngIf="isUserLogedIn && isEmployee">
+          <li class="nav-item"><a  class="nav-link not-active" routerLink="/assigned-tasks" routerLinkActive="active-bg">Assigned Tasks</a></li>
+          <li class="nav-item"><a  class="nav-link not-active" routerLink="/apply-leaves" routerLinkActive="active-bg">Apply leave</a></li>
         </ng-container>
         <li class="nav-item"><a  class="nav-link not-active" routerLink="/about" routerLinkActive="active-bg">About</a></li>
       </ul>

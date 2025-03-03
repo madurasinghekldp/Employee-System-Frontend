@@ -85,8 +85,10 @@ export class AddUserComponent {
                   text: res.message,
                   icon: "error"
                 });
-                this.userRegForm.reset();
+                
               }
+              this.userRegForm.reset();
+              this.roleSet.clear();
             });
           }
   

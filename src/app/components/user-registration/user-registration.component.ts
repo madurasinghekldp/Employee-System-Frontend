@@ -75,7 +75,7 @@ export class UserRegistrationComponent {
       lastName: this.userRegForm.controls.lastName?.value,
       email: this.userRegForm.controls.email?.value,
       password: this.userRegForm.controls.password?.value,
-      userRoleName: ["ROLE_ADMIN","ROLE_EMP"],
+      userRoleName: ["ROLE_ADMIN"],
       company: this.createCompany
     }
 

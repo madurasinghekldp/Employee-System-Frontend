@@ -12,7 +12,7 @@ import { AddUserComponent } from './components/add-user/add-user.component';
 import { LeavesComponent } from './components/leaves/leaves.component';
 import { SalaryComponent } from './components/salary/salary.component';
 import { TasksComponent } from './components/tasks/tasks.component';
-import { authGuard } from './guards/auth.guard';
+import { adminGuard, adminOrUserGuard, authGuard, empGuard, userGuard } from './guards/auth.guard';
 import { SettingComponent } from './components/setting/setting.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AssignTasksComponent } from './components/assign-tasks/assign-tasks.component';
@@ -35,32 +35,32 @@ export const routes: Routes = [
     {
         path:"view-employee",
         component: ViewEmployeesComponent,
-        canActivate: [authGuard]
+        canActivate: [authGuard,adminOrUserGuard]
     },
     {
         path:"manage-department",
         component: ManageDepartmentComponent,
-        canActivate: [authGuard]
+        canActivate: [authGuard,adminOrUserGuard]
     },
     {
         path:"manage-role",
         component: ManageRoleComponent,
-        canActivate: [authGuard]
+        canActivate: [authGuard,adminOrUserGuard]
     },
     {
         path:"about",
         component: AboutComponent
     },
-    {
-        path: '',
-        component: LayoutComponent,
-        children: [
-          { path: "", redirectTo: "home", pathMatch: 'full' },
-          { path: "home", component: HomeComponent },
-          { path: "view-employee", component: ViewEmployeesComponent ,canActivate: [authGuard]},
-          { path: "add-employee", component: AddEmployeeComponent ,canActivate: [authGuard]},
-        ]
-      },
+    // {
+    //     path: '',
+    //     component: LayoutComponent,
+    //     children: [
+    //       { path: "", redirectTo: "home", pathMatch: 'full' },
+    //       { path: "home", component: HomeComponent },
+    //       { path: "view-employee", component: ViewEmployeesComponent ,canActivate: [authGuard]},
+    //       { path: "add-employee", component: AddEmployeeComponent ,canActivate: [authGuard]},
+    //     ]
+    //   },
       {
         path: "signup",
         component: UserRegistrationComponent
@@ -72,22 +72,22 @@ export const routes: Routes = [
       {
         path: "add-user",
         component: AddUserComponent,
-        canActivate: [authGuard]
+        canActivate: [authGuard,adminGuard]
       },
       {
         path: "manage-leaves",
         component: LeavesComponent,
-        canActivate: [authGuard]
+        canActivate: [authGuard,adminOrUserGuard]
       },
       {
         path: "manage-salary",
         component: SalaryComponent,
-        canActivate: [authGuard]
+        canActivate: [authGuard,adminOrUserGuard]
       },
       {
         path: "manage-task",
         component: TasksComponent,
-        canActivate: [authGuard]
+        canActivate: [authGuard,adminOrUserGuard]
       },
       {
         path: "setting",
@@ -102,11 +102,11 @@ export const routes: Routes = [
       {
         path: "assigned-tasks",
         component: AssignTasksComponent,
-        canActivate: [authGuard]
+        canActivate: [authGuard,empGuard]
       },
       {
         path: "apply-leaves",
         component: ApplyLeaveComponent,
-        canActivate: [authGuard]
+        canActivate: [authGuard,empGuard]
       }
 ];

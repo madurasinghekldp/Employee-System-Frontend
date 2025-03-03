@@ -31,6 +31,7 @@ export class LeavesComponent implements OnInit{
   public offset:number = 0;
   public isGoingToUpdate:boolean = false;
   public updatingLeaveId:number = 0;
+  public isApproved:boolean = false;
 
   constructor(
     private readonly employeeService:EmployeeService, 
@@ -65,57 +66,24 @@ export class LeavesComponent implements OnInit{
     id:null,
     employee: null,
     startDate: "",
-    endDate: ""
+    endDate: "",
+    approvedBy: null
   }
 
   leaveForm = new FormGroup({
     employee: new FormControl<Employee | null>(null,Validators.required),
     startDate: new FormControl('',Validators.required),
-    endDate: new FormControl('',Validators.required)
+    endDate: new FormControl('',Validators.required),
+    approved: new FormControl(false)
   });
 
-  submitLeave(){
-    if(this.leaveForm.valid){
-      this.leave = {
-        id:null,
-        employee: this.leaveForm.controls.employee.value,
-        startDate: this.leaveForm.controls.startDate.value,
-        endDate: this.leaveForm.controls.endDate.value
-      }
-      this.leaveService.createLeave(this.leave).subscribe(res=>{
-        if(isSuccessResponse(res)){
-          Swal.fire({
-            title: "Success!",
-            text: "Leave Added!",
-            icon: "success"
-          });
-          this.loadLeaves();
-        }
-        else if(isErrorResponse(res)){
-          Swal.fire({
-            title: "Failed!",
-            text: res.message,
-            icon: "error"
-          });
-        }
-        else{
-          Swal.fire({
-            title: "Failed!",
-            text: "Unkown error occurred!",
-            icon: "error"
-          });
-        }
-      });
-      this.leaveForm.controls.startDate.reset();
-      this.leaveForm.controls.endDate.reset();
-    }
-    else{
-      this.leaveForm.controls.employee.markAsTouched();
-    }
-  }
+
 
   employeeSelected(){
     this.loadLeaves();
+    this.leaveForm.controls.startDate.reset();
+    this.leaveForm.controls.endDate.reset();
+    this.leaveForm.controls.approved.reset();
   }
 
   goToPreviousPage(){
@@ -155,7 +123,8 @@ export class LeavesComponent implements OnInit{
     this.updatingLeaveId= leave.id;
     this.leaveForm.patchValue({
       startDate: leave.startDate ? new Date(leave.startDate).toISOString().split('T')[0] : '',
-      endDate: leave.endDate ? new Date(leave.endDate).toISOString().split('T')[0] : ''
+      endDate: leave.endDate ? new Date(leave.endDate).toISOString().split('T')[0] : '',
+      approved: leave.approvedBy!=null
     });
     console.log(this.leaveForm);
   }
@@ -166,7 +135,16 @@ export class LeavesComponent implements OnInit{
         id:this.updatingLeaveId,
         employee: this.leaveForm.controls.employee.value,
         startDate: this.leaveForm.controls.startDate.value,
-        endDate: this.leaveForm.controls.endDate.value
+        endDate: this.leaveForm.controls.endDate.value,
+        approvedBy: this.leaveForm.controls.approved? {
+          id:this.user()?.id,
+          firstName:null,
+          lastName:null,
+          email:null,
+          password:null,
+          userRoleName:null,
+          company:null
+        }:null
       }
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -228,6 +206,7 @@ export class LeavesComponent implements OnInit{
     }
     this.leaveForm.controls.startDate.reset();
     this.leaveForm.controls.endDate.reset();
+    this.leaveForm.controls.approved.reset();
   }
 
   onDelete(leave:any){
@@ -285,5 +264,14 @@ export class LeavesComponent implements OnInit{
       });
     }
   }
+
+  cancelUpdate(){
+    this.isGoingToUpdate = false;
+    this.updatingLeaveId= 0;
+    this.leaveForm.controls.startDate.reset();
+    this.leaveForm.controls.endDate.reset();
+    this.leaveForm.controls.approved.reset();
+  }
+
 
 }
