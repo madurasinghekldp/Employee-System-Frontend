@@ -9,6 +9,8 @@ import { userStore } from '../../store/user.store';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import { CommonModule, NgFor } from '@angular/common';
 import Swal from 'sweetalert2';
+import { Department } from '../../types/department';
+import { DepartmentService } from '../../services/department.service';
 
 @Component({
   selector: 'app-leaves',
@@ -16,7 +18,7 @@ import Swal from 'sweetalert2';
   imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule],
   templateUrl: './leaves.component.html',
   styleUrl: './leaves.component.css',
-  providers:[EmployeeService,LeaveService]
+  providers:[EmployeeService,LeaveService,DepartmentService]
 })
 export class LeavesComponent implements OnInit{
 
@@ -26,6 +28,7 @@ export class LeavesComponent implements OnInit{
 
   public employeeList:Employee[] = [];
   public leaveList:Leaves[] = [];
+  public departmentList:Department[] = [];
   public leavesMessage:string = "";
   private readonly limit:number = 5;
   public offset:number = 0;
@@ -35,7 +38,8 @@ export class LeavesComponent implements OnInit{
 
   constructor(
     private readonly employeeService:EmployeeService, 
-    private readonly leaveService:LeaveService
+    private readonly leaveService:LeaveService,
+    private readonly departmentService:DepartmentService
   ){
     effect(()=>{
           this.init();
@@ -47,19 +51,19 @@ export class LeavesComponent implements OnInit{
   }
 
   init(){
-      if(this.store.user()){
-        this.employeeService.getAllByCompany(this.user()?.company.id).subscribe(res=>{
-          if(isSuccessResponse(res)){
-            this.employeeList = res.data;
-          }
-          else if(isErrorResponse(res)){
-            this.employeeList = [];
-          }
-          else{
-            this.employeeList = [];
-          }
-        })
-      }
+    if(this.store.user()){
+      this.departmentService.getAll(this.user()?.company.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.departmentList = res.data;
+        }
+        else if(isErrorResponse(res)){
+          this.departmentList = [];
+        }
+        else{
+          this.departmentList = [];
+        }
+      })
+    }
   }
 
   leave:Leaves = {
@@ -71,13 +75,28 @@ export class LeavesComponent implements OnInit{
   }
 
   leaveForm = new FormGroup({
+    department: new FormControl<Department | null>(null,Validators.required),
     employee: new FormControl<Employee | null>(null,Validators.required),
     startDate: new FormControl('',Validators.required),
     endDate: new FormControl('',Validators.required),
     approved: new FormControl(false)
   });
 
-
+  departmentSelected(){
+    if(this.store.user()){
+      this.employeeService.getAllByCompany(this.user()?.company.id,this.leaveForm.controls.department.value?.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.employeeList = res.data;
+        }
+        else if(isErrorResponse(res)){
+          this.employeeList = [];
+        }
+        else{
+          this.employeeList = [];
+        }
+      })
+    }
+  }
 
   employeeSelected(){
     this.loadLeaves();

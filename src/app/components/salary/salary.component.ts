@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Salary } from '../../types/salary';
 import { HttpClientModule } from '@angular/common/http';
@@ -9,6 +9,8 @@ import { userStore } from '../../store/user.store';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import { CommonModule, NgFor } from '@angular/common';
 import Swal from 'sweetalert2';
+import { Department } from '../../types/department';
+import { DepartmentService } from '../../services/department.service';
 
 @Component({
   selector: 'app-salary',
@@ -16,18 +18,17 @@ import Swal from 'sweetalert2';
   imports: [FormsModule, ReactiveFormsModule, HttpClientModule, NgFor, CommonModule],
   templateUrl: './salary.component.html',
   styleUrl: './salary.component.css',
-  providers:[EmployeeService,SalaryService]
+  providers:[EmployeeService,SalaryService,DepartmentService]
 })
 export class SalaryComponent implements OnInit {
 
   store = inject(userStore);
 
-  get user() {
-    return this.store.user();
-  }
+  user = computed(() => this.store.user());
 
   public employeeList: Employee[] = [];
   public salaryList: Salary[] = [];
+  public departmentList:Department[] = [];
   public salariesMessage: string = "";
   private readonly limit: number = 5;
   public offset: number = 0;
@@ -36,29 +37,32 @@ export class SalaryComponent implements OnInit {
 
   constructor(
     private readonly employeeService: EmployeeService,
-    private readonly salaryService: SalaryService
-  ) {}
+    private readonly salaryService: SalaryService,
+    private readonly departmentService:DepartmentService
+  ) {
+      effect(()=>{
+            this.init();
+          })
+    }
 
   ngOnInit(): void {
     this.init();
   }
 
   init() {
-    setTimeout(() => {
-      if (this.store.user()) {
-        this.employeeService.getAllByCompany(this.user?.company.id).subscribe(res => {
-          if (isSuccessResponse(res)) {
-            this.employeeList = res.data;
-          } 
+      if(this.store.user()){
+        this.departmentService.getAll(this.user()?.company.id).subscribe(res=>{
+          if(isSuccessResponse(res)){
+            this.departmentList = res.data;
+          }
           else if(isErrorResponse(res)){
-            this.employeeList = [];
+            this.departmentList = [];
           }
           else{
-            this.employeeList = [];
+            this.departmentList = [];
           }
-        });
+        })
       }
-    }, 500);
   }
 
   salary: Salary = {
@@ -69,6 +73,7 @@ export class SalaryComponent implements OnInit {
   };
 
   salaryForm = new FormGroup({
+    department: new FormControl<Department | null>(null,Validators.required),
     employee: new FormControl<Employee | null>(null, Validators.required),
     payment: new FormControl(0, Validators.required),
     paymentDate: new FormControl('', Validators.required)
@@ -108,6 +113,22 @@ export class SalaryComponent implements OnInit {
 
   employeeSelected() {
     this.loadSalaries();
+  }
+
+  departmentSelected(){
+    if(this.store.user()){
+      this.employeeService.getAllByCompany(this.user()?.company.id,this.salaryForm.controls.department.value?.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.employeeList = res.data;
+        }
+        else if(isErrorResponse(res)){
+          this.employeeList = [];
+        }
+        else{
+          this.employeeList = [];
+        }
+      })
+    }
   }
 
   goToPreviousPage() {

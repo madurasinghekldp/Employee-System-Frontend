@@ -3,7 +3,15 @@
         <h2 class="text-center mb-4">Salaries</h2>
         <form (ngSubmit)="submitSalary()" [formGroup]="salaryForm" class="w-100">
             <div class="row g-3">
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <label class="form-label" for="department">Department</label>
+                    <select class="form-select" formControlName="department" name="department" (change)="departmentSelected()">
+                        <option [ngValue]="department" *ngFor="let department of departmentList">{{department.name}}</option>
+                    </select>
+                    <small *ngIf="salaryForm.controls.department.errors && salaryForm.controls.department.touched" 
+                        class="text-danger fst-italic">Department should be selected.</small>
+                </div>
+                <div class="col-md-3">
                     <label class="form-label" for="employee">Employee</label>
                     <select class="form-select" formControlName="employee" name="employee" (change)="employeeSelected()">
                         <option [ngValue]="employee" *ngFor="let employee of employeeList">{{employee.firstName}} {{employee.lastName}}</option>
@@ -11,13 +19,13 @@
                     <small *ngIf="salaryForm.controls.employee.errors && salaryForm.controls.employee.touched" 
                         class="text-danger fst-italic">Employee should be selected.</small>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label" for="payment">Payment</label>
                     <input type="number" class="form-control" formControlName="payment" name="payment">
                     <small *ngIf="salaryForm.controls.payment.errors && salaryForm.controls.payment.touched" 
                         class="text-danger fst-italic">Payment should not be empty.</small>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label" for="paymentDate">Payment Date</label>
                     <input type="date" class="form-control" formControlName="paymentDate" name="paymentDate">
                     <small *ngIf="salaryForm.controls.paymentDate.errors && salaryForm.controls.paymentDate.touched" 

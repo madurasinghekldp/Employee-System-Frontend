@@ -10,6 +10,8 @@ import { EmployeeService } from '../../services/employee.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule, NgFor } from '@angular/common';
 import { User } from '../../types/user';
+import { Department } from '../../types/department';
+import { DepartmentService } from '../../services/department.service';
 
 @Component({
   selector: 'app-tasks',
@@ -17,7 +19,7 @@ import { User } from '../../types/user';
   imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
-  providers:[TaskService,EmployeeService]
+  providers:[TaskService,EmployeeService,DepartmentService]
 })
 export class TasksComponent  implements OnInit {
 
@@ -27,6 +29,7 @@ export class TasksComponent  implements OnInit {
 
   public employeeList:Employee[] = [];
   public taskList: Task[] = [];
+  public departmentList:Department[] = [];
   public tasksMessage: string = "";
   public isGoingToUpdate: boolean = false;
   public updatingTaskId: number|null = 0;
@@ -35,7 +38,8 @@ export class TasksComponent  implements OnInit {
 
   constructor(
     private readonly taskService: TaskService,
-    private readonly employeeService:EmployeeService
+    private readonly employeeService:EmployeeService,
+    private readonly departmentService:DepartmentService
   ) {
     effect(()=>{
       this.init();
@@ -48,15 +52,15 @@ export class TasksComponent  implements OnInit {
 
   init(){
     if(this.store.user()){
-      this.employeeService.getAllByCompany(this.user()?.company.id).subscribe(res=>{
+      this.departmentService.getAll(this.user()?.company.id).subscribe(res=>{
         if(isSuccessResponse(res)){
-          this.employeeList = res.data;
+          this.departmentList = res.data;
         }
         else if(isErrorResponse(res)){
-          this.employeeList = [];
+          this.departmentList = [];
         }
         else{
-          this.employeeList = [];
+          this.departmentList = [];
         }
       })
     }
@@ -76,6 +80,7 @@ export class TasksComponent  implements OnInit {
 
 
   taskForm = new FormGroup({
+    department: new FormControl<Department | null>(null,Validators.required),
     employee: new FormControl<Employee | null>(null,Validators.required),
     taskName: new FormControl('', Validators.required),
     status: new FormControl('',Validators.required),
@@ -130,6 +135,22 @@ export class TasksComponent  implements OnInit {
 
   employeeSelected(){
     this.loadTasks();
+  }
+
+  departmentSelected(){
+    if(this.store.user()){
+      this.employeeService.getAllByCompany(this.user()?.company.id,this.taskForm.controls.department.value?.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.employeeList = res.data;
+        }
+        else if(isErrorResponse(res)){
+          this.employeeList = [];
+        }
+        else{
+          this.employeeList = [];
+        }
+      })
+    }
   }
 
   goToPreviousPage(){

@@ -41,8 +41,8 @@ export class EmployeeService {
     );
   }
 
-  getAllByCompany(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
-    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/emp/all?companyId=${companyId}`,
+  getAllByCompany(companyId:number|null|undefined,departmentId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/emp/all?companyId=${companyId}&departmentId=${departmentId}`,
     {responseType:"json"});
   }
 }

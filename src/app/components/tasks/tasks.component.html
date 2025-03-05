@@ -5,14 +5,25 @@
             <form (ngSubmit)="submitTask()" [formGroup]="taskForm">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label" for="employee">Employee</label>
-                            <select class="form-select" formControlName="employee" name="employee" (change)="employeeSelected()">
-                                <option [ngValue]="employee" *ngFor="let employee of employeeList">{{employee.firstName}} {{employee.lastName}}</option>
-                            </select>
-                            <small *ngIf="taskForm.controls.employee.errors && taskForm.controls.employee.touched" 
-                            class="text-danger fst-italic">Employee should be selected.</small>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label class="form-label" for="department">Department</label>
+                                <select class="form-select" formControlName="department" name="department" (change)="departmentSelected()">
+                                    <option [ngValue]="department" *ngFor="let department of departmentList">{{department.name}}</option>
+                                </select>
+                                <small *ngIf="taskForm.controls.department.errors && taskForm.controls.department.touched" 
+                                class="text-danger fst-italic">Department should be selected.</small>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label class="form-label" for="employee">Employee</label>
+                                <select class="form-select" formControlName="employee" name="employee" (change)="employeeSelected()">
+                                    <option [ngValue]="employee" *ngFor="let employee of employeeList">{{employee.firstName}} {{employee.lastName}}</option>
+                                </select>
+                                <small *ngIf="taskForm.controls.employee.errors && taskForm.controls.employee.touched" 
+                                class="text-danger fst-italic">Employee should be selected.</small>
+                            </div>
                         </div>
+                        
                         <div class="mb-3">
                             <label class="form-label" for="taskName">Task Name</label>
                             <textarea type="text" class="form-control" formControlName="taskName" name="taskName"></textarea>
