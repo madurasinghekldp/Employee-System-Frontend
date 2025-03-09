@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <h1 class="text-primary">{{this.user()?.company?.name}} Dashboard</h1>
+    </div>
+    <div class="row p-4">
+        <div class="col p-4">
+            <div class="border border-primary rounded">
+                <div class="p-4">
+                    <h1 class="text-info">Department Count</h1>
+                    <div class="flex-row d-flex justify-content-between">
+                        <h2 class="text-muted">{{depCount}}</h2>
+                        <span class="border rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background-color: #b5c9ff;">
+                            <a routerLink="/manage-department"><i class="bi bi-box-arrow-up-right text-primary"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col p-4">
+            <div class="border border-primary rounded">
+                <div class="p-4">
+                    <h1 class="text-info">Employee Count</h1>
+                    <div class="flex-row d-flex justify-content-between">
+                        <h2 class="text-muted">{{empCount}}</h2>
+                        <span class="border rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background-color: #b5c9ff;">
+                            <a routerLink="/view-employee"><i class="bi bi-box-arrow-up-right text-primary"></i></a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-4">
+        <div class="col p-4">
+            <div class="d-flex justify-content-center">
+                <h2 class="text-secondary">Tasks Analysis</h2>
+            </div>
+            <div style="width: 300px; height: 300px;" class="mx-auto">
+                <canvas id="chartjs-pie"></canvas>
+            </div>
+        </div>
+        <div class="col p-4">
+            <div class="d-flex justify-content-center">
+                <h2 class="text-secondary">Leave Analysis</h2>
+            </div>
+            <div style="width: 100%; height: 300px;" class="mx-auto">
+                <canvas id="chartjs-line"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

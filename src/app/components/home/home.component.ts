@@ -1,22 +1,32 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect} from '@angular/core';
 import { RouterModule} from '@angular/router';
-import { Observable } from 'rxjs';
-import { UserData } from '../../store/user.model';
-import { UserState } from '../../store/user.state';
 import { CommonModule, NgIf } from '@angular/common';
-import { userStore } from '../../store/user.store';
+import { AdminDashboardComponent } from '../admin-dashboard/admin-dashboard.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule,NgIf,CommonModule],
+  imports: [RouterModule,NgIf,CommonModule,AdminDashboardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
-  ngOnInit(): void {
-    
+export class HomeComponent{
+  
+  public isUserLogedIn: boolean = false;
+  public isAdmin: boolean|undefined = false;
+  isUser:boolean|undefined = false;
+  isEmployee:boolean|undefined = false;
+
+  constructor(
+    private readonly authService:AuthService
+  ){
+    effect(()=>{
+          this.isUserLogedIn = this.authService.isUserLogedIn();
+          this.isAdmin = this.authService.isAdmin();
+          this.isUser = this.authService.isUser();
+          this.isEmployee = this.authService.isEmployee();
+        });
   }
-  store = inject(userStore);
 
 }

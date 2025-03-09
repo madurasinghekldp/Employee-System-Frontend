@@ -45,4 +45,8 @@ export class EmployeeService {
     return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/emp/all?companyId=${companyId}&departmentId=${departmentId}`,
     {responseType:"json"});
   }
+
+  getCount(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse | ErrorResponse>(`http://localhost:8080/emp/count?companyId=${companyId}`,{responseType:"json"})
+  }
 }

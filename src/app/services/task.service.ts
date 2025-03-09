@@ -33,4 +33,16 @@ export class TaskService {
     return this.http.post<SuccessResponse|ErrorResponse>("http://localhost:8080/task",newTask,{responseType:"json"})
   }
 
+  getTasksByStatus(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/task/get-by-status?companyId=${companyId}`,{responseType:"json"})
+  }
+
+  getTaskCountByUser(userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/task/count?userId=${userId}`,{responseType:"json"})
+  }
+
+  getTasksByStatusByUser(userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/task/get-by-status-user?userId=${userId}`,{responseType:"json"})
+  }
+
 }

@@ -17,6 +17,8 @@ import { SettingComponent } from './components/setting/setting.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AssignTasksComponent } from './components/assign-tasks/assign-tasks.component';
 import { ApplyLeaveComponent } from './components/apply-leave/apply-leave.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { EmployeeDashboardComponent } from './components/employee-dashboard/employee-dashboard.component';
 
 export const routes: Routes = [
     {
@@ -108,5 +110,14 @@ export const routes: Routes = [
         path: "apply-leaves",
         component: ApplyLeaveComponent,
         canActivate: [authGuard,empGuard]
+      },
+      {
+        path: "admin-dashboard",
+        component: AdminDashboardComponent
+      }
+      ,
+      {
+        path: "employee-dashboard",
+        component: EmployeeDashboardComponent
       }
 ];

@@ -32,4 +32,12 @@ export class LeaveService {
   deleteLeave(id: number | null):Observable<SuccessResponse|ErrorResponse> {
     return this.http.delete<SuccessResponse|ErrorResponse>(`http://localhost:8080/leave?id=${id}`,{responseType:"json"});
   }
+
+  getLeaveCounts(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse> {
+    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/leave/get-by-date?companyId=${companyId}`,{responseType:"json"});
+  }
+
+  getLeaveCountByUser(userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/leave/count?userId=${userId}`,{responseType:"json"})
+  }
 }

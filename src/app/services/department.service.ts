@@ -46,4 +46,8 @@ export class DepartmentService {
       {responseType:"json"}
     );
   }
+
+  getCount(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse | ErrorResponse>(`http://localhost:8080/dep/count?companyId=${companyId}`,{responseType:"json"})
+  }
 }
