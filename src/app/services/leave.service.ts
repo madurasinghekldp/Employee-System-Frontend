@@ -33,11 +33,15 @@ export class LeaveService {
     return this.http.delete<SuccessResponse|ErrorResponse>(`http://localhost:8080/leave?id=${id}`,{responseType:"json"});
   }
 
-  getLeaveCounts(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse> {
-    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/leave/get-by-date?companyId=${companyId}`,{responseType:"json"});
+  getLeaveCountsDatesByCompany(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse> {
+    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/leave/company-leaves?companyId=${companyId}`,{responseType:"json"});
   }
 
   getLeaveCountByUser(userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
     return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/leave/count?userId=${userId}`,{responseType:"json"})
+  }
+
+  getLeaveCountsDatesByUser(userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`http://localhost:8080/leave/user-leaves?userId=${userId}`,{responseType:"json"})
   }
 }

@@ -48,8 +48,11 @@
     </div>
   </div>
 </ng-container>
-<ng-container *ngIf="isUserLogedIn && isAdmin">
+<ng-container *ngIf="isUserLogedIn && (isAdmin || isUser)">
   <app-admin-dashboard></app-admin-dashboard>
+</ng-container>
+<ng-container *ngIf="isUserLogedIn && (isEmployee && !isAdmin && !isUser)">
+  <app-employee-dashboard></app-employee-dashboard>
 </ng-container>
 
   

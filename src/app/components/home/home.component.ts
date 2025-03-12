@@ -3,11 +3,12 @@ import { RouterModule} from '@angular/router';
 import { CommonModule, NgIf } from '@angular/common';
 import { AdminDashboardComponent } from '../admin-dashboard/admin-dashboard.component';
 import { AuthService } from '../../services/auth.service';
+import { EmployeeDashboardComponent } from '../employee-dashboard/employee-dashboard.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterModule,NgIf,CommonModule,AdminDashboardComponent],
+  imports: [RouterModule,NgIf,CommonModule,AdminDashboardComponent,EmployeeDashboardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

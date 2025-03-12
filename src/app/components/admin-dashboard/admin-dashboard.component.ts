@@ -72,7 +72,7 @@ export class AdminDashboardComponent implements OnInit{
         this.createPieChart();
       }
     });
-    this.leaveService.getLeaveCounts(this.user()?.company.id).subscribe(res=>{
+    this.leaveService.getLeaveCountsDatesByCompany(this.user()?.company.id).subscribe(res=>{
       if(isSuccessResponse(res)){
         this.lineLabels = Object.keys(res.data);
         this.lineData = Object.values(res.data);
@@ -92,8 +92,7 @@ export class AdminDashboardComponent implements OnInit{
   } */
 
   createPieChart() {
-    console.log(this.doughnutLabels)
-    const labels = this.doughnutLabels;
+    const labels = this.doughnutLabels.length>0?this.doughnutLabels:["non"];
     const ctx = document.getElementById("chartjs-pie") as HTMLCanvasElement;
     
     if (ctx) {
@@ -102,7 +101,7 @@ export class AdminDashboardComponent implements OnInit{
         data: {
           labels: labels,
           datasets: [{
-            data: this.doughnutData,
+            data: this.doughnutData.length>0?this.doughnutData:[1],
             backgroundColor: this.generateRandomColors(labels.length),
             borderColor: "transparent"
           }]
@@ -129,10 +128,10 @@ export class AdminDashboardComponent implements OnInit{
           labels: this.lineLabels,
           datasets: [
             {
-              label: 'Past leaves',
+              label: 'Monthly leaves',
               data: this.lineData,
               borderColor: 'red',
-              backgroundColor: 'rgba(0, 0, 255, 0.1)',
+              backgroundColor: 'rgba(255, 0, 0, 0.1)',
               borderWidth: 2,
               fill: true
             },

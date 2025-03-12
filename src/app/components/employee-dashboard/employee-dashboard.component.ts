@@ -71,6 +71,19 @@ export class EmployeeDashboardComponent  implements OnInit{
         this.createPieChart();
       }
     });
+
+    this.leaveService.getLeaveCountsDatesByUser(this.user()?.id).subscribe(res=>{
+      if(isSuccessResponse(res)){
+        this.lineLabels = Object.keys(res.data);
+        this.lineData = Object.values(res.data);
+        this.createLineChart();
+      }
+      else if(isErrorResponse(res)){
+        this.lineLabels = ['non'];
+        this.lineData = [];
+        this.createLineChart();
+      }
+    });
   }
 
   createPieChart() {
@@ -107,24 +120,24 @@ export class EmployeeDashboardComponent  implements OnInit{
       this.chart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+          labels: this.lineLabels,
           datasets: [
             {
-              label: 'Sales (in USD)',
-              data: [100, 200, 150, 300, 250, 400, 350],
-              borderColor: 'blue',
-              backgroundColor: 'rgba(0, 0, 255, 0.1)',
+              label: 'Monthly leaves',
+              data: this.lineData,
+              borderColor: 'red',
+              backgroundColor: 'rgba(255, 0, 0, 0.1)',
               borderWidth: 2,
               fill: true
             },
-            {
+            /* {
               label: 'Expenses (in USD)',
               data: [80, 150, 100, 250, 200, 350, 300],
               borderColor: 'red',
               backgroundColor: 'rgba(255, 0, 0, 0.1)',
               borderWidth: 2,
               fill: true
-            }
+            } */
           ]
         },
         options: {
@@ -139,13 +152,13 @@ export class EmployeeDashboardComponent  implements OnInit{
             x: {
               title: {
                 display: true,
-                text: 'Months'
+                text: 'Dates'
               }
             },
             y: {
               title: {
                 display: true,
-                text: 'Amount ($)'
+                text: 'Counts'
               },
               beginAtZero: true
             }
