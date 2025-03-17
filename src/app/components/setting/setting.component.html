@@ -34,6 +34,19 @@
         
         <hr class="my-4">
 
+        <form (ngSubmit)="updateProfileImage()" [formGroup]="profileImageForm">
+            <div class="row mb-3">
+                <label for="profileImage" class="form-label fw-bold">Upload profile image</label>
+                <input class="form-control" type="file" id="profileImage" formControlName="profileImage" accept="image/*">
+                <small *ngIf="profileImageForm.controls.profileImage.errors && profileImageForm.controls.profileImage.touched" 
+                    class="text-danger fst-italic">Please select an image.</small>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-25">Upload Image</button>
+        </form>
+
+        <hr class="my-4">
+
         <form (ngSubmit)="updatePassword()" [formGroup]="passwordForm">
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -77,8 +90,36 @@
                 <small *ngIf="companyForm.controls.registerNumber.errors && companyForm.controls.registerNumber.touched" 
                     class="text-danger fst-italic">Register Number should be provided.</small>
             </div>
+
+            <div class="row mb-3">
+                <div class="col-6">
+                    <label class="form-label fw-bold" for="annualLeaves">Annual Leaves:</label>
+                    <input type="number" class="form-control" formControlName="annualLeaves">
+                    <small *ngIf="companyForm.controls.annualLeaves.errors && companyForm.controls.annualLeaves.touched" 
+                        class="text-danger fst-italic">Annual leaves should be provided.</small>
+                </div>
+                <div class="col-6">
+                    <label class="form-label fw-bold" for="casualLeaves">Casual Leaves:</label>
+                    <input type="number" class="form-control" formControlName="casualLeaves">
+                    <small *ngIf="companyForm.controls.casualLeaves.errors && companyForm.controls.casualLeaves.touched" 
+                        class="text-danger fst-italic">Casual leaves should be provided.</small>
+                </div>
+            </div>
             
             <button type="submit" class="btn btn-primary w-25">Save Company Details</button>
+        </form>
+
+        <hr class="my-4">
+
+        <form (ngSubmit)="updateCompanyImage()" [formGroup]="companyImageForm">
+            <div class="row mb-3">
+                <label for="companyImage" class="form-label fw-bold">Upload company image</label>
+                <input class="form-control" type="file" id="companyImage" formControlName="companyImage" accept="image/*">
+                <small *ngIf="companyImageForm.controls.companyImage.errors && companyImageForm.controls.companyImage.touched" 
+                    class="text-danger fst-italic">Please select an image.</small>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-25">Upload Image</button>
         </form>
 
         <hr class="my-4">

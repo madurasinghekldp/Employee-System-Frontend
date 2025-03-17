@@ -41,12 +41,22 @@ export class SettingComponent {
     companyForm = new FormGroup({
       name: new FormControl('',Validators.required),
       address: new FormControl('',Validators.required),
-      registerNumber: new FormControl('',Validators.required)
+      registerNumber: new FormControl('',Validators.required),
+      annualLeaves: new FormControl(0,Validators.required),
+      casualLeaves: new FormControl(0,Validators.required)
     })
 
     passwordForm = new FormGroup({
       oldPassword: new FormControl('',Validators.required),
       newPassword: new FormControl('',Validators.required)
+    })
+
+    profileImageForm = new FormGroup({
+      profileImage: new FormControl(null,Validators.required)
+    })
+
+    companyImageForm = new FormGroup({
+      companyImage: new FormControl(null,Validators.required)
     })
   
     constructor(
@@ -73,7 +83,9 @@ export class SettingComponent {
         this.companyForm.patchValue({
           name: this.user()?.company.name,
           address: this.user()?.company.address,
-          registerNumber: this.user()?.company.registerNumber
+          registerNumber: this.user()?.company.registerNumber,
+          annualLeaves: this.user()?.company.annualLeaves,
+          casualLeaves: this.user()?.company.casualLeaves
         });
       });
     }
@@ -194,7 +206,14 @@ export class SettingComponent {
         });
       }
     }
+  
+  updateProfileImage(){
+    
+  }
 
+  updateCompanyImage(){
+    
+  }
 
   deactivateAccount(){
     const swalWithBootstrapButtons = Swal.mixin({

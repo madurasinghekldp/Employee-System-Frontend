@@ -3,6 +3,8 @@ export type Company = {
     name: string;
     address: string;
     registerNumber: string;
+    annualLeaves:number;
+    casualLeaves:number;
   }
   
   export type UserData = {
