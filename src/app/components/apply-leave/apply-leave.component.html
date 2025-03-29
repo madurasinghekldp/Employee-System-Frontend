@@ -1,20 +1,52 @@
 <div class="container py-5">
-    <div class="bg-secondary-subtle p-4 rounded shadow mb-4">
+    <div class="bg-secondary-subtle p-4 rounded shadow mb-4 border border-primary">
         <h2 class="text-center mb-4">Leaves</h2>
         <form (ngSubmit)="submitLeave()" [formGroup]="leaveForm" class="w-100">
             <div class="row g-3">
-                
                 <div class="col-md-6">
-                    <label class="form-label" for="startDate">Start Date</label>
-                    <input type="date" class="form-control" formControlName="startDate" name="startDate">
-                    <small *ngIf="leaveForm.controls.startDate.errors && leaveForm.controls.startDate.touched" 
-                        class="text-danger fst-italic">Start date should be selected.</small>
+                    <label class="form-label" for="date">Leave Date</label>
+                    <input type="date" class="form-control" formControlName="date" name="date">
+                    <small *ngIf="leaveForm.controls.date.errors && leaveForm.controls.date.touched" 
+                        class="text-danger fst-italic">Leave date should be selected.</small>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label" for="endDate">End Date</label>
-                    <input type="date" class="form-control" formControlName="endDate" name="endDate">
-                    <small *ngIf="leaveForm.controls.endDate.errors && leaveForm.controls.endDate.touched" 
-                        class="text-danger fst-italic">End date should be selected.</small>
+                    <label for="leaveType" class="form-label">Leave Type</label>
+                    <select id="leaveType" class="form-select" formControlName="leaveType" name="leaveType">
+                      <option value="ANNUAL">ANNUAL</option>
+                      <option value="CASUAL">CASUAL</option>
+                    </select>
+                    <small *ngIf="leaveForm.controls.leaveType.errors && leaveForm.controls.leaveType.touched" 
+                        class="text-danger fst-italic">Leave type should be selected.</small>
+                </div>
+            </div>
+            <div class="row g-3 mt-3">
+                <div class="col-md-6">
+                    <div class="row p-4">
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="check" id="flexRadioDefault1" formControlName="check" value="half">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                  Half Day
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="check" id="flexRadioDefault2" formControlName="check" value="full">
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                  Full Day
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a comment here" style="height: 100px" formControlName="reason"></textarea>
+                        <label for="reason">Reason</label>
+                        <small *ngIf="leaveForm.controls.reason.errors && leaveForm.controls.reason.touched" 
+                        class="text-danger fst-italic">Reason should be selected.</small>
+                    </div>
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-3">
@@ -30,16 +62,20 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
+                        <th>Date</th>
+                        <th>Reason</th>
+                        <th>Leave Type</th>
+                        <th>Days</th>
                         <th>Approved By</th>
                     </tr>
                 </thead>
                 <tbody *ngIf="leaveList.length > 0">
                     <tr *ngFor="let leave of leaveList">
                         <td>{{leave.id}}</td>
-                        <td>{{ leave.startDate | date: 'yyyy-MM-dd' }}</td>
-                        <td>{{leave.endDate | date: 'yyyy-MM-dd' }}</td>
+                        <td>{{leave.date | date: 'yyyy-MM-dd'}}</td>
+                        <td>{{leave.reason}}</td>
+                        <td>{{leave.leaveType}}</td>
+                        <td>{{leave.dayCount}}</td>
                         <td>{{leave.approvedBy?.firstName}} {{leave.approvedBy?.lastName}}</td>
                     </tr>
                 </tbody>

@@ -67,18 +67,21 @@ export class LeavesComponent implements OnInit{
   }
 
   leave:Leaves = {
-    id:null,
-    employee: null,
-    startDate: "",
-    endDate: "",
+    id: null,
+    date: null,
+    reason: null,
+    leaveType: null,
+    dayCount: null,
     approvedBy: null
   }
 
   leaveForm = new FormGroup({
     department: new FormControl<Department | null>(null,Validators.required),
     employee: new FormControl<Employee | null>(null,Validators.required),
-    startDate: new FormControl('',Validators.required),
-    endDate: new FormControl('',Validators.required),
+    date: new FormControl('',Validators.required),
+    leaveType: new FormControl('',Validators.required),
+    check: new FormControl('',Validators.required),
+    reason: new FormControl('',Validators.required),
     approved: new FormControl(false)
   });
 
@@ -100,8 +103,10 @@ export class LeavesComponent implements OnInit{
 
   employeeSelected(){
     this.loadLeaves();
-    this.leaveForm.controls.startDate.reset();
-    this.leaveForm.controls.endDate.reset();
+    this.leaveForm.controls.date.reset();
+    this.leaveForm.controls.leaveType.reset();
+    this.leaveForm.controls.check.reset();
+    this.leaveForm.controls.reason.reset();
     this.leaveForm.controls.approved.reset();
   }
 
@@ -141,8 +146,10 @@ export class LeavesComponent implements OnInit{
     this.isGoingToUpdate = true;
     this.updatingLeaveId= leave.id;
     this.leaveForm.patchValue({
-      startDate: leave.startDate ? new Date(leave.startDate).toISOString().split('T')[0] : '',
-      endDate: leave.endDate ? new Date(leave.endDate).toISOString().split('T')[0] : '',
+      date: leave.date ? new Date(leave.date).toISOString().split('T')[0] : '',
+      leaveType: leave.leaveType,
+      check: leave.dayCount==0.5? "half":"full",
+      reason: leave.reason,
       approved: leave.approvedBy!=null
     });
     console.log(this.leaveForm);
@@ -152,9 +159,10 @@ export class LeavesComponent implements OnInit{
     if(this.leaveForm.valid){
       this.leave = {
         id:this.updatingLeaveId,
-        employee: this.leaveForm.controls.employee.value,
-        startDate: this.leaveForm.controls.startDate.value,
-        endDate: this.leaveForm.controls.endDate.value,
+        date: this.leaveForm.controls.date.value,
+        reason: this.leaveForm.controls.reason.value,
+        leaveType: this.leaveForm.controls.leaveType.value,
+        dayCount: this.leaveForm.controls.check.value=="half"? 0.5:1,
         approvedBy: this.leaveForm.controls.approved? {
           id:this.user()?.id,
           firstName:null,
@@ -223,8 +231,10 @@ export class LeavesComponent implements OnInit{
       });
       
     }
-    this.leaveForm.controls.startDate.reset();
-    this.leaveForm.controls.endDate.reset();
+    this.leaveForm.controls.date.reset();
+    this.leaveForm.controls.leaveType.reset();
+    this.leaveForm.controls.check.reset();
+    this.leaveForm.controls.reason.reset();
     this.leaveForm.controls.approved.reset();
   }
 
@@ -287,8 +297,10 @@ export class LeavesComponent implements OnInit{
   cancelUpdate(){
     this.isGoingToUpdate = false;
     this.updatingLeaveId= 0;
-    this.leaveForm.controls.startDate.reset();
-    this.leaveForm.controls.endDate.reset();
+    this.leaveForm.controls.date.reset();
+    this.leaveForm.controls.leaveType.reset();
+    this.leaveForm.controls.check.reset();
+    this.leaveForm.controls.reason.reset();
     this.leaveForm.controls.approved.reset();
   }
 

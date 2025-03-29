@@ -3,6 +3,8 @@ import { User } from "./user";
 export type LeaveCreate = {
     id: number|null;
     user: User|null;
-    startDate: string|null;
-    endDate: string|null;
+    date: string|null;
+    reason: string|null;
+    leaveType: string|null;
+    dayCount: number|null;
 }

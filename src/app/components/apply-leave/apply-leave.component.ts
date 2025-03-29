@@ -52,14 +52,18 @@ export class ApplyLeaveComponent implements OnInit{
 
   leave:LeaveCreate = {
     id: null,
-    startDate: "",
-    endDate: "",
-    user: null
+    date: null,
+    reason: null,
+    user: null,
+    leaveType: null,
+    dayCount: null
   }
 
   leaveForm = new FormGroup({
-    startDate: new FormControl('',Validators.required),
-    endDate: new FormControl('',Validators.required)
+    date: new FormControl('',Validators.required),
+    leaveType: new FormControl('',Validators.required),
+    check: new FormControl('',Validators.required),
+    reason: new FormControl('',Validators.required)
   });
 
   submitLeave(){
@@ -75,8 +79,10 @@ export class ApplyLeaveComponent implements OnInit{
           userRoleName: null,
           company: null
         },
-        startDate: this.leaveForm.controls.startDate.value,
-        endDate: this.leaveForm.controls.endDate.value
+        date: this.leaveForm.controls.date.value,
+        reason: this.leaveForm.controls.reason.value,
+        leaveType: this.leaveForm.controls.leaveType.value,
+        dayCount: this.leaveForm.controls.check.value === "half"? 0.5 : 1
       }
       this.leaveService.createLeave(this.leave).subscribe(res=>{
         if(isSuccessResponse(res)){
@@ -102,8 +108,10 @@ export class ApplyLeaveComponent implements OnInit{
           });
         }
       });
-      this.leaveForm.controls.startDate.reset();
-      this.leaveForm.controls.endDate.reset();
+      this.leaveForm.controls.date.reset();
+      this.leaveForm.controls.leaveType.reset();
+      this.leaveForm.controls.check.reset();
+      this.leaveForm.controls.reason.reset();
     }
   }
 
