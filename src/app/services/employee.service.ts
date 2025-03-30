@@ -4,7 +4,7 @@ import { Employee } from '../types/employee';
 import { SuccessResponse } from '../types/success-response';
 import { ErrorResponse } from '../types/error-response';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

@@ -8,7 +8,7 @@ import { LoginUser } from '../types/loginUser';
 import { TokenService } from './token.service';
 import { userStore } from '../store/user.store';
 import { UpdatePassword } from '../types/update-password';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

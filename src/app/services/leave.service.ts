@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { SuccessResponse } from '../types/success-response';
 import { ErrorResponse } from '../types/error-response';
 import { LeaveCreate } from '../types/apply-leave';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
