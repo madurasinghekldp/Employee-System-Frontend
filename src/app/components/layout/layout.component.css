@@ -23,11 +23,11 @@
     background: #f1f1f1;
 }
 .container {
-    max-height: 80vh;
+    max-height: 100vh;
     overflow-y: auto;
 }
 .content-container {
-    max-height: 80vh; /* Adjust the height as needed */
+    max-height: 100vh; /* Adjust the height as needed */
     overflow-y: auto;
     padding-right: 10px; /* Optional: Prevents scrollbar overlap */
 }
