@@ -10,4 +10,5 @@ export type Employee = {
     department: Department|null;
     role: Role|null;
     company: Company|undefined;
+    user: any
 }

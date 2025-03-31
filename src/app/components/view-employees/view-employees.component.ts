@@ -44,7 +44,8 @@ export class ViewEmployeesComponent implements OnInit{
     email: null,
     department: null,
     role: null,
-    company: undefined
+    company: undefined,
+    user: null
   } 
 
   employeeForm = new FormGroup({

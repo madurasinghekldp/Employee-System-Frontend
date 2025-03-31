@@ -59,4 +59,15 @@ export class UserService {
   deleteUser(id:number|null|undefined){
     return this.http.delete<SuccessResponse|ErrorResponse>(`${this.apiUrl}users?id=${id}`,{responseType:"json"});
   }
+
+  uploadProfileImage(file:File|null,userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    const formData = new FormData();
+    if(file && userId){
+      
+      formData.append('file', file);
+      formData.append('userId', userId.toString());
+      
+    }
+    return this.http.post<SuccessResponse|ErrorResponse>(`${this.apiUrl}images/profile/upload`,formData,{responseType:"json"})
+  }
 }

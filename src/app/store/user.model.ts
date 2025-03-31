@@ -5,6 +5,7 @@ export type Company = {
     registerNumber: string;
     annualLeaves:number;
     casualLeaves:number;
+    logo: string;
   }
   
   export type UserData = {
@@ -12,6 +13,7 @@ export type Company = {
     firstName: string;
     lastName: string;
     email: string;
+    profileImage: string;
     company: Company;
   }
   

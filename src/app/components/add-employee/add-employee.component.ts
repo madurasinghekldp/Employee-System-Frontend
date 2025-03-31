@@ -91,7 +91,8 @@ export class AddEmployeeComponent implements OnInit{
     email:null,
     department:null,
     role:null,
-    company:undefined
+    company:undefined,
+    user: null
   }
 
   addEmployee(){
@@ -102,7 +103,8 @@ export class AddEmployeeComponent implements OnInit{
       email:this.employeeForm.controls.email?.value,
       department:this.employeeForm.controls.department?.value,
       role:this.employeeForm.controls.role?.value,
-      company: this.user()?.company
+      company: this.user()?.company,
+      user:null
     }
     if(this.employeeForm.valid){
       this.employeeService.add(this.employee).subscribe(res =>{

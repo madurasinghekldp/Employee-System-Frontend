@@ -9,6 +9,7 @@
         <thead>
           <tr>
             <th scope="col">Id</th>
+            <th scope="col">Image</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Department</th>
@@ -19,6 +20,7 @@
         <tbody *ngIf="employeeList.length>0">
           <tr *ngFor="let employee of employeeList; index as i;">
             <td >{{employee.id}}</td>
+            <td><img [src]="employee?.user?.profileImage || 'assets/images/default_profile.png'" alt="" width="40" height="40" class="rounded-circle"></td>
             <td >{{employee.firstName+" "+employee.lastName}}</td>
             <td >{{employee.email}}</td>
             <td >{{employee.department?.name}}</td>
