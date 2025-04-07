@@ -32,6 +32,7 @@ export class ApplyLeaveComponent implements OnInit{
   public offset:number = 0;
   public isGoingToUpdate:boolean = false;
   public updatingLeaveId:number = 0;
+  public leaveData:any
 
   constructor(
     private readonly employeeService:EmployeeService, 
@@ -48,6 +49,7 @@ export class ApplyLeaveComponent implements OnInit{
 
   init(){
     this.loadLeaves();
+    this.loadLeaveCategoryCount();
   }
 
   leave:LeaveCreate = {
@@ -145,6 +147,18 @@ export class ApplyLeaveComponent implements OnInit{
     })
   }
 
-  
+  loadLeaveCategoryCount(){
+    this.leaveService.getLeaveCategoryCountByUser(this.user()?.id).subscribe(res=>{
+      if(isSuccessResponse(res)){
+        this.leaveData = res.data;
+      }
+      else if(isErrorResponse(res)){
+        this.leaveData = null;
+      }
+      else{
+        this.leaveData = null;
+      }
+    })
+  }
 
 }

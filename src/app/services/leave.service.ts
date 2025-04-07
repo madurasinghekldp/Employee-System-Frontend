@@ -47,4 +47,8 @@ export class LeaveService {
   getLeaveCountsDatesByUser(userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
     return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}leave/user-leaves?userId=${userId}`,{responseType:"json"})
   }
+
+  getLeaveCategoryCountByUser(userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}leave/user-leave-category-count?userId=${userId}`,{responseType:"json"})
+  }
 }

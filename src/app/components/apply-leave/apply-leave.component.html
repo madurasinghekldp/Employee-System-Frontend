@@ -1,6 +1,11 @@
 <div class="container py-5">
-    <div class="bg-secondary-subtle p-4 rounded shadow mb-4 border border-primary">
+    <div class="bg-secondary-subtle p-4 rounded shadow mb-4">
         <h2 class="text-center mb-4">Leaves</h2>
+        <div class="row">
+            <div class="col" *ngFor="let item of leaveData | keyvalue">
+              <p><strong>{{ item.key }}</strong>: {{ item.value }}</p>
+            </div>
+        </div>
         <form (ngSubmit)="submitLeave()" [formGroup]="leaveForm" class="w-100">
             <div class="row g-3">
                 <div class="col-md-6">
