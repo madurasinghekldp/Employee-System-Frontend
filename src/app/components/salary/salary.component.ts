@@ -11,11 +11,12 @@ import { CommonModule, NgFor } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Department } from '../../types/department';
 import { DepartmentService } from '../../services/department.service';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-salary',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, HttpClientModule, NgFor, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, HttpClientModule, NgFor, CommonModule,SpinnerComponent],
   templateUrl: './salary.component.html',
   styleUrl: './salary.component.css',
   providers:[EmployeeService,SalaryService,DepartmentService]
@@ -25,6 +26,7 @@ export class SalaryComponent implements OnInit {
   store = inject(userStore);
 
   user = computed(() => this.store.user());
+  loading: boolean = false;
 
   public employeeList: Employee[] = [];
   public salaryList: Salary[] = [];
@@ -87,7 +89,9 @@ export class SalaryComponent implements OnInit {
         payment: this.salaryForm.controls.payment.value,
         paymentDate: this.salaryForm.controls.paymentDate.value
       };
+      this.loading = true;
       this.salaryService.createSalary(this.salary).subscribe(res => {
+        this.loading = false;
         if (isSuccessResponse(res)) {
           Swal.fire({ title: "Success!", text: "Salary Added!", icon: "success" });
           this.loadSalaries();
@@ -197,7 +201,9 @@ export class SalaryComponent implements OnInit {
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
+          this.loading = true;
           this.salaryService.updateSalary(this.salary).subscribe(res => {
+            this.loading = false;
             if (isSuccessResponse(res)) {
               Swal.fire({ title: "Success!", text: "Salary Updated!", icon: "success" });
               this.isGoingToUpdate = false;
@@ -249,7 +255,9 @@ export class SalaryComponent implements OnInit {
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
+          this.loading = true;
           this.salaryService.deleteSalary(salary.id).subscribe(res => {
+            this.loading = false;
             if (isSuccessResponse(res)) {
               Swal.fire({ title: "Success!", text: "Salary Deleted!", icon: "success" });
               this.loadSalaries();

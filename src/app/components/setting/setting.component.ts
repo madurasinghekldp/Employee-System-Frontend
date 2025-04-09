@@ -11,11 +11,12 @@ import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
 import { CompanyService } from '../../services/company.service';
 import { UpdatePassword } from '../../types/update-password';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-setting',
   standalone: true,
-  imports: [FormsModule,ReactiveFormsModule,HttpClientModule,CommonModule],
+  imports: [FormsModule,ReactiveFormsModule,HttpClientModule,CommonModule,SpinnerComponent],
   templateUrl: './setting.component.html',
   styleUrl: './setting.component.css',
   providers:[UserService,CompanyService]
@@ -24,6 +25,7 @@ export class SettingComponent {
 
   store = inject(userStore);
   user = computed(() => this.store.user());
+  loading: boolean = false;
   
   firstName:string | undefined;
   lastName:string | undefined;
@@ -143,8 +145,10 @@ export class SettingComponent {
           reverseButtons: true
         }).then((result) => {
           if (result.isConfirmed) {
+            this.loading = true;
             this.userService.updateUser(this.user()?.id,this.userForm.value).subscribe(res=>{
               if(isSuccessResponse(res)){
+                this.loading = false;
                 localStorage.removeItem('token');
                 this.store.loadUsers(null);
                 this.store.loadRoles(null);
@@ -160,6 +164,7 @@ export class SettingComponent {
                 });
               }
               else if(isErrorResponse(res)){
+                this.loading = false;
                 swalWithBootstrapButtons.fire({
                   title: "Update Error!",
                   text: res.message,
@@ -167,6 +172,7 @@ export class SettingComponent {
                 });
               }
               else{
+                this.loading = false;
                 swalWithBootstrapButtons.fire({
                   title: "Update Error!",
                   text: "User has not been updated.",
@@ -208,9 +214,11 @@ export class SettingComponent {
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
+          this.loading = true;
           this.companyService.updateCompany(company).subscribe(res=>{
             if(isSuccessResponse(res)){
               this.store.updateCompany({company: res.data});
+              this.loading = false;
               swalWithBootstrapButtons.fire({
                 title: "Updated!",
                 text: "Company has been updated",
@@ -218,6 +226,7 @@ export class SettingComponent {
               });
             }
             else if(isErrorResponse(res)){
+              this.loading = false;
               swalWithBootstrapButtons.fire({
                 title: "Update Error!",
                 text: res.message,
@@ -225,6 +234,7 @@ export class SettingComponent {
               });
             }
             else{
+              this.loading = false;
               swalWithBootstrapButtons.fire({
                 title: "Update Error!",
                 text: "Company has not been updated.",
@@ -239,7 +249,9 @@ export class SettingComponent {
             icon: "error"
           });
         }
+        
       });
+      
     }
   }
   
@@ -252,8 +264,10 @@ export class SettingComponent {
       buttonsStyling: false
     });
     if(this.profileImageForm.valid){
+      this.loading = true;
       this.userService.uploadProfileImage(this.selectedProfileImage,this.user()?.id).subscribe(res=>{
         if(isSuccessResponse(res)){
+          this.loading = false;
           swalWithBootstrapButtons.fire({
             title: "Success!",
             text: "Profile image updated.",
@@ -262,12 +276,14 @@ export class SettingComponent {
           this.loadUserDetails();
         }
         else if(isErrorResponse(res)){
+          this.loading = false;
           swalWithBootstrapButtons.fire({
             title: "Error!",
             text: "Profile image has not been updated.",
             icon: "error"
           });
         }
+        this.loading = false;
         this.profileImageForm.controls.profileImage.reset();
       })
     }
@@ -282,8 +298,10 @@ export class SettingComponent {
       buttonsStyling: false
     });
     if(this.companyImageForm.valid){
+      this.loading = true;
       this.companyService.uploadCompanyImage(this.selectedLogoImage,this.user()?.company?.id).subscribe(res=>{
         if(isSuccessResponse(res)){
+          this.loading = false;
           swalWithBootstrapButtons.fire({
             title: "Success!",
             text: "Company image updated.",
@@ -292,12 +310,14 @@ export class SettingComponent {
           this.loadUserDetails();
         }
         else if(isErrorResponse(res)){
+          this.loading = false;
           swalWithBootstrapButtons.fire({
             title: "Error!",
             text: "Company image has not been updated.",
             icon: "error"
           });
         }
+        this.loading = false;
         this.companyImageForm.controls.companyImage.reset();
       })
     }
@@ -383,8 +403,10 @@ export class SettingComponent {
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
+          this.loading = true;
           this.userService.updatePassword(this.user()?.id,passwords).subscribe(res=>{
             if(isSuccessResponse(res)){
+              this.loading = false;
               swalWithBootstrapButtons.fire({
                 title: "Updated!",
                 text: "Password has been updated",
@@ -393,6 +415,7 @@ export class SettingComponent {
               this.passwordForm.reset();
             }
             else if(isErrorResponse(res)){
+              this.loading = false;
               swalWithBootstrapButtons.fire({
                 title: "Update Error!",
                 text: res.message,
@@ -400,6 +423,7 @@ export class SettingComponent {
               });
             }
             else{
+              this.loading = false;
               swalWithBootstrapButtons.fire({
                 title: "Update Error!",
                 text: "Password has not been updated.",

@@ -10,11 +10,12 @@ import Swal from 'sweetalert2';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule, NgFor } from '@angular/common';
 import { LeaveCreate } from '../../types/apply-leave';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-apply-leave',
   standalone: true,
-  imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule],
+  imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule,SpinnerComponent],
   templateUrl: './apply-leave.component.html',
   styleUrl: './apply-leave.component.css',
   providers:[EmployeeService,LeaveService]
@@ -33,6 +34,7 @@ export class ApplyLeaveComponent implements OnInit{
   public isGoingToUpdate:boolean = false;
   public updatingLeaveId:number = 0;
   public leaveData:any
+  loading:boolean = false;
 
   constructor(
     private readonly employeeService:EmployeeService, 
@@ -86,7 +88,9 @@ export class ApplyLeaveComponent implements OnInit{
         leaveType: this.leaveForm.controls.leaveType.value,
         dayCount: this.leaveForm.controls.check.value === "half"? 0.5 : 1
       }
+      this.loading = true;
       this.leaveService.createLeave(this.leave).subscribe(res=>{
+        this.loading = false;
         if(isSuccessResponse(res)){
           Swal.fire({
             title: "Success!",

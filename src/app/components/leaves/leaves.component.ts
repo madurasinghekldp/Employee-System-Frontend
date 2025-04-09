@@ -11,11 +11,12 @@ import { CommonModule, NgFor } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Department } from '../../types/department';
 import { DepartmentService } from '../../services/department.service';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-leaves',
   standalone: true,
-  imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule],
+  imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule,SpinnerComponent],
   templateUrl: './leaves.component.html',
   styleUrl: './leaves.component.css',
   providers:[EmployeeService,LeaveService,DepartmentService]
@@ -35,6 +36,7 @@ export class LeavesComponent implements OnInit{
   public isGoingToUpdate:boolean = false;
   public updatingLeaveId:number = 0;
   public isApproved:boolean = false;
+  loading:boolean = false;
 
   constructor(
     private readonly employeeService:EmployeeService, 
@@ -190,7 +192,9 @@ export class LeavesComponent implements OnInit{
         reverseButtons: true
       }).then((result)=>{
         if (result.isConfirmed) {
+          this.loading = true;
           this.leaveService.updateLeave(this.leave).subscribe(res=>{
+            this.loading = false;
             if(isSuccessResponse(res)){
               Swal.fire({
                 title: "Success!",
@@ -258,7 +262,9 @@ export class LeavesComponent implements OnInit{
         reverseButtons: true
       }).then((result)=>{
         if (result.isConfirmed) {
+          this.loading = true;
           this.leaveService.deleteLeave(leave.id).subscribe(res=>{
+            this.loading = false;
             if(isSuccessResponse(res)){
               Swal.fire({
                 title: "Success!",

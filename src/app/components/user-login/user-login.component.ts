@@ -10,11 +10,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { TokenService } from '../../services/token.service';
 import { userStore } from '../../store/user.store';
 import { AuthService } from '../../services/auth.service';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-user-login',
   standalone: true,
-  imports: [FormsModule,ReactiveFormsModule,NgIf,HttpClientModule],
+  imports: [FormsModule,ReactiveFormsModule,NgIf,HttpClientModule,SpinnerComponent],
   templateUrl: './user-login.component.html',
   styleUrl: './user-login.component.css',
   providers:[UserService,TokenService],
@@ -22,6 +23,7 @@ import { AuthService } from '../../services/auth.service';
 export class UserLoginComponent {
 
   store = inject(userStore);
+  loading:boolean = false;
   
   constructor(
     private readonly userService:UserService, 
@@ -46,7 +48,9 @@ export class UserLoginComponent {
       password: this.userLoginForm.controls.password?.value
     }
     if(this.userLoginForm.valid){
+        this.loading = true;
         this.userService.login(this.loginUser).subscribe(res =>{
+          this.loading = false;
           if(isSuccessResponse(res)){
             localStorage.setItem("token",res.data.token);
             Swal.fire({
@@ -54,7 +58,6 @@ export class UserLoginComponent {
               text: "Login is successfull",
               icon: "success"
             }).then(()=>{
-              
               this.userLoginForm.reset();
               this.userService.getUserDetailsByEmail().subscribe(res=>{
                 if(isSuccessResponse(res)) {

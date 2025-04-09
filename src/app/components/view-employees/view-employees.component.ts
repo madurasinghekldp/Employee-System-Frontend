@@ -12,11 +12,12 @@ import { RoleService } from '../../services/role.service';
 import { Role } from '../../types/role';
 import { EmployeeUpdatePopupComponent } from '../employee-update-popup/employee-update-popup.component';
 import { userStore } from '../../store/user.store';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-view-employees',
   standalone: true,
-  imports: [HttpClientModule,FormsModule,NgFor,NgIf,ReactiveFormsModule,EmployeeUpdatePopupComponent],
+  imports: [HttpClientModule,FormsModule,NgFor,NgIf,ReactiveFormsModule,EmployeeUpdatePopupComponent,SpinnerComponent],
   templateUrl: './view-employees.component.html',
   styleUrl: './view-employees.component.css',
   providers:[EmployeeService,DepartmentService,RoleService]
@@ -26,6 +27,7 @@ export class ViewEmployeesComponent implements OnInit{
   store = inject(userStore);
     
   user = computed(() => this.store.user());
+  loading:boolean = false;
 
   private readonly limit:number = 5;
   public offset:number = 0;
@@ -220,7 +222,9 @@ export class ViewEmployeesComponent implements OnInit{
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
+          this.loading = true;
           this.employeeService.update(this.selectedEmployee).subscribe(res=>{
+            this.loading = false;
             if(isSuccessResponse(res)){
               this.loadEmployeeTable();
               swalWithBootstrapButtons.fire({

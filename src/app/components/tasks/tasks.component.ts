@@ -12,11 +12,12 @@ import { CommonModule, NgFor } from '@angular/common';
 import { User } from '../../types/user';
 import { Department } from '../../types/department';
 import { DepartmentService } from '../../services/department.service';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule],
+  imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule,SpinnerComponent],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css',
   providers:[TaskService,EmployeeService,DepartmentService]
@@ -35,6 +36,7 @@ export class TasksComponent  implements OnInit {
   public updatingTaskId: number|null = 0;
   private readonly limit:number = 5;
   public offset:number = 0;
+  loading:boolean = false;
 
   constructor(
     private readonly taskService: TaskService,
@@ -102,7 +104,9 @@ export class TasksComponent  implements OnInit {
         status: this.taskForm.controls.status.value,
         approvedBy: null
       }
+      this.loading = true;
       this.taskService.createTask(newTask).subscribe(res => {
+        this.loading = false;
         if(isSuccessResponse(res)){
           Swal.fire("Success!", "Task Added!", "success");
         }
@@ -245,7 +249,9 @@ export class TasksComponent  implements OnInit {
         reverseButtons: true
       }).then((result)=>{
         if(result.isConfirmed){
+          this.loading = true;
           this.taskService.updateTask(updatedTask).subscribe(res => {
+            this.loading = false;
             if(isSuccessResponse(res)){
               Swal.fire("Success!", "Task Updated!", "success");
               this.isGoingToUpdate = false;
@@ -310,7 +316,9 @@ export class TasksComponent  implements OnInit {
         reverseButtons: true
       }).then((result)=>{
         if (result.isConfirmed) {
+          this.loading = true;
           this.taskService.deleteTask(task.id).subscribe(res => {
+            this.loading = false;
             if(isSuccessResponse(res)){
               Swal.fire({
                 title: "Success!",

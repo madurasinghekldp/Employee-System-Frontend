@@ -8,20 +8,22 @@ import Swal from 'sweetalert2';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Company } from '../../types/company';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-user-registration',
   standalone: true,
-  imports: [FormsModule,ReactiveFormsModule,NgIf,HttpClientModule],
+  imports: [FormsModule,ReactiveFormsModule,NgIf,HttpClientModule,SpinnerComponent],
   templateUrl: './user-registration.component.html',
   styleUrl: './user-registration.component.css',
   providers:[UserService]
 })
 export class UserRegistrationComponent {
 
-  constructor(private userService:UserService, private router: Router){}
+  constructor(private readonly userService:UserService, private readonly router: Router){}
 
   public isCompanyValid: boolean = false;
+  loading:boolean = false;
 
   userRegForm = new FormGroup({
     firstName: new FormControl('',Validators.required),
@@ -80,7 +82,9 @@ export class UserRegistrationComponent {
     }
 
     if(this.userRegForm.valid){
+          this.loading = true;
           this.userService.signup(this.createUser).subscribe(res =>{
+            this.loading = false;
             if(isSuccessResponse(res)){
               Swal.fire({
                 title: "Success!",

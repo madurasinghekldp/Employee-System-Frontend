@@ -37,15 +37,28 @@ export class TaskService {
   }
 
   getTasksByStatus(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
-    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}task/get-by-status?companyId=${companyId}`,{responseType:"json"})
+    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}task/get-by-status?companyId=${companyId}`,
+      {responseType:"json"})
   }
 
   getTaskCountByUser(userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
-    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}task/count?userId=${userId}`,{responseType:"json"})
+    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}task/count?userId=${userId}`,
+      {responseType:"json"})
   }
 
   getTasksByStatusByUser(userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
-    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}task/get-by-status-user?userId=${userId}`,{responseType:"json"})
+    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}task/get-by-status-user?userId=${userId}`,
+      {responseType:"json"})
+  }
+
+  getEmployeeMonthlyRejectedTasks(employeeId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}task/employee-monthly-rejected-tasks?employeeId=${employeeId}`,
+      {responseType:"json"})
+  }
+
+  getEmployeeMonthlyLateTasks(employeeId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}task/employee-monthly-late-tasks?employeeId=${employeeId}`,
+      {responseType:"json"})
   }
 
 }

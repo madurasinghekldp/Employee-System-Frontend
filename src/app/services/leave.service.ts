@@ -49,6 +49,12 @@ export class LeaveService {
   }
 
   getLeaveCategoryCountByUser(userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
-    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}leave/user-leave-category-count?userId=${userId}`,{responseType:"json"})
+    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}leave/user-leave-category-count?userId=${userId}`,
+      {responseType:"json"})
+  }
+
+  getEmployeeMonthlyLeaveCount(employeeId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}leave/employee-monthly-leave-count?employeeId=${employeeId}`,
+      {responseType:"json"})
   }
 }

@@ -9,11 +9,12 @@ import { Task } from '../../types/task';
 import Swal from 'sweetalert2';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule, NgFor } from '@angular/common';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-assign-tasks',
   standalone: true,
-  imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule],
+  imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule,SpinnerComponent],
   templateUrl: './assign-tasks.component.html',
   styleUrl: './assign-tasks.component.css',
   providers:[TaskService,EmployeeService]
@@ -30,6 +31,7 @@ export class AssignTasksComponent implements OnInit {
   public updatingTaskId: number|null = 0;
   private readonly limit:number = 5;
   public offset:number = 0;
+  loading:boolean = false;
 
   constructor(
     private readonly taskService: TaskService,
@@ -165,7 +167,9 @@ export class AssignTasksComponent implements OnInit {
         reverseButtons: true
       }).then((result)=>{
         if(result.isConfirmed){
+          this.loading = true;
           this.taskService.updateTaskByUser(updatedTask).subscribe(res => {
+            this.loading = false;
             if(isSuccessResponse(res)){
               Swal.fire("Success!", "Task Updated!", "success");
               this.isGoingToUpdate = false;

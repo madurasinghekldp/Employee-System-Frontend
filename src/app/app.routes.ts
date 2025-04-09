@@ -19,6 +19,7 @@ import { AssignTasksComponent } from './components/assign-tasks/assign-tasks.com
 import { ApplyLeaveComponent } from './components/apply-leave/apply-leave.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { EmployeeDashboardComponent } from './components/employee-dashboard/employee-dashboard.component';
+import { PerformanceComponent } from './components/performance/performance.component';
 
 export const routes: Routes = [
     {
@@ -119,5 +120,10 @@ export const routes: Routes = [
       {
         path: "employee-dashboard",
         component: EmployeeDashboardComponent
+      },
+      {
+        path: "performance-cal",
+        component: PerformanceComponent,
+        canActivate: [authGuard,adminGuard]
       }
 ];

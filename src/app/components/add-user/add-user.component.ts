@@ -8,11 +8,12 @@ import Swal from 'sweetalert2';
 import { NgFor, NgIf } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { userStore } from '../../store/user.store';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-add-user',
   standalone: true,
-  imports: [FormsModule,ReactiveFormsModule,NgIf,HttpClientModule,NgFor],
+  imports: [FormsModule,ReactiveFormsModule,NgIf,HttpClientModule,NgFor,SpinnerComponent],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.css'
 })
@@ -21,6 +22,7 @@ export class AddUserComponent {
   get user() {
     return this.store.user(); 
   }
+  loading:boolean = false;
 
   constructor(private readonly userService:UserService){}
 
@@ -69,28 +71,30 @@ export class AddUserComponent {
       }
   
       if(this.userRegForm.valid){
-            this.userService.createUser(this.createUser).subscribe(res =>{
-              if(isSuccessResponse(res)){
-                Swal.fire({
-                  title: "Success!",
-                  text: "Add User is successfull",
-                  icon: "success"
-                }).then(()=>{
-                  this.userRegForm.reset();
-                });
-              }
-              else if(isErrorResponse(res)){
-                Swal.fire({
-                  title: "Failed!",
-                  text: res.message,
-                  icon: "error"
-                });
-                
-              }
+        this.loading = true;
+        this.userService.createUser(this.createUser).subscribe(res =>{
+          this.loading = false;
+          if(isSuccessResponse(res)){
+            Swal.fire({
+              title: "Success!",
+              text: "Add User is successfull",
+              icon: "success"
+            }).then(()=>{
               this.userRegForm.reset();
-              this.roleSet.clear();
             });
           }
+          else if(isErrorResponse(res)){
+            Swal.fire({
+              title: "Failed!",
+              text: res.message,
+              icon: "error"
+            });
+            
+          }
+          this.userRegForm.reset();
+          this.roleSet.clear();
+        });
+      }
   
     }
 
