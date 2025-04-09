@@ -30,12 +30,14 @@
               <span class=" mx-1"></span>
               <i class="btn bi bi-pencil-square btn-outline-success" (click)="loadUpdateModel(employee)"
                data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
+               <span class=" mx-1"></span>
+               <i class="btn bi bi-speedometer btn-outline-warning"></i>
             </td>
           </tr>
         </tbody>
         <tbody *ngIf="employeeMessage">
           <tr>
-            <td colspan="6" class="text-center">{{employeeMessage}}</td>
+            <td colspan="7" class="text-center">{{employeeMessage}}</td>
           </tr>
         </tbody>
         <nav aria-label="Page navigation example">
