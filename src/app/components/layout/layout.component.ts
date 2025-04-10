@@ -7,11 +7,13 @@ import { userStore } from '../../store/user.store';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import { NgIf } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { SidebarImageComponent } from '../sidebar-image/sidebar-image.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterModule,HttpClientModule,NgIf],
+  imports: [RouterModule,HttpClientModule,NgIf,SidebarImageComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
   providers: [TokenService,UserService]
@@ -29,12 +31,12 @@ export class LayoutComponent implements OnInit{
   public isAdmin: boolean|undefined = false;
   isUser:boolean|undefined = false;
   isEmployee:boolean|undefined = false;
-
   
   constructor(
     private readonly tokenService: TokenService,
     private readonly userService: UserService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly location: Location
   ){
     effect(()=>{
       this.isUserLogedIn = this.authService.isUserLogedIn();
@@ -67,6 +69,11 @@ export class LayoutComponent implements OnInit{
     this.store.loadRoles(null);
     this.authService.isUserLogedIn.set(this.tokenService.validateTokenFromLocalStorage());
     this.authService.isAdmin.set(this.tokenService.getUserRoles()?.includes("ROLE_ADMIN"));
+  }
+
+
+  goBackward(){
+    this.location.back();
   }
 
 

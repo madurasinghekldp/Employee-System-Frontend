@@ -20,6 +20,12 @@
           <li class="nav-item"><a  class="nav-link not-active" routerLink="/apply-leaves" routerLinkActive="active-bg">Apply leave</a></li>
         </ng-container>
         <li class="nav-item"><a  class="nav-link not-active" routerLink="/about" routerLinkActive="active-bg">About</a></li>
+        
       </ul>
+      <span class="mx-2"></span>
+      <ng-container *ngIf="isUserLogedIn">
+        <img [src]="companyLogo" alt="" width="40" height="40" class="rounded-circle">
+      </ng-container>
     </header>
+    
   </div>

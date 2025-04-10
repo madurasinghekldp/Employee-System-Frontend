@@ -33,6 +33,7 @@ export class SettingComponent {
   companyName:string | undefined;
   address:string | undefined;
   registerNumber:string | undefined;
+  isAdmin:boolean|undefined = false;
 
   userForm = new FormGroup({
     firstName: new FormControl('',Validators.required),
@@ -75,6 +76,7 @@ export class SettingComponent {
       this.companyName = this.user()?.company.name;
       this.address = this.user()?.company.address;
       this.registerNumber = this.user()?.company.registerNumber;
+      this.isAdmin = this.authService.isAdmin();
 
       this.userForm.patchValue({
         firstName: this.user()?.firstName,
@@ -266,8 +268,8 @@ export class SettingComponent {
     if(this.profileImageForm.valid){
       this.loading = true;
       this.userService.uploadProfileImage(this.selectedProfileImage,this.user()?.id).subscribe(res=>{
+        this.loading = false;
         if(isSuccessResponse(res)){
-          this.loading = false;
           swalWithBootstrapButtons.fire({
             title: "Success!",
             text: "Profile image updated.",
@@ -276,7 +278,6 @@ export class SettingComponent {
           this.loadUserDetails();
         }
         else if(isErrorResponse(res)){
-          this.loading = false;
           swalWithBootstrapButtons.fire({
             title: "Error!",
             text: "Profile image has not been updated.",
@@ -313,7 +314,7 @@ export class SettingComponent {
           this.loading = false;
           swalWithBootstrapButtons.fire({
             title: "Error!",
-            text: "Company image has not been updated.",
+            text: res.message,
             icon: "error"
           });
         }

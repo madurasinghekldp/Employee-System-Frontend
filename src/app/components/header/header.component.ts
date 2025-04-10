@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit} from '@angular/core';
+import { Component, computed, effect, inject, OnInit} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { userStore } from '../../store/user.store';
 import { NgIf } from '@angular/common';
@@ -24,15 +24,18 @@ export class HeaderComponent implements OnInit {
       this.isAdmin = this.authService.isAdmin();
       this.isUser = this.authService.isUser();
       this.isEmployee = this.authService.isEmployee();
+      this.companyLogo = this.user()?.company.logo;
     });
   }
   
   store = inject(userStore);
+  user = computed(() => this.store.user());
   
   isUserLogedIn:boolean = false;
   isAdmin:boolean|undefined = false;
   isUser:boolean|undefined = false;
   isEmployee:boolean|undefined = false;
+  companyLogo:string|undefined;
 
 
   ngOnInit(): void {

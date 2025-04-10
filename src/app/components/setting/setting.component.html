@@ -68,6 +68,7 @@
             <button type="submit" class="btn btn-primary w-25">Update Password</button>
         </form>
 
+        <ng-container *ngIf="isAdmin">
         <hr class="my-4">
         
         <form (ngSubmit)="updateCompany()" [formGroup]="companyForm">
@@ -126,7 +127,7 @@
             
             <button type="submit" class="btn btn-primary w-25">Upload Image</button>
         </form>
-
+        </ng-container>
         <hr class="my-4">
 
         <button type="button" class="btn btn-danger w-25" (click)="deactivateAccount()">Deactivate My Account</button>
