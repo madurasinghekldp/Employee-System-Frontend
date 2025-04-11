@@ -4,11 +4,13 @@ import { userStore } from '../../store/user.store';
 import { NgIf } from '@angular/common';
 import { TokenService } from '../../services/token.service';
 import { AuthService } from '../../services/auth.service';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatTableModule} from '@angular/material/table';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule,NgIf],
+  imports: [RouterModule,NgIf,MatBadgeModule,MatTableModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
   providers:[TokenService]
@@ -37,6 +39,9 @@ export class HeaderComponent implements OnInit {
   isEmployee:boolean|undefined = false;
   companyLogo:string|undefined;
 
+  displayedColumns: string[] = ['message'];
+  dataSource = [];
+  clickedRows = new Set();
 
   ngOnInit(): void {
     

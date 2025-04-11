@@ -70,4 +70,8 @@ export class UserService {
     }
     return this.http.post<SuccessResponse|ErrorResponse>(`${this.apiUrl}images/profile/upload`,formData,{responseType:"json"})
   }
+
+  getCompanyUsers(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}users/company?companyId=${companyId}`,{responseType:"json"});
+  }
 }

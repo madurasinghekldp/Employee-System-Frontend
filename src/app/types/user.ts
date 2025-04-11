@@ -9,3 +9,12 @@ export type User = {
     userRoleName:string[]|null;
     company:Company|null;
 }
+
+export type GetUsers = {
+    id:number|null|undefined;
+    firstName:string|null;
+    lastName:string|null;
+    email:string|null;
+    profileImage:string|null;
+    companyId:number|null|undefined;
+}

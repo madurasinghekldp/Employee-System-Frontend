@@ -23,9 +23,43 @@
         
       </ul>
       <span class="mx-2"></span>
-      <ng-container *ngIf="isUserLogedIn">
+      <div *ngIf="isUserLogedIn" matBadge="2" matBadgeColor="warn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
         <img [src]="companyLogo" alt="" width="40" height="40" class="rounded-circle">
-      </ng-container>
+      </div>
     </header>
     
   </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Notifications</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+          <!-- Position Column -->
+          <ng-container matColumnDef="message">
+            <th mat-header-cell *matHeaderCellDef>Click to mark as read</th>
+            <td mat-cell *matCellDef="let element">{{element.message}}</td>
+          </ng-container>
+        
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+              mat-row
+              (click)="clickedRows.add(row)"
+              [class.demo-row-is-clicked]="clickedRows.has(row)"
+              *matRowDef="let row; columns: displayedColumns;"
+          ></tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

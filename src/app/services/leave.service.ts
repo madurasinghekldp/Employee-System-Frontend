@@ -16,8 +16,8 @@ export class LeaveService {
 
   private readonly apiUrl = environment.apiUrl;
 
-  createLeave(leave: LeaveCreate):Observable<SuccessResponse|ErrorResponse>{
-    return this.http.post<SuccessResponse|ErrorResponse>(`${this.apiUrl}leave`,leave,{responseType:"json"});
+  createLeave(leave: LeaveCreate,userId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.post<SuccessResponse|ErrorResponse>(`${this.apiUrl}leave?userId=${userId}`,leave,{responseType:"json"});
   }
 
   getAllLeaves(limit:number,offset:number,employeeId:number|null):Observable<SuccessResponse|ErrorResponse>{

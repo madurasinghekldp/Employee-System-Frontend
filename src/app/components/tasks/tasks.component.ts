@@ -105,7 +105,7 @@ export class TasksComponent  implements OnInit {
         approvedBy: null
       }
       this.loading = true;
-      this.taskService.createTask(newTask).subscribe(res => {
+      this.taskService.createTask(newTask,this.user()?.id).subscribe(res => {
         this.loading = false;
         if(isSuccessResponse(res)){
           Swal.fire("Success!", "Task Added!", "success");

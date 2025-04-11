@@ -32,8 +32,8 @@ export class TaskService {
     return this.http.get<SuccessResponse|ErrorResponse>(`${this.apiUrl}task/all-by-user?userId=${userId}&limit=${limit}
     &offset=${offset}`,{responseType:"json"});
   }
-  createTask(newTask: Task) :Observable<SuccessResponse|ErrorResponse>{
-    return this.http.post<SuccessResponse|ErrorResponse>(`${this.apiUrl}task`,newTask,{responseType:"json"})
+  createTask(newTask: Task,userId:number|null|undefined) :Observable<SuccessResponse|ErrorResponse>{
+    return this.http.post<SuccessResponse|ErrorResponse>(`${this.apiUrl}task?userId=${userId}`,newTask,{responseType:"json"})
   }
 
   getTasksByStatus(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{

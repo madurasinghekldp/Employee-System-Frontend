@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule, NgFor } from '@angular/common';
 import { LeaveCreate } from '../../types/apply-leave';
 import { SpinnerComponent } from '../spinner/spinner.component';
+import { GetUsers} from '../../types/user';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-apply-leave',
@@ -18,7 +20,7 @@ import { SpinnerComponent } from '../spinner/spinner.component';
   imports: [FormsModule,ReactiveFormsModule,HttpClientModule,NgFor,CommonModule,SpinnerComponent],
   templateUrl: './apply-leave.component.html',
   styleUrl: './apply-leave.component.css',
-  providers:[EmployeeService,LeaveService]
+  providers:[EmployeeService,LeaveService,UserService]
 })
 export class ApplyLeaveComponent implements OnInit{
 
@@ -28,6 +30,7 @@ export class ApplyLeaveComponent implements OnInit{
 
   public employeeList:Employee[] = [];
   public leaveList:Leaves[] = [];
+  public userList:GetUsers[] = [];
   public leavesMessage:string = "";
   private readonly limit:number = 5;
   public offset:number = 0;
@@ -38,7 +41,8 @@ export class ApplyLeaveComponent implements OnInit{
 
   constructor(
     private readonly employeeService:EmployeeService, 
-    private readonly leaveService:LeaveService
+    private readonly leaveService:LeaveService,
+    private readonly userService:UserService
   ){
     effect(()=>{
       this.init();
@@ -52,6 +56,7 @@ export class ApplyLeaveComponent implements OnInit{
   init(){
     this.loadLeaves();
     this.loadLeaveCategoryCount();
+    this.loadUsers();
   }
 
   leave:LeaveCreate = {
@@ -67,7 +72,8 @@ export class ApplyLeaveComponent implements OnInit{
     date: new FormControl('',Validators.required),
     leaveType: new FormControl('',Validators.required),
     check: new FormControl('',Validators.required),
-    reason: new FormControl('',Validators.required)
+    reason: new FormControl('',Validators.required),
+    referenceTo: new FormControl<GetUsers|null>(null,Validators.required)
   });
 
   submitLeave(){
@@ -89,7 +95,7 @@ export class ApplyLeaveComponent implements OnInit{
         dayCount: this.leaveForm.controls.check.value === "half"? 0.5 : 1
       }
       this.loading = true;
-      this.leaveService.createLeave(this.leave).subscribe(res=>{
+      this.leaveService.createLeave(this.leave,this.leaveForm.controls.referenceTo.value?.id).subscribe(res=>{
         this.loading = false;
         if(isSuccessResponse(res)){
           Swal.fire({
@@ -118,6 +124,7 @@ export class ApplyLeaveComponent implements OnInit{
       this.leaveForm.controls.leaveType.reset();
       this.leaveForm.controls.check.reset();
       this.leaveForm.controls.reason.reset();
+      this.leaveForm.controls.referenceTo.reset();
     }
   }
 
@@ -161,6 +168,20 @@ export class ApplyLeaveComponent implements OnInit{
       }
       else{
         this.leaveData = null;
+      }
+    })
+  }
+
+  loadUsers(){
+    this.userService.getCompanyUsers(this.user()?.company?.id).subscribe(res=>{
+      if(isSuccessResponse(res)){
+        this.userList = res.data;
+      }
+      else if(isErrorResponse(res)){
+        this.userList = [];
+      }
+      else{
+        this.userList = [];
       }
     })
   }
