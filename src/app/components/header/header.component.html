@@ -23,7 +23,7 @@
         
       </ul>
       <span class="mx-2"></span>
-      <div *ngIf="isUserLogedIn" matBadge="2" matBadgeColor="warn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      <div *ngIf="isUserLogedIn" matBadgeSize="small" [matBadgeHidden]="hidden" [matBadge]="notificationCount" matBadgeColor="warn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
         <img [src]="companyLogo" alt="" width="40" height="40" class="rounded-circle">
       </div>
     </header>
@@ -50,7 +50,7 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr
               mat-row
-              (click)="clickedRows.add(row)"
+              (click)="rowClicked(row)"
               [class.demo-row-is-clicked]="clickedRows.has(row)"
               *matRowDef="let row; columns: displayedColumns;"
           ></tr>
@@ -58,7 +58,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
