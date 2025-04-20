@@ -24,7 +24,7 @@
       </ul>
       <span class="mx-2"></span>
       <div *ngIf="isUserLogedIn" matBadgeSize="small" [matBadgeHidden]="hidden" [matBadge]="notificationCount" matBadgeColor="warn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        <img [src]="companyLogo" alt="" width="40" height="40" class="rounded-circle">
+        <img [src]="companyLogo||'assets/images/company-default-logo.png'" alt="" width="40" height="40" class="rounded-circle">
       </div>
     </header>
     
