@@ -14,25 +14,25 @@
         </div>
         <div class="flex-col mt-5 mx-5">
             <p class="mt-5">
-                <mat-slide-toggle labelPosition="before">
+                <mat-slide-toggle labelPosition="before" [(ngModel)]="leaveCountChecked" (change)="getLeaveCount()">
                     Get the leave count
                 </mat-slide-toggle>
                 <span class="mx-2"></span>
-                <mat-chip>count</mat-chip>
+                <mat-chip>{{leaveCount}}</mat-chip>
             </p>
             <p class="mt-5">
-                <mat-slide-toggle labelPosition="before">
+                <mat-slide-toggle labelPosition="before" [(ngModel)]="rejectedTaskCountChecked" (change)="getRejectedTaskCount()">
                     Get the rejected task count
                 </mat-slide-toggle>
                 <span class="mx-2"></span>
-                <mat-chip>count</mat-chip>
+                <mat-chip>{{rejectedTaskCount}}</mat-chip>
             </p>
             <p class="mt-5">
-                <mat-slide-toggle labelPosition="before">
+                <mat-slide-toggle labelPosition="before" [(ngModel)]="lateSubmittedTaskCountChecked" (change)="getLateSubmittedTaskCount()">
                     Get the late submitted task count
                 </mat-slide-toggle>
                 <span class="mx-2"></span>
-                <mat-chip>count</mat-chip>
+                <mat-chip>{{lateSubmittedTaskCount}}</mat-chip>
             </p>
         </div>
     </div>

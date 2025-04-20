@@ -13,6 +13,7 @@ import { Role } from '../../types/role';
 import { EmployeeUpdatePopupComponent } from '../employee-update-popup/employee-update-popup.component';
 import { userStore } from '../../store/user.store';
 import { SpinnerComponent } from '../spinner/spinner.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-employees',
@@ -61,7 +62,8 @@ export class ViewEmployeesComponent implements OnInit{
   constructor(
     private readonly employeeService: EmployeeService,
     private readonly departmentService: DepartmentService,
-    private readonly roleService: RoleService
+    private readonly roleService: RoleService,
+    private readonly router: Router,
   ) {
     effect(()=>{
       this.init();
@@ -119,6 +121,12 @@ export class ViewEmployeesComponent implements OnInit{
       this.offset -= 5;
       this.loadEmployeeTable();
     }
+  }
+
+  goToCalPage(id:number|null){
+    this.router.navigate(['/performance-cal'], {
+      queryParams: { employeeId: id}
+    });
   }
 
   loadEmployeeTable(){

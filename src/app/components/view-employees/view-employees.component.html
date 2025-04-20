@@ -31,7 +31,7 @@
               <i class="btn bi bi-pencil-square btn-outline-success" (click)="loadUpdateModel(employee)"
                data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
                <span class=" mx-1"></span>
-               <i class="btn bi bi-speedometer btn-outline-warning"></i>
+               <i class="btn bi bi-speedometer btn-outline-warning" (click)="goToCalPage(employee.id)"></i>
             </td>
           </tr>
         </tbody>
@@ -42,9 +42,9 @@
         </tbody>
         <nav aria-label="Page navigation example">
           <ul class="pagination">
-            <li class="page-item"><button class="page-link" (click)="goToPreviousPage()">&laquo; Previous</button></li>
+            <li class="page-item"><button class="page-link" (click)="goToPreviousPage()">&laquo;</button></li>
             <span class=" mx-3 my-auto">{{(offset/5)+1}}</span>
-            <li class="page-item"><button class="page-link" (click)="goToNextPage()">Next &raquo;</button></li>
+            <li class="page-item"><button class="page-link" (click)="goToNextPage()">&raquo;</button></li>
           </ul>
         </nav>
       </table>
