@@ -18,7 +18,6 @@ import { LeaveService } from '../../services/leave.service';
   providers:[DepartmentService,EmployeeService,TaskService,LeaveService]
 })
 export class AdminDashboardComponent implements OnInit{
-  chart: any;
   store = inject(userStore);
     
   user = computed(() => this.store.user());
@@ -28,6 +27,9 @@ export class AdminDashboardComponent implements OnInit{
   public doughnutData:number[] = [];
   public lineLabels:string[] = [];
   public lineData:number[] = [];
+
+  pieChart: Chart | null = null;
+  lineChart: Chart | null = null;
 
   constructor(
     private readonly departmentService: DepartmentService,
@@ -44,46 +46,48 @@ export class AdminDashboardComponent implements OnInit{
   }
 
   init(){
-    this.departmentService.getCount(this.user()?.company.id).subscribe(res=>{
-      if(isSuccessResponse(res)){
-        this.depCount = res.data;
-      }
-      else if(isErrorResponse(res)){
-        this.depCount = 0;
-      }
-    });
-    this.employeeService.getCount(this.user()?.company.id).subscribe(res=>{
-      if(isSuccessResponse(res)){
-        this.empCount = res.data;
-      }
-      else if(isErrorResponse(res)){
-        this.empCount = 0;
-      }
-    });
-    this.taskService.getTasksByStatus(this.user()?.company.id).subscribe(res=>{
-      if(isSuccessResponse(res)){
-        this.doughnutLabels = Object.keys(res.data);
-        this.doughnutData = Object.values(res.data);
-        this.createPieChart();
-      }
-      else if(isErrorResponse(res)){
-        this.doughnutLabels = ['non'];
-        this.doughnutData = [];
-        this.createPieChart();
-      }
-    });
-    this.leaveService.getLeaveCountsDatesByCompany(this.user()?.company.id).subscribe(res=>{
-      if(isSuccessResponse(res)){
-        this.lineLabels = Object.keys(res.data);
-        this.lineData = Object.values(res.data);
-        this.createLineChart();
-      }
-      else if(isErrorResponse(res)){
-        this.lineLabels = ['non'];
-        this.lineData = [];
-        this.createLineChart();
-      }
-    });
+    if(this.user()){
+      this.departmentService.getCount(this.user()?.company.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.depCount = res.data;
+        }
+        else if(isErrorResponse(res)){
+          this.depCount = 0;
+        }
+      });
+      this.employeeService.getCount(this.user()?.company.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.empCount = res.data;
+        }
+        else if(isErrorResponse(res)){
+          this.empCount = 0;
+        }
+      });
+      this.taskService.getTasksByStatus(this.user()?.company.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.doughnutLabels = Object.keys(res.data);
+          this.doughnutData = Object.values(res.data);
+          this.createPieChart();
+        }
+        else if(isErrorResponse(res)){
+          this.doughnutLabels = ['non'];
+          this.doughnutData = [];
+          this.createPieChart();
+        }
+      });
+      this.leaveService.getLeaveCountsDatesByCompany(this.user()?.company.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.lineLabels = Object.keys(res.data);
+          this.lineData = Object.values(res.data);
+          this.createLineChart();
+        }
+        else if(isErrorResponse(res)){
+          this.lineLabels = ['non'];
+          this.lineData = [];
+          this.createLineChart();
+        }
+      });
+    }
   }
 
   /* ngAfterViewInit() {
@@ -94,9 +98,13 @@ export class AdminDashboardComponent implements OnInit{
   createPieChart() {
     const labels = this.doughnutLabels.length>0?this.doughnutLabels:["non"];
     const ctx = document.getElementById("chartjs-pie") as HTMLCanvasElement;
+
+    if (this.pieChart) {
+      this.pieChart.destroy();
+    }
     
     if (ctx) {
-      this.chart = new Chart(ctx, {
+      this.pieChart = new Chart(ctx, {
         type: "doughnut",
         data: {
           labels: labels,
@@ -121,8 +129,12 @@ export class AdminDashboardComponent implements OnInit{
   createLineChart() {
     const ctx = document.getElementById('chartjs-line') as HTMLCanvasElement;
 
+    if (this.lineChart) {
+      this.lineChart.destroy();
+    }
+
     if (ctx) {
-      this.chart = new Chart(ctx, {
+      this.lineChart = new Chart(ctx, {
         type: 'line',
         data: {
           labels: this.lineLabels,

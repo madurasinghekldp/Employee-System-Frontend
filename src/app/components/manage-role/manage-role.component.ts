@@ -53,20 +53,22 @@ export class ManageRoleComponent implements OnInit {
   }
 
   loadRoles(){
-    this.roleService.getAllSelected(this.user()?.company.id,this.limit,this.offset,this.searchText).subscribe((res)=>{
-      if(isSuccessResponse(res)){
-        this.roleList = res.data;
-        this.roleMessage = "";
-      }
-      else if(isErrorResponse(res)){
-        this.roleList = [];
-        this.roleMessage = res.message;
-      }
-      else{
-        this.roleList = [];
-        this.roleMessage = "Unexpected error occurred";
-      }
-    })
+    if(this.user()){
+      this.roleService.getAllSelected(this.user()?.company.id,this.limit,this.offset,this.searchText).subscribe((res)=>{
+        if(isSuccessResponse(res)){
+          this.roleList = res.data;
+          this.roleMessage = "";
+        }
+        else if(isErrorResponse(res)){
+          this.roleList = [];
+          this.roleMessage = res.message;
+        }
+        else{
+          this.roleList = [];
+          this.roleMessage = "Unexpected error occurred";
+        }
+      })
+    }
   }
 
   goToNextPage(){

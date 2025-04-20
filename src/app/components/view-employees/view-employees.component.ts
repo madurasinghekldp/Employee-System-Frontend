@@ -80,35 +80,37 @@ export class ViewEmployeesComponent implements OnInit{
   }
 
   init(){
-    this.departmentService.getAll(this.user()?.company?.id).subscribe(res=>{
-      if(isSuccessResponse(res)){
-        this.departmentList = res.data;
-        this.departmentMessage = "";
-      }
-      else if(isErrorResponse(res)){
-        this.departmentList = [];
-        this.departmentMessage = res.message;
-      }
-      else{
-        this.departmentList = [];
-        this.departmentMessage = "Unexpected error occurred";
-      }
-    });
-
-    this.roleService.getAll(this.user()?.company?.id).subscribe(res=>{
-      if(isSuccessResponse(res)){
-        this.roleList = res.data;
-        this.roleMessage = "";
-      }
-      else if(isErrorResponse(res)){
-        this.roleList = [];
-        this.roleMessage = res.message;
-      }
-      else{
-        this.roleList = [];
-        this.roleMessage = "Unexpected error occurred";
-      }
-    });
+    if(this.user()){
+      this.departmentService.getAll(this.user()?.company?.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.departmentList = res.data;
+          this.departmentMessage = "";
+        }
+        else if(isErrorResponse(res)){
+          this.departmentList = [];
+          this.departmentMessage = res.message;
+        }
+        else{
+          this.departmentList = [];
+          this.departmentMessage = "Unexpected error occurred";
+        }
+      });
+  
+      this.roleService.getAll(this.user()?.company?.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.roleList = res.data;
+          this.roleMessage = "";
+        }
+        else if(isErrorResponse(res)){
+          this.roleList = [];
+          this.roleMessage = res.message;
+        }
+        else{
+          this.roleList = [];
+          this.roleMessage = "Unexpected error occurred";
+        }
+      });
+    }
   }
 
   goToNextPage(){
@@ -130,18 +132,20 @@ export class ViewEmployeesComponent implements OnInit{
   }
 
   loadEmployeeTable(){
-    this.employeeService.getAll(this.user()?.company?.id,this.limit,this.offset,this.searchText).subscribe(res=>{
-      if (isSuccessResponse(res)) {
-        this.employeeList = res.data;
-        this.employeeMessage = "";
-      } else if (isErrorResponse(res)) {
-        this.employeeMessage = res.message;
-        this.employeeList = [];
-      } else {
-        this.employeeMessage = "Unexpected error occurred";
-        this.employeeList = [];
-      }
-    });
+    if(this.user()){
+      this.employeeService.getAll(this.user()?.company?.id,this.limit,this.offset,this.searchText).subscribe(res=>{
+        if (isSuccessResponse(res)) {
+          this.employeeList = res.data;
+          this.employeeMessage = "";
+        } else if (isErrorResponse(res)) {
+          this.employeeMessage = res.message;
+          this.employeeList = [];
+        } else {
+          this.employeeMessage = "Unexpected error occurred";
+          this.employeeList = [];
+        }
+      });
+    }
   }
 
   deleteEmployee(employee:Employee){

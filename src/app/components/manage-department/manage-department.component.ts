@@ -53,20 +53,22 @@ export class ManageDepartmentComponent implements OnInit {
   }
 
   loadDepartments(){
-    this.departmentService.getAllSelected(this.user()?.company.id,this.limit,this.offset,this.searchText).subscribe(res=>{
-      if(isSuccessResponse(res)){
-        this.departmentList = res.data;
-        this.departmentMessage = "";
-      }
-      else if(isErrorResponse(res)){
-        this.departmentList = [];
-        this.departmentMessage = res.message;
-      }
-      else{
-        this.departmentList = [];
-        this.departmentMessage = "Unexpected error occurred";
-      }
-    })
+    if(this.user()){
+      this.departmentService.getAllSelected(this.user()?.company.id,this.limit,this.offset,this.searchText).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.departmentList = res.data;
+          this.departmentMessage = "";
+        }
+        else if(isErrorResponse(res)){
+          this.departmentList = [];
+          this.departmentMessage = res.message;
+        }
+        else{
+          this.departmentList = [];
+          this.departmentMessage = "Unexpected error occurred";
+        }
+      })
+    }
   }
 
   goToNextPage(){

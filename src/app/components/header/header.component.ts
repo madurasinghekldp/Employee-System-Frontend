@@ -56,17 +56,19 @@ export class HeaderComponent implements OnInit {
   }
 
   loadNotifications(){
-    this.notificationService.getAllNotifications(this.user()?.id).subscribe((res)=>{
-      if(isSuccessResponse(res)){
-        this.dataSource = res.data;
-        this.notificationCount = res.data.length;
-        if(this.notificationCount > 0){
-          this.hidden = false;
+    if(this.user()){
+      this.notificationService.getAllNotifications(this.user()?.id).subscribe((res)=>{
+        if(isSuccessResponse(res)){
+          this.dataSource = res.data;
+          this.notificationCount = res.data.length;
+          if(this.notificationCount > 0){
+            this.hidden = false;
+          }
+        }else if(isErrorResponse(res)){
+          this.dataSource = [];
         }
-      }else if(isErrorResponse(res)){
-        this.dataSource = [];
-      }
-    });
+      });
+    }
   }
 
   rowClicked(row:any){

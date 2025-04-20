@@ -142,48 +142,54 @@ export class ApplyLeaveComponent implements OnInit{
   }
 
   loadLeaves(){
-    this.leaveService.getAllLeavesByUser(this.limit,this.offset,this.user()?.id).subscribe(res=>{
-      if(isSuccessResponse(res)){
-        this.leaveList = res.data;
-        this.leavesMessage = "";
-      }
-      else if(isErrorResponse(res)){
-        this.leaveList = [];
-        this.leavesMessage = "Leaves not found";
-      }
-      else{
-        this.leaveList = [];
-        this.leavesMessage = "Unexpected error occurred";
-      }
-    })
+    if(this.user()){
+      this.leaveService.getAllLeavesByUser(this.limit,this.offset,this.user()?.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.leaveList = res.data;
+          this.leavesMessage = "";
+        }
+        else if(isErrorResponse(res)){
+          this.leaveList = [];
+          this.leavesMessage = "Leaves not found";
+        }
+        else{
+          this.leaveList = [];
+          this.leavesMessage = "Unexpected error occurred";
+        }
+      })
+    }
   }
 
   loadLeaveCategoryCount(){
-    this.leaveService.getLeaveCategoryCountByUser(this.user()?.id).subscribe(res=>{
-      if(isSuccessResponse(res)){
-        this.leaveData = res.data;
-      }
-      else if(isErrorResponse(res)){
-        this.leaveData = null;
-      }
-      else{
-        this.leaveData = null;
-      }
-    })
+    if(this.user()){
+      this.leaveService.getLeaveCategoryCountByUser(this.user()?.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.leaveData = res.data;
+        }
+        else if(isErrorResponse(res)){
+          this.leaveData = null;
+        }
+        else{
+          this.leaveData = null;
+        }
+      })
+    }
   }
 
   loadUsers(){
-    this.userService.getCompanyUsers(this.user()?.company?.id).subscribe(res=>{
-      if(isSuccessResponse(res)){
-        this.userList = res.data;
-      }
-      else if(isErrorResponse(res)){
-        this.userList = [];
-      }
-      else{
-        this.userList = [];
-      }
-    })
+    if(this.user()){
+      this.userService.getCompanyUsers(this.user()?.company?.id).subscribe(res=>{
+        if(isSuccessResponse(res)){
+          this.userList = res.data;
+        }
+        else if(isErrorResponse(res)){
+          this.userList = [];
+        }
+        else{
+          this.userList = [];
+        }
+      })
+    }
   }
 
 }
