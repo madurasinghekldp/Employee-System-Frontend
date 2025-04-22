@@ -8,11 +8,12 @@ import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-
 import Swal from 'sweetalert2';
 import { RoleUpdatePopupComponent } from '../role-update-popup/role-update-popup.component';
 import { userStore } from '../../store/user.store';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-manage-role',
   standalone: true,
-  imports: [FormsModule,NgFor,NgIf,HttpClientModule,ReactiveFormsModule,RoleUpdatePopupComponent],
+  imports: [FormsModule,NgFor,NgIf,HttpClientModule,ReactiveFormsModule,RoleUpdatePopupComponent,SpinnerComponent],
   templateUrl: './manage-role.component.html',
   styleUrl: './manage-role.component.css',
   providers: [RoleService]
@@ -21,7 +22,7 @@ export class ManageRoleComponent implements OnInit {
 
   store = inject(userStore);
   user = computed(() => this.store.user());
-  
+  loading:boolean = false;
   private readonly limit:number = 5;
   public offset:number = 0;
   public searchText:string = '';
@@ -119,7 +120,9 @@ export class ManageRoleComponent implements OnInit {
     }
 
     if(this.roleForm.valid){
+      this.loading = true;
       this.roleService.add(this.role).subscribe(res=>{
+        this.loading = false;
         if(isSuccessResponse(res)){
           Swal.fire({
             title: "Success!",
@@ -161,7 +164,9 @@ export class ManageRoleComponent implements OnInit {
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
+          this.loading = true;
           this.roleService.update(this.selectedRole).subscribe(res=>{
+            this.loading = false;
             if(isSuccessResponse(res)){
               this.loadRoles();
               swalWithBootstrapButtons.fire({
@@ -215,7 +220,9 @@ export class ManageRoleComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
+        this.loading = true;
         this.roleService.delete(role).subscribe(res=>{
+          this.loading = false;
           if(isSuccessResponse(res)){
             swalWithBootstrapButtons.fire({
               title: "Deleted!",

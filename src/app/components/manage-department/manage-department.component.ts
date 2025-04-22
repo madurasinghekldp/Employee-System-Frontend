@@ -8,11 +8,12 @@ import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-
 import Swal from 'sweetalert2';
 import { DepartmentUpdatePopupComponent } from '../department-update-popup/department-update-popup.component';
 import { userStore } from '../../store/user.store';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-manage-department',
   standalone: true,
-  imports: [NgFor,FormsModule,ReactiveFormsModule,NgIf,HttpClientModule,DepartmentUpdatePopupComponent],
+  imports: [NgFor,FormsModule,ReactiveFormsModule,NgIf,HttpClientModule,DepartmentUpdatePopupComponent,SpinnerComponent],
   templateUrl: './manage-department.component.html',
   styleUrl: './manage-department.component.css',
   providers:[DepartmentService]
@@ -21,7 +22,7 @@ export class ManageDepartmentComponent implements OnInit {
 
   store = inject(userStore);
   user = computed(() => this.store.user());
-
+  loading:boolean = false;
   private readonly limit:number = 5;
   public offset:number = 0;
   public searchText:string = '';
@@ -121,7 +122,9 @@ export class ManageDepartmentComponent implements OnInit {
     }
 
     if(this.departmentForm.valid){
+      this.loading = true;
       this.departmentService.add(this.department).subscribe(res => {
+        this.loading = false;
         if(isSuccessResponse(res)){
           Swal.fire({
             title: "Success!",
@@ -163,7 +166,9 @@ export class ManageDepartmentComponent implements OnInit {
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
+          this.loading = true;
           this.departmentService.update(this.selectedDepartment).subscribe(res=>{
+            this.loading = false;
             if(isSuccessResponse(res)){
               this.loadDepartments();
               swalWithBootstrapButtons.fire({
@@ -216,7 +221,9 @@ export class ManageDepartmentComponent implements OnInit {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
+        this.loading = true;
         this.departmentService.delete(department).subscribe(res=>{
+          this.loading = false;
           if(isSuccessResponse(res)){
             swalWithBootstrapButtons.fire({
               title: "Deleted!",

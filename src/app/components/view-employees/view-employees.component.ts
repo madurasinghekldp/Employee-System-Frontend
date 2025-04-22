@@ -166,7 +166,9 @@ export class ViewEmployeesComponent implements OnInit{
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
+        this.loading = true;
         this.employeeService.delete(employee).subscribe(res=>{
+          this.loading = false;
           if(isSuccessResponse(res)){
             swalWithBootstrapButtons.fire({
               title: "Deleted!",
