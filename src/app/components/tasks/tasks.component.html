@@ -76,7 +76,7 @@
         </div>
     </div>
     <div class="w-100">
-        <div class="bg-white p-4 rounded shadow">
+        <div class="bg-white p-4 rounded shadow table-responsive">
             <h4 class="text-center mb-3">Tasks List</h4>
             <table class="table table-striped">
                 <thead>
@@ -120,15 +120,19 @@
                         <td colspan="8" class="text-center">{{tasksMessage}}</td>
                     </tr>
                 </tbody>
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                      <li class="page-item"><button class="page-link" (click)="goToPreviousPage()">&laquo;</button></li>
-                      <span class=" mx-3 my-auto">{{(offset/5)+1}}</span>
-                      <li class="page-item"><button class="page-link" (click)="goToNextPage()">&raquo;</button></li>
-                    </ul>
-                </nav>
             </table>
         </div>
+        <nav aria-label="Page navigation example" class="mt-3">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <button class="page-link" (click)="goToPreviousPage()">&laquo;</button>
+                </li>
+                <span class="mx-3 my-auto">{{(offset / 5) + 1}}</span>
+                <li class="page-item">
+                    <button class="page-link" (click)="goToNextPage()">&raquo;</button>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
 
