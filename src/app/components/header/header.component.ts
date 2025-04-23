@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, OnInit} from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule, Event } from '@angular/router';
 import { userStore } from '../../store/user.store';
 import { NgIf } from '@angular/common';
 import { TokenService } from '../../services/token.service';
@@ -9,6 +9,7 @@ import {MatTableModule} from '@angular/material/table';
 import { NotificationService } from '../../services/notification.service';
 import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-check';
 import { HttpClientModule } from '@angular/common/http';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -19,11 +20,26 @@ import { HttpClientModule } from '@angular/common/http';
   providers:[TokenService,NotificationService]
 })
 export class HeaderComponent implements OnInit {
+  currentRouteLabel: string = 'Home';
+
+  routeMap: { [key: string]: string } = {
+    '/home': 'Home',
+    '/view-employee': 'Employees',
+    '/manage-department': 'Departments',
+    '/manage-role': 'Roles',
+    '/manage-leaves': 'Leaves',
+    '/manage-salary': 'Salary',
+    '/manage-task': 'Tasks',
+    '/assigned-tasks': 'Assigned Tasks',
+    '/apply-leaves': 'Apply Leave',
+    '/about': 'About',
+  };
 
   constructor(
     private readonly tokenService: TokenService,
     private readonly authService: AuthService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly router: Router,
   ){
     effect(()=>{
       this.isUserLogedIn = this.authService.isUserLogedIn();
@@ -33,6 +49,11 @@ export class HeaderComponent implements OnInit {
       this.companyLogo = this.user()?.company.logo;
       this.loadNotifications();
     });
+    this.router.events
+      .pipe(filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.currentRouteLabel = this.routeMap[event.urlAfterRedirects] || 'Menu';
+      });
   }
   
   store = inject(userStore);

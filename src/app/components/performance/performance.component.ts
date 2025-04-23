@@ -9,11 +9,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { PerformanceService } from '../../services/performance.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-performance',
   standalone: true,
-  imports: [MatSlideToggleModule,MatChipsModule,HttpClientModule,FormsModule,MatProgressBarModule],
+  imports: [MatSlideToggleModule,MatChipsModule,HttpClientModule,FormsModule,MatProgressBarModule,CommonModule],
   templateUrl: './performance.component.html',
   styleUrl: './performance.component.css',
   providers: [LeaveService, TaskService, PerformanceService]

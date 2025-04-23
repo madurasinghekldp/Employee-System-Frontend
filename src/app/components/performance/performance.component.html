@@ -41,6 +41,6 @@
     </div>
     <div class="py-5">
         <mat-progress-bar [mode]="loading?'indeterminate':'determinate'" [value]="performanceValue"></mat-progress-bar>
-        <small class="text-success">{{performanceValue}}%</small>
+        <small class="text-success">{{performanceValue | number:"1.1-1"}}%</small>
     </div>
 </div>

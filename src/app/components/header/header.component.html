@@ -1,27 +1,54 @@
-<div class="custom-bg w-100">
+<div class=" d-flex justify-content-center w-auto">
     
-    <header class="d-flex justify-content-center py-3">
+    <header class="custom-bg d-flex justify-content-center py-3 px-3 rounded rounded-pill">
       <div class="my-auto mx-3">
         <img src="/assets/images/Empgo.png" width="90" alt="Empgo Logo">
       </div>
-      <ul class="nav nav-pills">
-        <li class="nav-item"><a  class="nav-link not-active" routerLink="/home" routerLinkActive="active-bg">Home</a></li>
-        <ng-container *ngIf="isUserLogedIn &&( isAdmin || isUser)">
-        <li class="nav-item"><a  class="nav-link not-active" routerLink="/view-employee" routerLinkActive="active-bg">Employees</a></li>
-        <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-department" routerLinkActive="active-bg">Departments</a></li>
-        <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-role" routerLinkActive="active-bg">Roles</a></li>
-        <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-leaves" routerLinkActive="active-bg">Leaves</a></li>
-        <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-salary" routerLinkActive="active-bg">Salary</a></li>
-        <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-task" routerLinkActive="active-bg">Tasks</a></li>
-        
-        </ng-container>
-        <ng-container *ngIf="isUserLogedIn && isEmployee">
-          <li class="nav-item"><a  class="nav-link not-active" routerLink="/assigned-tasks" routerLinkActive="active-bg">Assigned Tasks</a></li>
-          <li class="nav-item"><a  class="nav-link not-active" routerLink="/apply-leaves" routerLinkActive="active-bg">Apply leave</a></li>
-        </ng-container>
-        <li class="nav-item"><a  class="nav-link not-active" routerLink="/about" routerLinkActive="active-bg">About</a></li>
-        
-      </ul>
+      <div class="d-none d-md-block">
+        <ul class="nav nav-pills">
+          <li class="nav-item"><a  class="nav-link not-active" routerLink="/home" routerLinkActive="active-bg">Home</a></li>
+          <ng-container *ngIf="isUserLogedIn &&( isAdmin || isUser)">
+          <li class="nav-item"><a  class="nav-link not-active" routerLink="/view-employee" routerLinkActive="active-bg">Employees</a></li>
+          <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-department" routerLinkActive="active-bg">Departments</a></li>
+          <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-role" routerLinkActive="active-bg">Roles</a></li>
+          <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-leaves" routerLinkActive="active-bg">Leaves</a></li>
+          <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-salary" routerLinkActive="active-bg">Salary</a></li>
+          <li class="nav-item"><a  class="nav-link not-active" routerLink="/manage-task" routerLinkActive="active-bg">Tasks</a></li>
+          
+          </ng-container>
+          <ng-container *ngIf="isUserLogedIn && isEmployee">
+            <li class="nav-item"><a  class="nav-link not-active" routerLink="/assigned-tasks" routerLinkActive="active-bg">Assigned Tasks</a></li>
+            <li class="nav-item"><a  class="nav-link not-active" routerLink="/apply-leaves" routerLinkActive="active-bg">Apply leave</a></li>
+          </ng-container>
+          <li class="nav-item"><a  class="nav-link not-active" routerLink="/about" routerLinkActive="active-bg">About</a></li>
+          
+        </ul>
+      </div>
+      <div class="dropdown d-block d-md-none">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          {{ currentRouteLabel }}
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" routerLink="/home" routerLinkActive="active">Home</a></li>
+      
+          <ng-container *ngIf="isUserLogedIn && (isAdmin || isUser)">
+            <li><a class="dropdown-item" routerLink="/view-employee" routerLinkActive="active">Employees</a></li>
+            <li><a class="dropdown-item" routerLink="/manage-department" routerLinkActive="active">Departments</a></li>
+            <li><a class="dropdown-item" routerLink="/manage-role" routerLinkActive="active">Roles</a></li>
+            <li><a class="dropdown-item" routerLink="/manage-leaves" routerLinkActive="active">Leaves</a></li>
+            <li><a class="dropdown-item" routerLink="/manage-salary" routerLinkActive="active">Salary</a></li>
+            <li><a class="dropdown-item" routerLink="/manage-task" routerLinkActive="active">Tasks</a></li>
+          </ng-container>
+      
+          <ng-container *ngIf="isUserLogedIn && isEmployee">
+            <li><a class="dropdown-item" routerLink="/assigned-tasks" routerLinkActive="active">Assigned Tasks</a></li>
+            <li><a class="dropdown-item" routerLink="/apply-leaves" routerLinkActive="active">Apply Leave</a></li>
+          </ng-container>
+      
+          <li><a class="dropdown-item" routerLink="/about" routerLinkActive="active">About</a></li>
+        </ul>
+      </div>
+      
       <span class="mx-2"></span>
       <div *ngIf="isUserLogedIn" matBadgeSize="small" [matBadgeHidden]="hidden" [matBadge]="notificationCount" matBadgeColor="warn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
         <img [src]="companyLogo||'assets/images/company-default-logo.png'" alt="" width="40" height="40" class="rounded-circle">
