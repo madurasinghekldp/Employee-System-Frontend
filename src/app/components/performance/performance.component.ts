@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatChipsModule} from '@angular/material/chips';
 import { ActivatedRoute } from '@angular/router';
@@ -7,14 +7,16 @@ import { isErrorResponse, isSuccessResponse } from '../../utility/response-type-
 import { TaskService } from '../../services/task.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { PerformanceService } from '../../services/performance.service';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-performance',
   standalone: true,
-  imports: [MatSlideToggleModule,MatChipsModule,HttpClientModule,FormsModule],
+  imports: [MatSlideToggleModule,MatChipsModule,HttpClientModule,FormsModule,MatProgressBarModule],
   templateUrl: './performance.component.html',
   styleUrl: './performance.component.css',
-  providers: [LeaveService, TaskService]
+  providers: [LeaveService, TaskService, PerformanceService]
 })
 export class PerformanceComponent implements OnInit{
 
@@ -25,11 +27,14 @@ export class PerformanceComponent implements OnInit{
   leaveCount:number = 0;
   rejectedTaskCount:number = 0;
   lateSubmittedTaskCount:number = 0;
+  performanceValue:number = 0;
+  loading:boolean = false;
 
   constructor(
     private readonly router: ActivatedRoute,
     private readonly leaveService: LeaveService,
     private readonly taskService: TaskService,
+    private readonly performanceService: PerformanceService
   ) {
     
   }
@@ -76,6 +81,23 @@ export class PerformanceComponent implements OnInit{
         }
         else if(isErrorResponse(res)){
           this.lateSubmittedTaskCount = 0;
+        }
+      });
+    }
+  }
+
+  getEmployeePerformanceValue(){
+    if(this.leaveCountChecked && this.rejectedTaskCountChecked && this.lateSubmittedTaskCountChecked){
+      this.loading = true;
+      this.performanceService.getEmployeePerformanceValue(this.leaveCount,this.rejectedTaskCount,this.lateSubmittedTaskCount).subscribe({
+        
+        next: res=>{
+          this.loading = false;
+          this.performanceValue = res.performance*10;
+        },
+        error: err=>{
+          this.loading = false;
+          this.performanceValue = 0;
         }
       });
     }

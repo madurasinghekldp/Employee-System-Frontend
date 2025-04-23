@@ -1,0 +1,7 @@
+mat-progress-bar.mat-mdc-progress-bar {
+    --mdc-linear-progress-active-indicator-color: rgb(86, 249, 86);
+    --mdc-linear-progress-track-color: rgb(253, 96, 96);
+    --mdc-linear-progress-track-height: 10px;
+    --mdc-linear-progress-active-indicator-height: 10px;
+}
+  
