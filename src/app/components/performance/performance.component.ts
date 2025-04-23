@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { PerformanceService } from '../../services/performance.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { CommonModule } from '@angular/common';
+import { EmployeeService } from '../../services/employee.service';
 
 @Component({
   selector: 'app-performance',
@@ -17,7 +18,7 @@ import { CommonModule } from '@angular/common';
   imports: [MatSlideToggleModule,MatChipsModule,HttpClientModule,FormsModule,MatProgressBarModule,CommonModule],
   templateUrl: './performance.component.html',
   styleUrl: './performance.component.css',
-  providers: [LeaveService, TaskService, PerformanceService]
+  providers: [LeaveService, TaskService, PerformanceService, EmployeeService],
 })
 export class PerformanceComponent implements OnInit{
 
@@ -30,12 +31,17 @@ export class PerformanceComponent implements OnInit{
   lateSubmittedTaskCount:number = 0;
   performanceValue:number = 0;
   loading:boolean = false;
+  employeeFirstName:string = '';
+  employeeLastName:string = '';
+  employeeProfileImage:string = '';
+  errorMessage:string = '';
 
   constructor(
     private readonly router: ActivatedRoute,
     private readonly leaveService: LeaveService,
     private readonly taskService: TaskService,
-    private readonly performanceService: PerformanceService
+    private readonly performanceService: PerformanceService,
+    private readonly employeeService: EmployeeService,
   ) {
     
   }
@@ -45,6 +51,8 @@ export class PerformanceComponent implements OnInit{
       this.employeeId = params['employeeId'] ? +params['employeeId'] : null;
       console.log(this.employeeId);
     })
+    this.getEmployeeById();
+
   }
 
   getLeaveCount(){
@@ -85,6 +93,19 @@ export class PerformanceComponent implements OnInit{
         }
       });
     }
+  }
+
+  getEmployeeById(){
+    this.employeeService.getById(this.employeeId).subscribe(res=>{
+      if(isSuccessResponse(res)){
+        this.employeeFirstName = res.data.firstName;
+        this.employeeLastName = res.data.lastName;
+        this.employeeProfileImage = res.data.profileImage;
+      }
+      else if(isErrorResponse(res)){
+        this.errorMessage = res.message;
+      }
+    });
   }
 
   getEmployeePerformanceValue(){

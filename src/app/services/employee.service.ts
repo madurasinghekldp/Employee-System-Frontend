@@ -51,4 +51,8 @@ export class EmployeeService {
   getCount(companyId:number|null|undefined):Observable<SuccessResponse|ErrorResponse>{
     return this.http.get<SuccessResponse | ErrorResponse>(`${this.apiUrl}emp/count?companyId=${companyId}`,{responseType:"json"})
   }
+
+  getById(id:number|null):Observable<SuccessResponse|ErrorResponse>{
+    return this.http.get<SuccessResponse | ErrorResponse>(`${this.apiUrl}emp/by-id?id=${id}`,{responseType:"json"});
+  }
 }

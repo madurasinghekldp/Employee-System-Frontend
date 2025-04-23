@@ -12,6 +12,10 @@
             A simple warning...The system uses monthly data and range of each parameter is between 0 and 10. If the 
             values are differes from this range, the system will not work properly.
         </div>
+        <div class="d-flex justify-content-center mt-5 mx-5">
+            <img [src]="employeeProfileImage || 'assets/images/default_profile.png'" alt="hugenerd" width="60" height="60" class="rounded-circle">
+            <p class="my-auto p-2"><strong>{{employeeFirstName}} {{employeeLastName}}</strong></p>
+        </div>
         <div class="flex-col mt-5 mx-5">
             <p class="mt-5">
                 <mat-slide-toggle labelPosition="before" [(ngModel)]="leaveCountChecked" (change)="getLeaveCount()">
