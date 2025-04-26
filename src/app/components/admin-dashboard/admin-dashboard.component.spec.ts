@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminDashboardComponent } from './admin-dashboard.component';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('AdminDashboardComponent', () => {
   let component: AdminDashboardComponent;
@@ -8,7 +10,18 @@ describe('AdminDashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AdminDashboardComponent]
+      imports: [AdminDashboardComponent],
+      providers: [
+              {
+                provide: ActivatedRoute,
+                useValue: {
+                  // mock the parameters or data you use
+                  params: of({ id: '1' }),
+                  queryParams: of({}),
+                  snapshot: {},
+                },
+              },
+            ],
     })
     .compileComponents();
     
